@@ -1,5 +1,7 @@
 {
 	"item.minecraft.coal": "Bituminous",
+	"block.minecraft.coal_ore": "Bituminous Ore",
+	"block.minecraft.deepslate_coal_ore": "Deepslate Bituminous Ore",
 	"item.material.peat": "Peat",
 	"item.material.lignite": "Lignite",
 	"item.material.sub_bituminous": "Sub-bituminous",

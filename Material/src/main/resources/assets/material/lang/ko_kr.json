@@ -1,5 +1,7 @@
 {
 	"item.minecraft.coal": "역청탄",
+	"block.minecraft.coal_ore": "역청탄광석",
+	"block.minecraft.deepslate_coal_ore": "심층역청탄광석",
 	"item.material.peat": "이탄",
 	"item.material.lignite": "갈탄",
 	"item.material.sub_bituminous": "아역청탄",
