@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "com.industrialcraft.material.client.mixin",
+	"compatibilityLevel": "JAVA_25",
+	"client": [
+		"MaterialClientMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

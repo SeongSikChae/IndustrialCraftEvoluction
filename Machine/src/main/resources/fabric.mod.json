@@ -1,0 +1,31 @@
+{
+	"schemaVersion": 1,
+	"id": "machine",
+	"version": "${version}",
+	"name": "Machine",
+	"description": "Machine module for IndustrialCraft: Evolution (Minecraft 26.2)",
+	"authors": [
+		"IndustrialCraft: Evolution"
+	],
+	"contact": {},
+	"license": "MIT",
+	"icon": "assets/machine/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.industrialcraft.machine.MachineMod"
+		],
+		"client": [
+			"com.industrialcraft.machine.client.MachineClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"material": "*"
+	}
+}

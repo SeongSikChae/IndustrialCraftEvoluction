@@ -1,0 +1,13 @@
+{
+	"replace": false,
+	"values": [
+		"material:peat_ore",
+		"material:deepslate_peat_ore",
+		"material:lignite_ore",
+		"material:deepslate_lignite_ore",
+		"material:sub_bituminous_ore",
+		"material:deepslate_sub_bituminous_ore",
+		"material:anthracite_ore",
+		"material:deepslate_anthracite_ore"
+	]
+}

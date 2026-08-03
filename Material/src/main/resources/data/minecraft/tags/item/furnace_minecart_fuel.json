@@ -1,0 +1,9 @@
+{
+	"replace": false,
+	"values": [
+		"material:peat",
+		"material:lignite",
+		"material:sub_bituminous",
+		"material:anthracite"
+	]
+}

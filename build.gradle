@@ -1,0 +1,13 @@
+// IndustrialCraft: Evolution — root aggregator
+// Mod modules live in subprojects (e.g. Material).
+
+allprojects {
+	group = rootProject.property('maven_group')
+	version = rootProject.property('mod_version')
+}
+
+subprojects {
+	repositories {
+		mavenCentral()
+	}
+}

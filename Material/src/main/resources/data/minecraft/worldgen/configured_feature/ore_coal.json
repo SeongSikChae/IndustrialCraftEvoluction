@@ -1,0 +1,42 @@
+{
+	"type": "minecraft:weighted_random_selector",
+	"config": {
+		"features": [
+			{
+				"data": {
+					"feature": "material:ore_peat",
+					"placement": []
+				},
+				"weight": 500
+			},
+			{
+				"data": {
+					"feature": "material:ore_lignite",
+					"placement": []
+				},
+				"weight": 100
+			},
+			{
+				"data": {
+					"feature": "material:ore_sub_bituminous",
+					"placement": []
+				},
+				"weight": 175
+			},
+			{
+				"data": {
+					"feature": "material:ore_bituminous",
+					"placement": []
+				},
+				"weight": 200
+			},
+			{
+				"data": {
+					"feature": "material:ore_anthracite",
+					"placement": []
+				},
+				"weight": 25
+			}
+		]
+	}
+}

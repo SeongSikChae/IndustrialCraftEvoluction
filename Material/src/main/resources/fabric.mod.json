@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "material",
+	"version": "${version}",
+	"name": "Material",
+	"description": "Material module for IndustrialCraft: Evolution (Minecraft 26.2)",
+	"authors": [
+		"IndustrialCraft: Evolution"
+	],
+	"contact": {},
+	"license": "MIT",
+	"icon": "assets/material/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.industrialcraft.material.MaterialMod"
+		],
+		"client": [
+			"com.industrialcraft.material.client.MaterialClient"
+		]
+	},
+	"mixins": [
+		"material.mixins.json",
+		{
+			"config": "material.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
