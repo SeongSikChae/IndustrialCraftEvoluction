@@ -4,6 +4,8 @@ import com.industrialcraft.machine.block.ModBlocks;
 import com.industrialcraft.machine.block.entity.ModBlockEntities;
 import com.industrialcraft.machine.item.ModItems;
 import com.industrialcraft.machine.menu.ModMenus;
+import com.industrialcraft.machine.recipe.ModRecipeBookCategories;
+import com.industrialcraft.machine.recipe.ModRecipes;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
@@ -15,6 +17,8 @@ public class MachineMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ModRecipes.initialize();
+		ModRecipeBookCategories.initialize();
 		ModItems.initialize();
 		ModBlocks.initialize();
 		ModBlockEntities.initialize();

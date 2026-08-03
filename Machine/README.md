@@ -2,7 +2,30 @@
 
 IndustrialCraft: Evolution의 기계 모듈입니다. 연료를 소모해 **회전 동력**(토크·각속도)을 내는 엔진부터 시작합니다.
 
-Material 모듈이 있으면 등급별 석탄류 연료 값·태그를 그대로 활용합니다. Material이 없어도 바닐라 `#furnace_minecart_fuel`(석탄·숯)로 동작합니다.
+Machine 전용 제작은 **기계 제작대**에서만 가능합니다. Material 모듈이 있으면 등급별 석탄류 연료 값·태그를 그대로 활용합니다. Material이 없어도 바닐라 `#furnace_minecart_fuel`(석탄·숯)로 동작합니다.
+
+---
+
+## 기계 제작대 (Machine Crafting Table)
+
+Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입 레시피만 매칭하며, 바닐라 제작은 할 수 없습니다. 바닐라 제작대와 같이 **레시피북**(녹색 책)으로 빠른 배치가 가능합니다.
+
+| 항목 | 값 |
+|------|-----|
+| 블록 | `machine:machine_crafting_table` |
+| 레시피 타입 | `machine:machine_crafting` |
+
+### 제작 (바닐라 제작대)
+
+```
+철괴  철괴  철괴
+철괴 제작대 철괴
+철괴  철괴  철괴
+```
+
+→ `machine:machine_crafting_table` × 1
+
+우클릭으로 GUI를 엽니다. 레이아웃은 바닐라 제작대와 같습니다. Machine 레시피(기계 제작대·화로 엔진 등)는 월드 시작 시 레시피북에 해금됩니다.
 
 ---
 
@@ -21,6 +44,18 @@ Material 모듈이 있으면 등급별 석탄류 연료 값·태그를 그대로
 | 정격 출력 | 1024 W (토크 × 각속도) |
 
 우클릭으로 GUI를 엽니다. 연료 게이지(불꽃)·현재 토크·각속도·출력을 확인할 수 있습니다.
+
+### 제작 (기계 제작대)
+
+```
+철괴  철괴  철괴
+철괴  화로  철괴
+철괴 피스톤 철괴
+```
+
+→ `machine:furnace_engine` × 1
+
+바닐라 제작대에서는 만들 수 없습니다.
 
 ### 사용법
 
@@ -81,5 +116,7 @@ Material이 없으면 바닐라 석탄·숯만 사용되며, 각각의 용광로
 
 | 종류 | ID | 설명 |
 |------|-----|------|
+| 블록 / 아이템 | `machine:machine_crafting_table` | 기계 제작대 (기능 블록 탭) |
 | 블록 / 아이템 | `machine:furnace_engine` | 화로 엔진 (기능 블록 탭) |
 | 아이템 | `machine:furnace_engine_gear` | BER용 샤프트·톱니 메시 |
+| 레시피 타입 | `machine:machine_crafting` | 기계 제작대 전용 shaped 레시피 |

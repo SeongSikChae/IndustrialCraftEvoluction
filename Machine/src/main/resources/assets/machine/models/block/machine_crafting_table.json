@@ -1,0 +1,8 @@
+{
+	"parent": "minecraft:block/cube_bottom_top",
+	"textures": {
+		"bottom": "machine:block/machine_crafting_table_bottom",
+		"side": "machine:block/machine_crafting_table_side",
+		"top": "machine:block/machine_crafting_table_top"
+	}
+}

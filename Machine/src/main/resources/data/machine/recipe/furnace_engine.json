@@ -1,0 +1,17 @@
+{
+	"type": "machine:machine_crafting",
+	"key": {
+		"F": "minecraft:furnace",
+		"I": "minecraft:iron_ingot",
+		"P": "minecraft:piston"
+	},
+	"pattern": [
+		"III",
+		"IFI",
+		"IPI"
+	],
+	"result": {
+		"count": 1,
+		"id": "machine:furnace_engine"
+	}
+}

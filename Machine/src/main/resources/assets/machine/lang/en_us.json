@@ -1,5 +1,7 @@
 {
+	"block.machine.machine_crafting_table": "Machine Crafting Table",
 	"block.machine.furnace_engine": "Furnace Engine",
+	"container.machine.machine_crafting_table": "Machine Crafting Table",
 	"container.machine.furnace_engine": "Furnace Engine",
 	"gui.machine.furnace_engine.torque": "Torque: %s",
 	"gui.machine.furnace_engine.omega": "Omega: %s",

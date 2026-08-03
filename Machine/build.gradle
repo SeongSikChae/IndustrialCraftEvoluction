@@ -8,6 +8,8 @@ base {
 }
 
 loom {
+	accessWidenerPath = file("src/main/resources/machine.accesswidener")
+
 	splitEnvironmentSourceSets()
 
 	mods {

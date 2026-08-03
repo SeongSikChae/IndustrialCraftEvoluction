@@ -8,6 +8,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 
 public final class ModMenus {
+	public static final MenuType<MachineCraftingTableMenu> MACHINE_CRAFTING_TABLE = register("machine_crafting_table", MachineCraftingTableMenu::new);
 	public static final MenuType<FurnaceEngineMenu> FURNACE_ENGINE = register("furnace_engine", FurnaceEngineMenu::new);
 
 	private ModMenus() {

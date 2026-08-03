@@ -14,6 +14,11 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 
 public final class ModBlocks {
+	public static final Block MACHINE_CRAFTING_TABLE = register(
+		ModBlockItemIds.MACHINE_CRAFTING_TABLE,
+		MachineCraftingTableBlock::new,
+		BlockBehaviour.Properties.ofFullCopy(Blocks.CRAFTING_TABLE)
+	);
 	public static final Block FURNACE_ENGINE = register(
 		ModBlockItemIds.FURNACE_ENGINE,
 		FurnaceEngineBlock::new,
@@ -37,6 +42,9 @@ public final class ModBlocks {
 
 	public static void initialize() {
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS)
-			.register(entries -> entries.accept(FURNACE_ENGINE));
+			.register(entries -> {
+				entries.accept(MACHINE_CRAFTING_TABLE);
+				entries.accept(FURNACE_ENGINE);
+			});
 	}
 }

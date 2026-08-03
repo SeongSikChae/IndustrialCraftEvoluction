@@ -11,6 +11,7 @@
 	"license": "MIT",
 	"icon": "assets/machine/icon.png",
 	"environment": "*",
+	"accessWidener": "machine.accesswidener",
 	"entrypoints": {
 		"main": [
 			"com.industrialcraft.machine.MachineMod"

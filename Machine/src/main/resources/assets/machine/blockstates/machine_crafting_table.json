@@ -1,0 +1,7 @@
+{
+	"variants": {
+		"": {
+			"model": "machine:block/machine_crafting_table"
+		}
+	}
+}

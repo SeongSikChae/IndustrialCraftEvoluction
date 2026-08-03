@@ -5,6 +5,7 @@ import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.Identifier;
 
 public final class ModBlockItemIds {
+	public static final BlockItemId MACHINE_CRAFTING_TABLE = create("machine_crafting_table");
 	public static final BlockItemId FURNACE_ENGINE = create("furnace_engine");
 
 	private ModBlockItemIds() {
