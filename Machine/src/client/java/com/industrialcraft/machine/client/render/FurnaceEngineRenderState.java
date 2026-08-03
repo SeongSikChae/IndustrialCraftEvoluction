@@ -8,5 +8,6 @@ public class FurnaceEngineRenderState extends BlockEntityRenderState {
 	public boolean lit;
 	public Direction facing = Direction.NORTH;
 	public float shaftAngle;
-	public final ItemStackRenderState shaftItem = new ItemStackRenderState();
+	/** Single rigid shaft+sprocket mesh. */
+	public final ItemStackRenderState shaftAssembly = new ItemStackRenderState();
 }

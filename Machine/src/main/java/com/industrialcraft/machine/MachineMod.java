@@ -2,6 +2,7 @@ package com.industrialcraft.machine;
 
 import com.industrialcraft.machine.block.ModBlocks;
 import com.industrialcraft.machine.block.entity.ModBlockEntities;
+import com.industrialcraft.machine.item.ModItems;
 import com.industrialcraft.machine.menu.ModMenus;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.Identifier;
@@ -14,6 +15,7 @@ public class MachineMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ModItems.initialize();
 		ModBlocks.initialize();
 		ModBlockEntities.initialize();
 		ModMenus.initialize();

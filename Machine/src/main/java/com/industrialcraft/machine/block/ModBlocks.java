@@ -17,7 +17,7 @@ public final class ModBlocks {
 	public static final Block FURNACE_ENGINE = register(
 		ModBlockItemIds.FURNACE_ENGINE,
 		FurnaceEngineBlock::new,
-		BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE)
+		BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE).noOcclusion()
 	);
 
 	private ModBlocks() {

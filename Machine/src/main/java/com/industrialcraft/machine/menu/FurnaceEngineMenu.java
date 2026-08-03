@@ -2,6 +2,7 @@ package com.industrialcraft.machine.menu;
 
 import com.industrialcraft.machine.block.entity.FurnaceEngineBlockEntity;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -14,8 +15,8 @@ import net.minecraft.world.item.ItemStack;
 
 public class FurnaceEngineMenu extends AbstractContainerMenu {
 	public static final int FUEL_SLOT = 0;
-	private static final int FUEL_SLOT_X = 80;
-	private static final int FUEL_SLOT_Y = 35;
+	private static final int FUEL_SLOT_X = 134;
+	private static final int FUEL_SLOT_Y = 53;
 	private static final int INVENTORY_START_X = 8;
 	private static final int INVENTORY_START_Y = 84;
 
@@ -44,17 +45,33 @@ public class FurnaceEngineMenu extends AbstractContainerMenu {
 		this.addDataSlots(data);
 	}
 
-	public int getBurnProgress() {
+	public float getLitProgress() {
 		int burnTime = this.data.get(FurnaceEngineBlockEntity.DATA_BURN_TIME);
 		int burnDuration = this.data.get(FurnaceEngineBlockEntity.DATA_BURN_DURATION);
 		if (burnDuration == 0) {
-			return 0;
+			return 0.0F;
 		}
-		return burnTime * 13 / burnDuration;
+		return Mth.clamp((float) burnTime / (float) burnDuration, 0.0F, 1.0F);
 	}
 
 	public boolean isLit() {
 		return this.data.get(FurnaceEngineBlockEntity.DATA_BURN_TIME) > 0;
+	}
+
+	public float getSpinFactor() {
+		return this.data.get(FurnaceEngineBlockEntity.DATA_SPIN_MILLI) / (float) FurnaceEngineBlockEntity.SPIN_MILLI_MAX;
+	}
+
+	public double getTorque() {
+		return FurnaceEngineBlockEntity.TORQUE * this.getSpinFactor();
+	}
+
+	public double getOmega() {
+		return FurnaceEngineBlockEntity.OMEGA * this.getSpinFactor();
+	}
+
+	public double getPower() {
+		return this.getTorque() * this.getOmega();
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 {
 	"model": {
 		"type": "minecraft:model",
-		"model": "machine:item/furnace_engine"
+		"model": "machine:item/furnace_engine_gear"
 	}
 }

@@ -1,4 +1,8 @@
 {
 	"block.machine.furnace_engine": "Furnace Engine",
-	"container.machine.furnace_engine": "Furnace Engine"
+	"container.machine.furnace_engine": "Furnace Engine",
+	"gui.machine.furnace_engine.torque": "Torque: %s",
+	"gui.machine.furnace_engine.omega": "Omega: %s",
+	"gui.machine.furnace_engine.power": "Power: %s",
+	"item.machine.furnace_engine_gear": "Furnace Engine Gear"
 }
