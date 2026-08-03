@@ -106,6 +106,16 @@ jobs:
           name: mods
           path: release-jars
 
+      - name: Flatten release jars
+        if: steps.version.outputs.changed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p release-flat
+          find release-jars -type f -name '*.jar' ! -name '*-sources.jar' -exec cp -t release-flat {} +
+          ls -la release-flat/
+          [[ -n "$(ls -A release-flat)" ]] || { echo "No jars found in artifact" >&2; exit 1; }
+
       - name: Create GitHub Release
         if: steps.version.outputs.changed == 'true'
         uses: softprops/action-gh-release@v2
@@ -114,6 +124,7 @@ jobs:
           name: ${{ steps.version.outputs.version }}
           prerelease: ${{ steps.version.outputs.prerelease == 'true' }}
           generate_release_notes: true
-          files: release-jars/*.jar
+          fail_on_unmatched_files: true
+          files: release-flat/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
