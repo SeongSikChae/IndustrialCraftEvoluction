@@ -8,6 +8,8 @@ Machine 전용 제작은 **기계 제작대**에서만 가능합니다. Material
 
 ## 기계 제작대 (Machine Crafting Table)
 
+<img src="docs/machine_crafting_table.png" alt="기계 제작대" width="256" />
+
 Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입 레시피만 매칭하며, 바닐라 제작은 할 수 없습니다. 바닐라 제작대와 같이 **레시피북**(녹색 책)으로 빠른 배치가 가능합니다.
 
 | 항목 | 값 |
@@ -17,19 +19,17 @@ Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입
 
 ### 제작 (바닐라 제작대)
 
-```
-철괴  철괴  철괴
-철괴 제작대 철괴
-철괴  철괴  철괴
-```
+<img src="docs/recipe_machine_crafting_table.png" alt="기계 제작대 제작 레시피" width="420" />
 
-→ `machine:machine_crafting_table` × 1
+철괴 8개 + 제작대 → `machine:machine_crafting_table` × 1
 
 우클릭으로 GUI를 엽니다. 레이아웃은 바닐라 제작대와 같습니다. Machine 레시피(기계 제작대·화로 엔진 등)는 월드 시작 시 레시피북에 해금됩니다.
 
 ---
 
 ## 화로 엔진 (Furnace Engine)
+
+<img src="docs/furnace_engine.png" alt="화로 엔진" width="256" />
 
 연료를 태워 플라이휠을 가속하고, 샤프트로 회전 동력을 출력하는 기초 엔진입니다.
 
@@ -47,13 +47,9 @@ Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입
 
 ### 제작 (기계 제작대)
 
-```
-철괴  철괴  철괴
-철괴  화로  철괴
-철괴 피스톤 철괴
-```
+<img src="docs/recipe_furnace_engine.png" alt="화로 엔진 제작 레시피" width="420" />
 
-→ `machine:furnace_engine` × 1
+철괴 7개 + 화로 + 피스톤 → `machine:furnace_engine` × 1
 
 바닐라 제작대에서는 만들 수 없습니다.
 
