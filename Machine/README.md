@@ -1,14 +1,14 @@
 # Machine
 
-IndustrialCraft: Evolution의 기계 모듈입니다. 연료를 소모해 **회전 동력**(토크·각속도)을 내는 엔진부터 시작합니다.
+IndustrialCraft: Evolution의 기계 모듈입니다. 연료를 소모해 **회전 동력**(토크·각속도)을 내는 엔진과, 그 동력을 1:1로 중계하는 Dynamo부터 시작합니다.
 
 Machine 전용 제작은 **기계 제작대**에서만 가능합니다. Material 모듈이 있으면 등급별 석탄류 연료 값·태그를 그대로 활용합니다. Material이 없어도 바닐라 `#furnace_minecart_fuel`(석탄·숯)로 동작합니다.
+
+아이템 창 썸네일은 Dynamo와 같이 **3D 블록 모델**(엔진·Dynamo는 샤프트 프리뷰 composite 포함)을 사용합니다.
 
 ---
 
 ## 기계 제작대 (Machine Crafting Table)
-
-<img src="docs/machine_crafting_table.png" alt="기계 제작대" width="256" />
 
 Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입 레시피만 매칭하며, 바닐라 제작은 할 수 없습니다. 바닐라 제작대와 같이 **레시피북**(녹색 책)으로 빠른 배치가 가능합니다.
 
@@ -16,20 +16,17 @@ Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입
 |------|-----|
 | 블록 | `machine:machine_crafting_table` |
 | 레시피 타입 | `machine:machine_crafting` |
+| 아이템 모델 | `machine:block/machine_crafting_table` 3D (`gui_light: side`) |
 
 ### 제작 (바닐라 제작대)
 
-<img src="docs/recipe_machine_crafting_table.png" alt="기계 제작대 제작 레시피" width="420" />
-
 철괴 8개 + 제작대 → `machine:machine_crafting_table` × 1
 
-우클릭으로 GUI를 엽니다. 레이아웃은 바닐라 제작대와 같습니다. Machine 레시피(기계 제작대·화로 엔진 등)는 월드 시작 시 레시피북에 해금됩니다.
+우클릭으로 GUI를 엽니다. 레이아웃은 바닐라 제작대와 같습니다. Machine 레시피(기계 제작대·화로 엔진·Dynamo 등)는 월드 시작 시 레시피북에 해금됩니다.
 
 ---
 
 ## 화로 엔진 (Furnace Engine)
-
-<img src="docs/furnace_engine.png" alt="화로 엔진" width="256" />
 
 연료를 태워 플라이휠을 가속하고, 샤프트로 회전 동력을 출력하는 기초 엔진입니다.
 
@@ -42,12 +39,11 @@ Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입
 | 정격 토크 | 4 Nm |
 | 정격 각속도 | 256 rad/s |
 | 정격 출력 | 1024 W (토크 × 각속도) |
+| 아이템 모델 | composite: 블록 3D + `furnace_engine_shaft_preview` |
 
 우클릭으로 GUI를 엽니다. 연료 게이지(불꽃)·현재 토크·각속도·출력을 확인할 수 있습니다.
 
 ### 제작 (기계 제작대)
-
-<img src="docs/recipe_furnace_engine.png" alt="화로 엔진 제작 레시피" width="420" />
 
 철괴 7개 + 화로 + 피스톤 → `machine:furnace_engine` × 1
 
@@ -55,7 +51,7 @@ Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입
 
 ### 사용법
 
-1. 화로 엔진을 설치합니다. 샤프트(톱니)는 플레이어가 바라보는 방향 기준으로 옆면을 향합니다.
+1. 화로 엔진을 설치합니다. 샤프트(톱니)는 설치 직후 **플레이어를 향한 면**(toward player)에 있습니다.
 2. GUI에 석탄·숯 등 허용 연료를 넣습니다.
 3. 연소가 시작되면 블록이 점화(`LIT`)되고, 배기구에서 연기가 나며 샤프트가 회전합니다.
 4. 연료가 끊겨도 플라이휠이 서서히 감속하므로 출력이 바로 0이 되지 않습니다.
@@ -94,7 +90,8 @@ Material이 없으면 바닐라 석탄·숯만 사용되며, 각각의 용광로
 
 - 연소 중: 스핀 계수가 틱당 +0.05 (약 1초면 정격)
 - 소화 후: 스핀 계수가 틱당 −0.0125 (약 4초면 정지)
-- 샤프트 시각 회전 속도도 같은 스핀 계수를 따릅니다
+- GUI·패널의 토크/ω/W는 **선형** (`스핀 계수 × 정격`)
+- 샤프트 **시각 회전**만 아래 로그 스케일을 따름 (`ShaftVisuals`)
 
 샤프트 네트워크·다른 기계는 `PowerSource`만 조회하면 되며, 연료·인벤토리 로직에 의존하지 않습니다.
 
@@ -108,11 +105,79 @@ Material이 없으면 바닐라 석탄·숯만 사용되며, 각각의 용광로
 
 ---
 
+## Dynamo
+
+출력 축을 입력으로 받아 **토크·각속도를 1:1**로 반대쪽 출력 축에 넘기는 중계기입니다. I/O가 아닌 네 면에 실시간 토크 / 각속도 / 출력을 LCD 스타일로 표시합니다.
+
+| 항목 | 값 |
+|------|-----|
+| 블록 | `machine:dynamo` |
+| I/O | `FACING` = 출력, 반대면 = 입력 |
+| 중계 | 입력 = 출력 (토크·ω 동일) |
+| 표시 | 비-I/O 4면 Nm / rad/s / W |
+| 아이템 모델 | composite: 블록 3D + `dynamo_shaft_preview` |
+
+### 제작 (기계 제작대)
+
+철괴·유리판·비교기:
+
+```
+I G I
+I C I
+I G I
+```
+
+→ `machine:dynamo` × 1 (`I`=철괴, `G`=유리판, `C`=비교기)
+
+바닐라 제작대에서는 만들 수 없습니다.
+
+### 사용법
+
+1. 앞단 기계의 **출력 축을 보고** 설치합니다. 시선 쪽 = 입력, 등 뒤 = 출력.
+2. 예: 엔진 축이 북쪽이면, 엔진 북쪽에서 엔진(남쪽)을 보고 Dynamo를 놓습니다 → 입력 남 / 출력 북.
+3. 체인도 동일: 앞 Dynamo의 출력 축을 보고 다음 Dynamo를 설치합니다.
+4. 연결되면 비-I/O 네 면에 같은 수치가 표시되고, 출력 축 톱니가 입력 ω에 맞춰 돕니다.
+
+출력 축은 이웃 Dynamo 입력 베어링까지 닿도록 길게 빠져 있습니다. 입력은 본체 안쪽 오목 베어링입니다.
+
+---
+
+## 샤프트 시각 회전 (`ShaftVisuals`)
+
+패널·GUI에 찍히는 ω는 그대로 두고, **BER 톱니 회전 속도만** `log2`로 매핑합니다. 화로 엔진과 Dynamo가 같은 공식을 씁니다.
+
+```
+ω ≤ 0          → 0 °/tick
+0 < ω < 1      → MIN × ω
+1 ≤ ω ≤ 32768  → MIN + (MAX − MIN) × (log2(ω) / 15)
+ω > 32768      → MAX
+```
+
+| 상수 | 값 | 의미 |
+|------|-----|------|
+| `OMEGA_VISUAL_MAX` | 32768 | 로그 곡선 상한 (`log2 = 15`) |
+| `MIN` | 1.5 °/tick | ω = 1 일 때 |
+| `MAX` | 15.0 °/tick | ω = 32768 일 때 |
+
+구현: `ShaftVisuals.degreesPerTick(omega)`  
+엔진은 `degreesPerTick(OMEGA × spinFactor)`, Dynamo는 `degreesPerTick(수신 omega)`.
+
+참고 값:
+
+| ω | °/tick (대략) |
+|---|---------------|
+| 1 | 1.5 |
+| 256 (엔진 정격) | ~8.7 |
+| 32768 | 15.0 |
+
+---
+
 ## 등록 콘텐츠
 
 | 종류 | ID | 설명 |
 |------|-----|------|
 | 블록 / 아이템 | `machine:machine_crafting_table` | 기계 제작대 (기능 블록 탭) |
 | 블록 / 아이템 | `machine:furnace_engine` | 화로 엔진 (기능 블록 탭) |
+| 블록 / 아이템 | `machine:dynamo` | Dynamo 중계기 (기능 블록 탭) |
 | 아이템 | `machine:furnace_engine_gear` | BER용 샤프트·톱니 메시 |
 | 레시피 타입 | `machine:machine_crafting` | 기계 제작대 전용 shaped 레시피 |

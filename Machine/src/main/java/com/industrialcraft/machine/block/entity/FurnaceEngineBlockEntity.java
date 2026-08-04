@@ -4,6 +4,7 @@ import com.industrialcraft.machine.block.FurnaceEngineBlock;
 import com.industrialcraft.machine.menu.FurnaceEngineMenu;
 import com.industrialcraft.machine.power.FuelDurations;
 import com.industrialcraft.machine.power.PowerSource;
+import com.industrialcraft.machine.power.ShaftVisuals;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -37,8 +38,6 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 	public static final int DATA_SPIN_MILLI = 2;
 	public static final int DATA_COUNT = 3;
 	public static final int SPIN_MILLI_MAX = 10_000;
-	/** Visual shaft speed at full spin (degrees per tick). */
-	public static final float MAX_SHAFT_SPEED = 4.0F;
 	private static final float SPIN_ACCEL = 0.05F;
 	private static final float SPIN_DECEL = 0.0125F;
 
@@ -117,7 +116,7 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 			}
 		}
 
-		float shaftSpeed = MAX_SHAFT_SPEED * entity.spinFactor;
+		float shaftSpeed = entity.shaftDegreesPerTick();
 		if (shaftSpeed > 0.0F) {
 			entity.shaftAngle += shaftSpeed;
 			if (entity.shaftAngle >= 360.0F) {
@@ -136,8 +135,13 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 		return this.spinFactor != previous;
 	}
 
+	/** Visual-only; uses log2(ω) via {@link ShaftVisuals}. */
+	private float shaftDegreesPerTick() {
+		return ShaftVisuals.degreesPerTick(OMEGA * this.spinFactor);
+	}
+
 	public float getShaftAngle(float partialTick) {
-		return this.shaftAngle + MAX_SHAFT_SPEED * this.spinFactor * partialTick;
+		return this.shaftAngle + this.shaftDegreesPerTick() * partialTick;
 	}
 
 	public float getSpinFactor() {

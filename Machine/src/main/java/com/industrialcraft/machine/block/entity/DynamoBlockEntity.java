@@ -3,6 +3,7 @@ package com.industrialcraft.machine.block.entity;
 import com.industrialcraft.machine.block.DynamoBlock;
 import com.industrialcraft.machine.power.PowerSource;
 import com.industrialcraft.machine.power.ShaftPower;
+import com.industrialcraft.machine.power.ShaftVisuals;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -50,8 +51,7 @@ public class DynamoBlockEntity extends BlockEntity implements PowerSource {
 	}
 
 	private void tickShaftVisual() {
-		float speed = FurnaceEngineBlockEntity.MAX_SHAFT_SPEED
-			* (this.omega / (float) FurnaceEngineBlockEntity.OMEGA);
+		float speed = shaftDegreesPerTick();
 		if (speed > 0.0F) {
 			this.shaftAngle += speed;
 			if (this.shaftAngle >= 360.0F) {
@@ -60,10 +60,13 @@ public class DynamoBlockEntity extends BlockEntity implements PowerSource {
 		}
 	}
 
+	/** Visual-only; uses log2(ω) via {@link ShaftVisuals}. */
+	private float shaftDegreesPerTick() {
+		return ShaftVisuals.degreesPerTick(this.omega);
+	}
+
 	public float getShaftAngle(float partialTick) {
-		float speed = FurnaceEngineBlockEntity.MAX_SHAFT_SPEED
-			* (this.omega / (float) FurnaceEngineBlockEntity.OMEGA);
-		return this.shaftAngle + speed * partialTick;
+		return this.shaftAngle + this.shaftDegreesPerTick() * partialTick;
 	}
 
 	@Override

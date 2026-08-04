@@ -26,14 +26,20 @@ import org.jspecify.annotations.Nullable;
  * Output shaft (same gear mesh as furnace engine) + torque / omega / power on four non-I/O faces.
  */
 public class DynamoRenderer implements BlockEntityRenderer<DynamoBlockEntity, DynamoRenderState> {
-	/** Body I/O faces sit at ±0.375 from center; keep axle seated in the output collar. */
-	private static final float ASSEMBLY_X = 0.42F;
+	/** Place spinning hub along the extended output axle (nests toward neighbor input recess). */
+	private static final float ASSEMBLY_X = 0.62F;
 	private static final float ASSEMBLY_SCALE = 1.0F;
-	private static final float TEXT_SCALE = 0.012F;
-	private static final float FACE_OFFSET = 0.515F;
-	private static final int TEXT_COLOR = 0xFFE8F0FF;
-	private static final int BACKGROUND_COLOR = 0x00000000;
-	private static final int OUTLINE_COLOR = 0xFF101820;
+	/** Fits torque/omega/power inside the display bezel (model screen 3.5..12.5). */
+	private static final float TEXT_SCALE = 0.0105F;
+	/** Screen outer face is ±14.5/16 from center; sit just in front to avoid z-fight. */
+	private static final float FACE_OFFSET = 0.408F;
+	/** Cool LCD glyphs; line plate matches the dark inset screen behind them. */
+	private static final int TEXT_COLOR = 0xFFB8F4FF;
+	private static final int BACKGROUND_COLOR = 0xD0050C14;
+	private static final int OUTLINE_COLOR = 0x00000000;
+	/** Self-lit display readout (block light + skylight max). */
+	private static final int DISPLAY_LIGHT = 0x00F000F0;
+	private static final int LABEL_PAD = 3;
 
 	private final Font font;
 	private final ItemModelResolver itemModelResolver;
@@ -89,7 +95,7 @@ public class DynamoRenderer implements BlockEntityRenderer<DynamoBlockEntity, Dy
 			}
 			poseStack.pushPose();
 			orientToFace(poseStack, face, axisPositive);
-			submitFaceLabels(state, poseStack, submitNodeCollector, state.lightCoords);
+			submitFaceLabels(state, poseStack, submitNodeCollector);
 			poseStack.popPose();
 		}
 	}
@@ -117,38 +123,66 @@ public class DynamoRenderer implements BlockEntityRenderer<DynamoBlockEntity, Dy
 	private void submitFaceLabels(
 		DynamoRenderState state,
 		PoseStack poseStack,
-		SubmitNodeCollector collector,
-		int light
+		SubmitNodeCollector collector
 	) {
 		poseStack.scale(TEXT_SCALE, -TEXT_SCALE, TEXT_SCALE);
 		int lineHeight = this.font.lineHeight + 2;
 		float startY = -lineHeight * 1.5F;
-		submitCenteredLine(collector, poseStack, state.torqueLabel, startY, light);
-		submitCenteredLine(collector, poseStack, state.omegaLabel, startY + lineHeight, light);
-		submitCenteredLine(collector, poseStack, state.powerLabel, startY + lineHeight * 2, light);
+		int plateWidth = maxLabelWidth(state) + LABEL_PAD * 2;
+		submitDisplayLine(collector, poseStack, state.torqueLabel, startY, plateWidth);
+		submitDisplayLine(collector, poseStack, state.omegaLabel, startY + lineHeight, plateWidth);
+		submitDisplayLine(collector, poseStack, state.powerLabel, startY + lineHeight * 2, plateWidth);
 	}
 
-	private void submitCenteredLine(
+	private int maxLabelWidth(DynamoRenderState state) {
+		return Math.max(
+			this.font.width(state.torqueLabel),
+			Math.max(this.font.width(state.omegaLabel), this.font.width(state.powerLabel))
+		);
+	}
+
+	private void submitDisplayLine(
 		SubmitNodeCollector collector,
 		PoseStack poseStack,
 		Component label,
 		float y,
-		int light
+		int plateWidth
 	) {
-		FormattedCharSequence text = label.getVisualOrderText();
-		float x = -this.font.width(text) / 2.0F;
+		FormattedCharSequence plate = paddedPlate(plateWidth);
+		float plateX = -plateWidth / 2.0F;
 		collector.submitText(
 			poseStack,
-			x,
+			plateX,
 			y,
-			text,
+			plate,
 			false,
-			Font.DisplayMode.POLYGON_OFFSET,
-			light,
-			TEXT_COLOR,
+			Font.DisplayMode.NORMAL,
+			DISPLAY_LIGHT,
+			0x00000000,
 			BACKGROUND_COLOR,
 			OUTLINE_COLOR
 		);
+
+		FormattedCharSequence text = label.getVisualOrderText();
+		float textX = -this.font.width(text) / 2.0F;
+		collector.submitText(
+			poseStack,
+			textX,
+			y,
+			text,
+			false,
+			Font.DisplayMode.NORMAL,
+			DISPLAY_LIGHT,
+			TEXT_COLOR,
+			0x00000000,
+			OUTLINE_COLOR
+		);
+	}
+
+	private FormattedCharSequence paddedPlate(int plateWidth) {
+		int spaceWidth = Math.max(1, this.font.width(" "));
+		int spaces = Math.max(1, (int) Math.ceil(plateWidth / (double) spaceWidth));
+		return Component.literal(" ".repeat(spaces)).getVisualOrderText();
 	}
 
 	private static void orientToFace(PoseStack poseStack, Direction face, Direction output) {

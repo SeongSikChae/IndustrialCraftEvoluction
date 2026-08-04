@@ -37,11 +37,14 @@ public class DynamoBlock extends BaseEntityBlock {
 	public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
 
 	private static final VoxelShape BODY = Block.box(2.0, 2.0, 2.0, 14.0, 14.0, 14.0);
-	/** Matches engine shaft collar scale on the output end. */
-	private static final VoxelShape PORT_OUT_NORTH = Block.box(6.5, 6.5, 0.5, 9.5, 9.5, 2.0);
-	private static final VoxelShape PORT_OUT_SOUTH = Block.box(6.5, 6.5, 14.0, 9.5, 9.5, 15.5);
-	private static final VoxelShape PORT_OUT_WEST = Block.box(0.5, 6.5, 6.5, 2.0, 9.5, 9.5);
-	private static final VoxelShape PORT_OUT_EAST = Block.box(14.0, 6.5, 6.5, 15.5, 9.5, 9.5);
+	/**
+	 * Output axle bridges the body inset gap into the next Dynamo's input recess
+	 * (bodies are inset to 2..14, so adjacent Dynamos need ~2.5 units past the face).
+	 */
+	private static final VoxelShape PORT_OUT_NORTH = Block.box(6.5, 6.5, -2.5, 9.5, 9.5, 2.0);
+	private static final VoxelShape PORT_OUT_SOUTH = Block.box(6.5, 6.5, 14.0, 9.5, 9.5, 18.5);
+	private static final VoxelShape PORT_OUT_WEST = Block.box(-2.5, 6.5, 6.5, 2.0, 9.5, 9.5);
+	private static final VoxelShape PORT_OUT_EAST = Block.box(14.0, 6.5, 6.5, 18.5, 9.5, 9.5);
 	private static final VoxelShape PORT_IN_NORTH = Block.box(5.5, 5.5, 2.0, 10.5, 10.5, 2.5);
 	private static final VoxelShape PORT_IN_SOUTH = Block.box(5.5, 5.5, 13.5, 10.5, 10.5, 14.0);
 	private static final VoxelShape PORT_IN_WEST = Block.box(2.0, 5.5, 5.5, 2.5, 10.5, 10.5);

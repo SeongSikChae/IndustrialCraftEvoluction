@@ -1,6 +1,15 @@
 {
 	"model": {
-		"type": "minecraft:model",
-		"model": "machine:item/dynamo"
+		"type": "minecraft:composite",
+		"models": [
+			{
+				"type": "minecraft:model",
+				"model": "machine:item/dynamo"
+			},
+			{
+				"type": "minecraft:model",
+				"model": "machine:item/dynamo_shaft_preview"
+			}
+		]
 	}
 }
