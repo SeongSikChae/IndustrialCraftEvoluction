@@ -2,6 +2,7 @@
 	"replace": false,
 	"values": [
 		"machine:machine_crafting_table",
-		"machine:furnace_engine"
+		"machine:furnace_engine",
+		"machine:dynamo"
 	]
 }

@@ -24,6 +24,11 @@ public final class ModBlocks {
 		FurnaceEngineBlock::new,
 		BlockBehaviour.Properties.ofFullCopy(Blocks.FURNACE).noOcclusion()
 	);
+	public static final Block DYNAMO = register(
+		ModBlockItemIds.DYNAMO,
+		DynamoBlock::new,
+		BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()
+	);
 
 	private ModBlocks() {
 	}
@@ -45,6 +50,7 @@ public final class ModBlocks {
 			.register(entries -> {
 				entries.accept(MACHINE_CRAFTING_TABLE);
 				entries.accept(FURNACE_ENGINE);
+				entries.accept(DYNAMO);
 			});
 	}
 }

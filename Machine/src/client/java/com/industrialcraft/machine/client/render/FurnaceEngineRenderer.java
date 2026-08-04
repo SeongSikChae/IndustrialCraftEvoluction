@@ -18,16 +18,13 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Renders one rigid shaft+sprocket assembly that spins as a single mesh,
- * seated into the engine's side bearing.
+ * Gear on sprocket: {@link FurnaceEngineBlock#FACING} = shaft world direction.
+ * Authored mesh shaft is +X; rotate so local +X aligns with FACING, then offset along +X.
  */
 public class FurnaceEngineRenderer implements BlockEntityRenderer<FurnaceEngineBlockEntity, FurnaceEngineRenderState> {
-	/**
-	 * Assembly origin after facing rotation (+Z front, +X right).
-	 * Chosen so the model's recessed shaft end sits inside the bearing housing.
-	 */
-	private static final float ASSEMBLY_X = 0.52F;
-	private static final float ASSEMBLY_SCALE = 0.95F;
+	/** Model origin at block center + this along FACING; short axle reaches back into the collar. */
+	private static final float ASSEMBLY_X = 0.50F;
+	private static final float ASSEMBLY_SCALE = 1.0F;
 
 	private final ItemModelResolver itemModelResolver;
 
@@ -76,11 +73,10 @@ public class FurnaceEngineRenderer implements BlockEntityRenderer<FurnaceEngineB
 
 		poseStack.pushPose();
 		poseStack.translate(0.5F, 0.5F, 0.5F);
-		poseStack.mulPose(Axis.YP.rotationDegrees(-state.facing.toYRot()));
+		// Map local +X -> FACING (EAST:0, SOUTH:-90, WEST:180, NORTH:90 under Axis.YP CCW).
+		poseStack.mulPose(Axis.YP.rotationDegrees(-state.facing.getClockWise().toYRot()));
 		poseStack.translate(ASSEMBLY_X, 0.0F, 0.0F);
-		// Model shaft is along +Z; map that to +X (out of the right side).
 		poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
-		// Spin the whole rigid mesh around the shaft axis.
 		poseStack.mulPose(Axis.ZP.rotationDegrees(state.shaftAngle));
 		poseStack.scale(ASSEMBLY_SCALE, ASSEMBLY_SCALE, ASSEMBLY_SCALE);
 		state.shaftAssembly.submit(poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);

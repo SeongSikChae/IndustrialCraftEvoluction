@@ -1,0 +1,17 @@
+{
+	"type": "machine:machine_crafting",
+	"key": {
+		"C": "minecraft:comparator",
+		"G": "minecraft:glass_pane",
+		"I": "minecraft:iron_ingot"
+	},
+	"pattern": [
+		"IGI",
+		"ICI",
+		"IGI"
+	],
+	"result": {
+		"count": 1,
+		"id": "machine:dynamo"
+	}
+}

@@ -5,6 +5,7 @@ import com.industrialcraft.machine.menu.FurnaceEngineMenu;
 import com.industrialcraft.machine.power.FuelDurations;
 import com.industrialcraft.machine.power.PowerSource;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -184,6 +185,11 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 	@Override
 	public int getOmega() {
 		return Math.round(OMEGA * this.spinFactor);
+	}
+
+	@Override
+	public boolean outputsToward(Direction face) {
+		return face == FurnaceEngineBlock.getOutputFace(this.getBlockState());
 	}
 
 	@Override

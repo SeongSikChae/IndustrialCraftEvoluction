@@ -1,5 +1,7 @@
 package com.industrialcraft.machine;
 
+import com.industrialcraft.machine.block.DynamoOrientationVerifier;
+import com.industrialcraft.machine.block.FurnaceEngineOrientationVerifier;
 import com.industrialcraft.machine.block.ModBlocks;
 import com.industrialcraft.machine.block.entity.ModBlockEntities;
 import com.industrialcraft.machine.item.ModItems;
@@ -23,6 +25,8 @@ public class MachineMod implements ModInitializer {
 		ModBlocks.initialize();
 		ModBlockEntities.initialize();
 		ModMenus.initialize();
+		FurnaceEngineOrientationVerifier.verifyOrThrow();
+		DynamoOrientationVerifier.verifyOrThrow();
 		LOGGER.info("Machine initialized");
 	}
 

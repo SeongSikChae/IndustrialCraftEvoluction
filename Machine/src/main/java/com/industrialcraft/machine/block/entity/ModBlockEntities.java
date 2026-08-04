@@ -15,6 +15,11 @@ public final class ModBlockEntities {
 		FurnaceEngineBlockEntity::new,
 		ModBlocks.FURNACE_ENGINE
 	);
+	public static final BlockEntityType<DynamoBlockEntity> DYNAMO = register(
+		"dynamo",
+		DynamoBlockEntity::new,
+		ModBlocks.DYNAMO
+	);
 
 	private ModBlockEntities() {
 	}

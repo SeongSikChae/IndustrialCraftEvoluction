@@ -31,12 +31,18 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
+/**
+ * Shaft = short protruding axle + spinning hub on the face toward the player after place.
+ * {@link #FACING} is that shaft world direction (authored mesh on +X).
+ * <p>Locked rules: {@code docs/shaft-power-design.md} §2.
+ */
 public class FurnaceEngineBlock extends BaseEntityBlock {
 	public static final MapCodec<FurnaceEngineBlock> CODEC = simpleCodec(FurnaceEngineBlock::new);
 	public static final EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
@@ -48,18 +54,73 @@ public class FurnaceEngineBlock extends BaseEntityBlock {
 	private static final VoxelShape EXHAUST_SOUTH = Block.box(5.5, 15.5, 1.5, 10.5, 24.0, 6.0);
 	private static final VoxelShape EXHAUST_WEST = Block.box(10.0, 15.5, 5.5, 14.5, 24.0, 10.5);
 	private static final VoxelShape EXHAUST_EAST = Block.box(1.5, 15.5, 5.5, 6.0, 24.0, 10.5);
-	private static final VoxelShape SPROCKET_EAST = Block.box(15.0, 5.0, 5.0, 18.5, 11.0, 11.0);
-	private static final VoxelShape SPROCKET_WEST = Block.box(-2.5, 5.0, 5.0, 1.0, 11.0, 11.0);
-	private static final VoxelShape SPROCKET_SOUTH = Block.box(5.0, 5.0, 15.0, 11.0, 11.0, 18.5);
-	private static final VoxelShape SPROCKET_NORTH = Block.box(5.0, 5.0, -2.5, 11.0, 11.0, 1.0);
-	private static final VoxelShape SHAPE_NORTH = Shapes.or(BASE, CORE, EXHAUST_NORTH, SPROCKET_EAST);
-	private static final VoxelShape SHAPE_SOUTH = Shapes.or(BASE, CORE, EXHAUST_SOUTH, SPROCKET_WEST);
-	private static final VoxelShape SHAPE_WEST = Shapes.or(BASE, CORE, EXHAUST_WEST, SPROCKET_NORTH);
-	private static final VoxelShape SHAPE_EAST = Shapes.or(BASE, CORE, EXHAUST_EAST, SPROCKET_SOUTH);
+	/** Compact axle stub past the body (~15 → 17). */
+	private static final VoxelShape SHAFT_EAST = Block.box(15.0, 6.0, 6.0, 17.0, 10.0, 10.0);
+	private static final VoxelShape SHAFT_WEST = Block.box(-1.0, 6.0, 6.0, 1.0, 10.0, 10.0);
+	private static final VoxelShape SHAFT_SOUTH = Block.box(6.0, 6.0, 15.0, 10.0, 10.0, 17.0);
+	private static final VoxelShape SHAFT_NORTH = Block.box(6.0, 6.0, -1.0, 10.0, 10.0, 1.0);
+	/** Exhaust authored at +Z; rotate with the same CW y table as blockstates. */
+	private static final VoxelShape SHAPE_EAST = Shapes.or(BASE, CORE, EXHAUST_NORTH, SHAFT_EAST);
+	private static final VoxelShape SHAPE_SOUTH = Shapes.or(BASE, CORE, EXHAUST_WEST, SHAFT_SOUTH);
+	private static final VoxelShape SHAPE_WEST = Shapes.or(BASE, CORE, EXHAUST_SOUTH, SHAFT_WEST);
+	private static final VoxelShape SHAPE_NORTH = Shapes.or(BASE, CORE, EXHAUST_EAST, SHAFT_NORTH);
 
 	public FurnaceEngineBlock(BlockBehaviour.Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, false));
+		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.SOUTH).setValue(LIT, false));
+	}
+
+	public static Direction getOutputFace(BlockState state) {
+		return state.getValue(FACING);
+	}
+
+	/** Shaft faces the player after place (look south → shaft north). */
+	public static Direction computeOutputShaft(Direction look) {
+		return look.getOpposite();
+	}
+
+	public static Direction computeOutputShaft(BlockPlaceContext context) {
+		return computeOutputShaft(context.getHorizontalDirection());
+	}
+
+	/** Detect shaft stub alone (full shape AABB includes the overhanging base on all sides). */
+	public static Direction detectSprocketFromShape(BlockState state) {
+		VoxelShape shaft = switch (state.getValue(FACING)) {
+			case EAST -> SHAFT_EAST;
+			case SOUTH -> SHAFT_SOUTH;
+			case WEST -> SHAFT_WEST;
+			default -> SHAFT_NORTH;
+		};
+		AABB box = shaft.bounds();
+		final double pastBody = 1.0;
+		Direction found = null;
+		int hits = 0;
+		if (box.maxX > pastBody) {
+			found = Direction.EAST;
+			hits++;
+		}
+		if (box.minX < 0.0) {
+			found = Direction.WEST;
+			hits++;
+		}
+		if (box.maxZ > pastBody) {
+			found = Direction.SOUTH;
+			hits++;
+		}
+		if (box.minZ < 0.0) {
+			found = Direction.NORTH;
+			hits++;
+		}
+		return hits == 1 ? found : null;
+	}
+
+	private static VoxelShape shapeFor(BlockState state) {
+		return switch (state.getValue(FACING)) {
+			case EAST -> SHAPE_EAST;
+			case SOUTH -> SHAPE_SOUTH;
+			case WEST -> SHAPE_WEST;
+			default -> SHAPE_NORTH;
+		};
 	}
 
 	@Override
@@ -74,12 +135,7 @@ public class FurnaceEngineBlock extends BaseEntityBlock {
 
 	@Override
 	protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-		return switch (state.getValue(FACING)) {
-			case SOUTH -> SHAPE_SOUTH;
-			case WEST -> SHAPE_WEST;
-			case EAST -> SHAPE_EAST;
-			default -> SHAPE_NORTH;
-		};
+		return shapeFor(state);
 	}
 
 	@Override
@@ -111,7 +167,7 @@ public class FurnaceEngineBlock extends BaseEntityBlock {
 	}
 
 	public static void spawnExhaustSmoke(Level level, BlockPos pos, BlockState state, RandomSource random, boolean forceVisible) {
-		Direction rear = state.getValue(FACING).getOpposite();
+		Direction rear = state.getValue(FACING).getClockWise();
 		double x = pos.getX() + 0.5 + rear.getStepX() * 0.22 + (random.nextDouble() - 0.5) * 0.1;
 		double y = pos.getY() + 1.5 + random.nextDouble() * 0.08;
 		double z = pos.getZ() + 0.5 + rear.getStepZ() * 0.22 + (random.nextDouble() - 0.5) * 0.1;
@@ -133,8 +189,7 @@ public class FurnaceEngineBlock extends BaseEntityBlock {
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		// Shaft/sprocket faces the direction the player is looking.
-		return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getClockWise());
+		return this.defaultBlockState().setValue(FACING, computeOutputShaft(context));
 	}
 
 	@Override
