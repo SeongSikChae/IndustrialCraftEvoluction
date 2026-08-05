@@ -1,6 +1,10 @@
 // IndustrialCraft: Evolution — root aggregator
 // Mod modules live in subprojects (e.g. Material).
 
+plugins {
+	id 'base'
+}
+
 allprojects {
 	group = rootProject.property('maven_group')
 	version = rootProject.property('mod_version')
@@ -10,4 +14,29 @@ subprojects {
 	repositories {
 		mavenCentral()
 	}
+}
+
+// Collect each module's distributable jar into root build/libs/
+// (MC 26.1+ / non-remap Loom uses jar; older remap Loom uses remapJar)
+tasks.register('collectModJars', Copy) {
+	group = 'build'
+	description = 'Copies mod jars from all subprojects into root build/libs'
+	into(layout.buildDirectory.dir('libs'))
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+subprojects { sub ->
+	plugins.withId('net.fabricmc.fabric-loom') {
+		rootProject.tasks.named('collectModJars', Copy).configure { copy ->
+			def jarTask = sub.tasks.names.contains('remapJar')
+				? sub.tasks.named('remapJar')
+				: sub.tasks.named('jar')
+			copy.dependsOn(jarTask)
+			copy.from(jarTask.flatMap { it.archiveFile })
+		}
+	}
+}
+
+tasks.named('assemble').configure {
+	dependsOn(tasks.named('collectModJars'))
 }
