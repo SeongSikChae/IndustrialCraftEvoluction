@@ -1,6 +1,18 @@
 # IndustrialCraftEvoluction
 Fabric 기반 Minecraft 산업 모드(IndustrialCraft: Evoluction)
 
+멀티 모듈로 구성되며, 각 모듈은 단독 JAR로 빌드·실행할 수 있습니다.
+
+## 모듈
+
+### [Material](Material/README.md)
+
+연료·광물 모듈입니다. 바닐라 석탄을 **역청탄**으로 재해석하고, 이탄·갈탄·아역청탄·무연탄 등 등급별 석탄류와 광석을 추가합니다. 용광로 연소 시간과 연료 태그를 Machine 등 다른 모듈에서 그대로 활용할 수 있습니다.
+
+### [Machine](Machine/README.md)
+
+기계 모듈입니다. 연료로 **회전 동력**(토크·각속도)을 내는 화로 엔진, 동력을 1:1로 중계하는 Dynamo, Machine 전용 **기계 제작대**를 제공합니다. Material이 있으면 등급별 연료를 쓰고, 없어도 바닐라 석탄·숯으로 동작합니다.
+
 ## Build
 
 ### 요구 사항
