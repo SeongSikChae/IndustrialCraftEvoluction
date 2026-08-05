@@ -7,5 +7,7 @@
 	"gui.machine.furnace_engine.torque": "토크: %s",
 	"gui.machine.furnace_engine.omega": "각속도: %s",
 	"gui.machine.furnace_engine.power": "출력: %s",
-	"item.machine.furnace_engine_gear": "화로 엔진 톱니"
+	"gui.machine.furnace_engine.throttle": "출력: %s%%",
+	"item.machine.furnace_engine_gear": "화로 엔진 톱니",
+	"item.machine.governor_accessory": "조속기 부속"
 }

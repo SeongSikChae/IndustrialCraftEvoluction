@@ -7,5 +7,7 @@
 	"gui.machine.furnace_engine.torque": "Torque: %s",
 	"gui.machine.furnace_engine.omega": "Omega: %s",
 	"gui.machine.furnace_engine.power": "Power: %s",
-	"item.machine.furnace_engine_gear": "Furnace Engine Gear"
+	"gui.machine.furnace_engine.throttle": "Output: %s%%",
+	"item.machine.furnace_engine_gear": "Furnace Engine Gear",
+	"item.machine.governor_accessory": "Governor Accessory"
 }

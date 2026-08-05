@@ -1,6 +1,7 @@
 package com.industrialcraft.machine.block.entity;
 
 import com.industrialcraft.machine.block.FurnaceEngineBlock;
+import com.industrialcraft.machine.item.ModItems;
 import com.industrialcraft.machine.menu.FurnaceEngineMenu;
 import com.industrialcraft.machine.power.FuelDurations;
 import com.industrialcraft.machine.power.PowerSource;
@@ -32,18 +33,34 @@ import org.jspecify.annotations.Nullable;
 public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implements PowerSource {
 	public static final int TORQUE = 4;
 	public static final int OMEGA = 256;
-	public static final int CONTAINER_SIZE = 1;
+	public static final int FUEL_SLOT = 0;
+	public static final int GOVERNOR_SLOT = 1;
+	public static final int CONTAINER_SIZE = 2;
 	public static final int DATA_BURN_TIME = 0;
 	public static final int DATA_BURN_DURATION = 1;
 	public static final int DATA_SPIN_MILLI = 2;
-	public static final int DATA_COUNT = 3;
+	public static final int DATA_THROTTLE_MILLI = 3;
+	public static final int DATA_APPLIED_THROTTLE_MILLI = 4;
+	public static final int DATA_COUNT = 5;
 	public static final int SPIN_MILLI_MAX = 10_000;
+	public static final int THROTTLE_MILLI_MAX = 10_000;
+	public static final int THROTTLE_PERCENT_MIN = 1;
+	public static final int THROTTLE_PERCENT_MAX = 100;
+	public static final float THROTTLE_MIN = THROTTLE_PERCENT_MIN / 100.0F;
 	private static final float SPIN_ACCEL = 0.05F;
 	private static final float SPIN_DECEL = 0.0125F;
+	/** Linear ramp rate so 0↔100% takes ~1.25s (25 ticks). */
+	private static final float THROTTLE_RAMP = 0.04F;
 
 	private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
 	private int burnTime;
 	private int burnDuration;
+	/** Fractional burn ticks accumulated against {@link #getEffectiveThrottle()}. */
+	private float burnProgress;
+	/** Target throttle 0..1 from the slider; used when a governor is installed. */
+	private float throttle = 1.0F;
+	/** Smoothed throttle 0..1 used for burn, power, and shaft visuals. */
+	private float appliedThrottle = 1.0F;
 	/** 0..1 flywheel factor shared by power output and shaft visuals. */
 	private float spinFactor;
 	private float shaftAngle;
@@ -55,6 +72,8 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 				case DATA_BURN_TIME -> FurnaceEngineBlockEntity.this.burnTime;
 				case DATA_BURN_DURATION -> FurnaceEngineBlockEntity.this.burnDuration;
 				case DATA_SPIN_MILLI -> FurnaceEngineBlockEntity.this.getSpinMilli();
+				case DATA_THROTTLE_MILLI -> FurnaceEngineBlockEntity.this.getThrottleMilli();
+				case DATA_APPLIED_THROTTLE_MILLI -> FurnaceEngineBlockEntity.this.getAppliedThrottleMilli();
 				default -> 0;
 			};
 		}
@@ -65,6 +84,12 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 				case DATA_BURN_TIME -> FurnaceEngineBlockEntity.this.burnTime = value;
 				case DATA_BURN_DURATION -> FurnaceEngineBlockEntity.this.burnDuration = value;
 				case DATA_SPIN_MILLI -> FurnaceEngineBlockEntity.this.spinFactor = value / (float) SPIN_MILLI_MAX;
+				case DATA_THROTTLE_MILLI ->
+					FurnaceEngineBlockEntity.this.throttle =
+						Mth.clamp(value / (float) THROTTLE_MILLI_MAX, THROTTLE_MIN, 1.0F);
+				case DATA_APPLIED_THROTTLE_MILLI ->
+					FurnaceEngineBlockEntity.this.appliedThrottle =
+						Mth.clamp(value / (float) THROTTLE_MILLI_MAX, THROTTLE_MIN, 1.0F);
 			}
 		}
 
@@ -84,30 +109,40 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, FurnaceEngineBlockEntity entity) {
 		boolean wasLit = entity.isLit();
+		boolean throttleChanged = entity.tickThrottleRamp();
+		float effectiveThrottle = entity.getEffectiveThrottle();
 
-		if (entity.burnTime > 0) {
-			entity.burnTime--;
+		if (entity.burnTime > 0 && effectiveThrottle > 0.0F) {
+			entity.burnProgress += effectiveThrottle;
+			int consumed = (int) entity.burnProgress;
+			if (consumed > 0) {
+				entity.burnProgress -= consumed;
+				entity.burnTime = Math.max(0, entity.burnTime - consumed);
+			}
 		}
 
-		if (entity.burnTime <= 0) {
+		if (entity.burnTime <= 0 && effectiveThrottle > 0.0F) {
 			entity.tryConsumeFuel(level);
 		}
 
 		boolean lit = entity.isLit();
-		boolean spinChanged = entity.tickSpin(lit);
+		boolean powered = lit && effectiveThrottle > 0.0F;
+		boolean spinChanged = entity.tickSpin(powered);
 
 		if (wasLit != lit) {
 			level.setBlock(pos, state.setValue(FurnaceEngineBlock.LIT, lit), 3);
 			entity.setChanged();
 			entity.syncToClients();
-		} else if (lit || spinChanged) {
+		} else if (lit || spinChanged || throttleChanged) {
 			entity.setChanged();
 		}
 	}
 
 	public static void clientTick(Level level, BlockPos pos, BlockState state, FurnaceEngineBlockEntity entity) {
+		entity.tickThrottleRamp();
 		boolean lit = state.getValue(FurnaceEngineBlock.LIT);
-		entity.tickSpin(lit);
+		boolean powered = lit && entity.getEffectiveThrottle() > 0.0F;
+		entity.tickSpin(powered);
 
 		if (lit) {
 			RandomSource random = level.getRandom();
@@ -125,6 +160,17 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 		}
 	}
 
+	private boolean tickThrottleRamp() {
+		float target = this.getThrottleTarget();
+		float previous = this.appliedThrottle;
+		if (this.appliedThrottle < target) {
+			this.appliedThrottle = Math.min(target, this.appliedThrottle + THROTTLE_RAMP);
+		} else if (this.appliedThrottle > target) {
+			this.appliedThrottle = Math.max(target, this.appliedThrottle - THROTTLE_RAMP);
+		}
+		return this.appliedThrottle != previous;
+	}
+
 	private boolean tickSpin(boolean powered) {
 		float previous = this.spinFactor;
 		if (powered) {
@@ -137,7 +183,7 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 
 	/** Visual-only; uses log2(ω) via {@link ShaftVisuals}. */
 	private float shaftDegreesPerTick() {
-		return ShaftVisuals.degreesPerTick(OMEGA * this.spinFactor);
+		return ShaftVisuals.degreesPerTick(OMEGA * this.getOutputScale());
 	}
 
 	public float getShaftAngle(float partialTick) {
@@ -152,8 +198,52 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 		return Mth.clamp(Math.round(this.spinFactor * SPIN_MILLI_MAX), 0, SPIN_MILLI_MAX);
 	}
 
+	public boolean hasGovernor() {
+		return this.items.get(GOVERNOR_SLOT).is(ModItems.GOVERNOR_ACCESSORY);
+	}
+
+	public float getThrottle() {
+		return this.throttle;
+	}
+
+	/** Immediate target: slider value with governor, otherwise full open. */
+	public float getThrottleTarget() {
+		return this.hasGovernor() ? this.throttle : 1.0F;
+	}
+
+	/** Smoothed throttle used for burn, power, and shaft visuals. */
+	public float getEffectiveThrottle() {
+		return this.appliedThrottle;
+	}
+
+	public int getThrottleMilli() {
+		return Mth.clamp(Math.round(this.throttle * THROTTLE_MILLI_MAX), 0, THROTTLE_MILLI_MAX);
+	}
+
+	public int getAppliedThrottleMilli() {
+		return Mth.clamp(Math.round(this.appliedThrottle * THROTTLE_MILLI_MAX), 0, THROTTLE_MILLI_MAX);
+	}
+
+	public void setThrottlePercent(int percent) {
+		float previous = this.throttle;
+		this.throttle = Mth.clamp(percent, THROTTLE_PERCENT_MIN, THROTTLE_PERCENT_MAX) / 100.0F;
+		if (this.throttle != previous) {
+			this.setChanged();
+			this.syncToClients();
+		}
+	}
+
+	/** spinFactor × √effectiveThrottle — shared by τ, ω, and shaft visuals. */
+	public float getOutputScale() {
+		float t = this.getEffectiveThrottle();
+		if (t <= 0.0F) {
+			return 0.0F;
+		}
+		return this.spinFactor * (float) Math.sqrt(t);
+	}
+
 	private void tryConsumeFuel(Level level) {
-		ItemStack fuel = this.items.get(0);
+		ItemStack fuel = this.items.get(FUEL_SLOT);
 		if (fuel.isEmpty() || !isFuel(fuel)) {
 			this.burnDuration = 0;
 			return;
@@ -168,7 +258,7 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 		this.burnDuration = add;
 		fuel.shrink(1);
 		if (fuel.isEmpty()) {
-			this.items.set(0, ItemStack.EMPTY);
+			this.items.set(FUEL_SLOT, ItemStack.EMPTY);
 		}
 		this.setChanged();
 	}
@@ -177,18 +267,22 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 		return stack.is(ItemTags.FURNACE_MINECART_FUEL);
 	}
 
+	public static boolean isGovernor(ItemStack stack) {
+		return stack.is(ModItems.GOVERNOR_ACCESSORY);
+	}
+
 	public boolean isLit() {
 		return this.burnTime > 0;
 	}
 
 	@Override
 	public int getTorque() {
-		return Math.round(TORQUE * this.spinFactor);
+		return Math.round(TORQUE * this.getOutputScale());
 	}
 
 	@Override
 	public int getOmega() {
-		return Math.round(OMEGA * this.spinFactor);
+		return Math.round(OMEGA * this.getOutputScale());
 	}
 
 	@Override
@@ -223,7 +317,20 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 
 	@Override
 	public boolean canPlaceItem(int slot, ItemStack stack) {
-		return isFuel(stack);
+		return switch (slot) {
+			case FUEL_SLOT -> isFuel(stack);
+			case GOVERNOR_SLOT -> isGovernor(stack);
+			default -> false;
+		};
+	}
+
+	@Override
+	public void setItem(int slot, ItemStack stack) {
+		ItemStack previous = this.getItem(slot);
+		super.setItem(slot, stack);
+		if (slot == GOVERNOR_SLOT && !ItemStack.isSameItemSameComponents(previous, stack)) {
+			this.syncToClients();
+		}
 	}
 
 	@Override
@@ -232,6 +339,9 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 		ContainerHelper.saveAllItems(output, this.items);
 		output.putInt("BurnTime", this.burnTime);
 		output.putInt("BurnDuration", this.burnDuration);
+		output.putFloat("BurnProgress", this.burnProgress);
+		output.putFloat("Throttle", this.throttle);
+		output.putFloat("AppliedThrottle", this.appliedThrottle);
 		output.putFloat("SpinFactor", this.spinFactor);
 	}
 
@@ -242,6 +352,9 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 		ContainerHelper.loadAllItems(input, this.items);
 		this.burnTime = input.getIntOr("BurnTime", 0);
 		this.burnDuration = input.getIntOr("BurnDuration", 0);
+		this.burnProgress = Mth.clamp(input.getFloatOr("BurnProgress", 0.0F), 0.0F, 1.0F);
+		this.throttle = Mth.clamp(input.getFloatOr("Throttle", 1.0F), THROTTLE_MIN, 1.0F);
+		this.appliedThrottle = Mth.clamp(input.getFloatOr("AppliedThrottle", this.throttle), THROTTLE_MIN, 1.0F);
 		this.spinFactor = Mth.clamp(input.getFloatOr("SpinFactor", 0.0F), 0.0F, 1.0F);
 	}
 

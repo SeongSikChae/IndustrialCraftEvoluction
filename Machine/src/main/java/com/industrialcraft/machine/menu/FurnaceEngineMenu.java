@@ -1,7 +1,6 @@
 package com.industrialcraft.machine.menu;
 
 import com.industrialcraft.machine.block.entity.FurnaceEngineBlockEntity;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -14,17 +13,26 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class FurnaceEngineMenu extends AbstractContainerMenu {
-	public static final int FUEL_SLOT = 0;
+	public static final int FUEL_SLOT = FurnaceEngineBlockEntity.FUEL_SLOT;
+	public static final int GOVERNOR_SLOT = FurnaceEngineBlockEntity.GOVERNOR_SLOT;
 	private static final int FUEL_SLOT_X = 134;
 	private static final int FUEL_SLOT_Y = 53;
+	private static final int GOVERNOR_SLOT_X = 110;
+	private static final int GOVERNOR_SLOT_Y = 53;
 	private static final int INVENTORY_START_X = 8;
 	private static final int INVENTORY_START_Y = 84;
+	private static final int PLAYER_INV_START = FurnaceEngineBlockEntity.CONTAINER_SIZE;
 
 	private final Container container;
 	private final ContainerData data;
 
 	public FurnaceEngineMenu(int containerId, Inventory inventory) {
-		this(containerId, inventory, new SimpleContainer(FurnaceEngineBlockEntity.CONTAINER_SIZE), new SimpleContainerData(FurnaceEngineBlockEntity.DATA_COUNT));
+		this(
+			containerId,
+			inventory,
+			new SimpleContainer(FurnaceEngineBlockEntity.CONTAINER_SIZE),
+			new SimpleContainerData(FurnaceEngineBlockEntity.DATA_COUNT)
+		);
 	}
 
 	public FurnaceEngineMenu(int containerId, Inventory inventory, Container container, ContainerData data) {
@@ -38,7 +46,18 @@ public class FurnaceEngineMenu extends AbstractContainerMenu {
 		this.addSlot(new Slot(container, FUEL_SLOT, FUEL_SLOT_X, FUEL_SLOT_Y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
-				return stack.is(ItemTags.FURNACE_MINECART_FUEL);
+				return FurnaceEngineBlockEntity.isFuel(stack);
+			}
+		});
+		this.addSlot(new Slot(container, GOVERNOR_SLOT, GOVERNOR_SLOT_X, GOVERNOR_SLOT_Y) {
+			@Override
+			public boolean mayPlace(ItemStack stack) {
+				return FurnaceEngineBlockEntity.isGovernor(stack);
+			}
+
+			@Override
+			public int getMaxStackSize() {
+				return 1;
 			}
 		});
 		this.addStandardInventorySlots(inventory, INVENTORY_START_X, INVENTORY_START_Y);
@@ -62,16 +81,60 @@ public class FurnaceEngineMenu extends AbstractContainerMenu {
 		return this.data.get(FurnaceEngineBlockEntity.DATA_SPIN_MILLI) / (float) FurnaceEngineBlockEntity.SPIN_MILLI_MAX;
 	}
 
+	public boolean hasGovernor() {
+		return FurnaceEngineBlockEntity.isGovernor(this.container.getItem(GOVERNOR_SLOT));
+	}
+
+	public float getStoredThrottle() {
+		return this.data.get(FurnaceEngineBlockEntity.DATA_THROTTLE_MILLI)
+			/ (float) FurnaceEngineBlockEntity.THROTTLE_MILLI_MAX;
+	}
+
+	public float getEffectiveThrottle() {
+		return this.data.get(FurnaceEngineBlockEntity.DATA_APPLIED_THROTTLE_MILLI)
+			/ (float) FurnaceEngineBlockEntity.THROTTLE_MILLI_MAX;
+	}
+
+	public int getThrottlePercent() {
+		return Mth.clamp(
+			Math.round(this.getStoredThrottle() * 100.0F),
+			FurnaceEngineBlockEntity.THROTTLE_PERCENT_MIN,
+			FurnaceEngineBlockEntity.THROTTLE_PERCENT_MAX
+		);
+	}
+
+	public float getOutputScale() {
+		float t = this.getEffectiveThrottle();
+		if (t <= 0.0F) {
+			return 0.0F;
+		}
+		return this.getSpinFactor() * (float) Math.sqrt(t);
+	}
+
 	public double getTorque() {
-		return FurnaceEngineBlockEntity.TORQUE * this.getSpinFactor();
+		return FurnaceEngineBlockEntity.TORQUE * this.getOutputScale();
 	}
 
 	public double getOmega() {
-		return FurnaceEngineBlockEntity.OMEGA * this.getSpinFactor();
+		return FurnaceEngineBlockEntity.OMEGA * this.getOutputScale();
 	}
 
 	public double getPower() {
 		return this.getTorque() * this.getOmega();
+	}
+
+	@Override
+	public boolean clickMenuButton(Player player, int buttonId) {
+		if (!this.hasGovernor()
+			|| buttonId < FurnaceEngineBlockEntity.THROTTLE_PERCENT_MIN
+			|| buttonId > FurnaceEngineBlockEntity.THROTTLE_PERCENT_MAX) {
+			return false;
+		}
+		if (this.container instanceof FurnaceEngineBlockEntity engine) {
+			engine.setThrottlePercent(buttonId);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -81,12 +144,16 @@ public class FurnaceEngineMenu extends AbstractContainerMenu {
 		if (slot.hasItem()) {
 			ItemStack stack = slot.getItem();
 			clicked = stack.copy();
-			if (slotIndex == FUEL_SLOT) {
-				if (!this.moveItemStackTo(stack, 1, this.slots.size(), true)) {
+			if (slotIndex < PLAYER_INV_START) {
+				if (!this.moveItemStackTo(stack, PLAYER_INV_START, this.slots.size(), true)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (stack.is(ItemTags.FURNACE_MINECART_FUEL)) {
+			} else if (FurnaceEngineBlockEntity.isFuel(stack)) {
 				if (!this.moveItemStackTo(stack, FUEL_SLOT, FUEL_SLOT + 1, false)) {
+					return ItemStack.EMPTY;
+				}
+			} else if (FurnaceEngineBlockEntity.isGovernor(stack)) {
+				if (!this.moveItemStackTo(stack, GOVERNOR_SLOT, GOVERNOR_SLOT + 1, false)) {
 					return ItemStack.EMPTY;
 				}
 			} else {

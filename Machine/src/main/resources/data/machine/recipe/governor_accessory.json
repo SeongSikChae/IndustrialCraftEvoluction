@@ -1,0 +1,17 @@
+{
+	"type": "machine:machine_crafting",
+	"key": {
+		"I": "minecraft:iron_ingot",
+		"L": "minecraft:lever",
+		"R": "minecraft:redstone"
+	},
+	"pattern": [
+		" I ",
+		"IRI",
+		" L "
+	],
+	"result": {
+		"count": 1,
+		"id": "machine:governor_accessory"
+	}
+}

@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 
 public final class ModItemIds {
 	public static final ResourceKey<Item> FURNACE_ENGINE_GEAR = create("furnace_engine_gear");
+	public static final ResourceKey<Item> GOVERNOR_ACCESSORY = create("governor_accessory");
 
 	private ModItemIds() {
 	}
