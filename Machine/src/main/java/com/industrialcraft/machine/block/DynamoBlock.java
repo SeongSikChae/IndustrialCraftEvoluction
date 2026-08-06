@@ -29,7 +29,7 @@ import org.jspecify.annotations.Nullable;
 /**
  * Through-shaft coupler: input→output 1:1, live metrics on the four non-I/O faces.
  * {@link #FACING} = output; input = opposite. Place looking at a source shaft (look = input).
- * <p>Locked rules: {@code docs/shaft-power-design.md} §3.
+ * <p>Locked rules: {@code .cursor/rules/machine-shaft-power.mdc} (dynamo).
  */
 public class DynamoBlock extends BaseEntityBlock {
 	public static final MapCodec<DynamoBlock> CODEC = simpleCodec(DynamoBlock::new);

@@ -41,7 +41,7 @@ import org.jspecify.annotations.Nullable;
 /**
  * Shaft = short protruding axle + spinning hub on the face toward the player after place.
  * {@link #FACING} is that shaft world direction (authored mesh on +X).
- * <p>Locked rules: {@code docs/shaft-power-design.md} §2.
+ * <p>Locked rules: {@code .cursor/rules/machine-shaft-power.mdc} (furnace engine).
  */
 public class FurnaceEngineBlock extends BaseEntityBlock {
 	public static final MapCodec<FurnaceEngineBlock> CODEC = simpleCodec(FurnaceEngineBlock::new);

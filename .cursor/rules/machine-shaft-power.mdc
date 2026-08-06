@@ -1,0 +1,41 @@
+---
+description: Machine 화로 엔진·Dynamo 샤프트 동력 배치/I/O/메시 잠긴 규칙. 엔진·Dynamo·ShaftPower 수정 시 준수.
+globs: Machine/**/*{FurnaceEngine,Dynamo,Shaft,Power}*
+alwaysApply: false
+---
+
+# Machine Shaft Power (locked)
+
+승인된 규칙만 구현·수정한다. `FACING` / shape / blockstate / 렌더를 한 정의로 맞춘다. 규칙과 다른 즉흥 뒤집기 금지. 합격은 인게임 기준(로그만으로 통과 금지).
+
+## 용어
+
+- **축(shaft)**: 본체에 이어진 짧은 원통 + 끝 허브/톱니 (큰 패널/문 아님)
+- **출력면**: 축이 있는 면 · **입력면**: 동력을 받는 면
+- **look**: 설치 시 플레이어 수평 시선 · **toward player**: `look.opposite()`
+
+## 화로 엔진
+
+- E1: 축/출력 = toward player → `FACING = look.opposite()`
+- E2: `FACING` = 축 방향 = 출력면
+- E3: 축 = 짧은 연결 원통 + 끝 허브/톱니
+- 메시 authored `+X`; blockstate CW: east0 / south90 / west180 / north270
+- BER: `+X` → `FACING`; `outputsToward(face)` ⟺ `face == FACING`
+
+## Dynamo
+
+- D1: 동력원 축을 보고 설치 → 시선=입력, 등뒤=출력
+- D2: 입→출 1:1 (τ / ω 동일)
+- D3: I/O 양끝 제외 4면에 τ·ω·W 표시
+- D4: 출력 축 = 엔진과 동일 (칼라 + `shaft_gear` BER)
+- D5: 입력 = 본체 안쪽 오목 베어링
+- `FACING` = 출력, `inputFace = FACING.opposite()`; 배치 `FACING = look.opposite()`
+- authored: 출력 north(−Z) 칼라, 입력 south(+Z) 베어링; `outputsToward` = 출력면만
+- 입력 연결: 이웃이 `outputsToward(inputFace.opposite())`
+
+## 기준 시나리오
+
+1. 남쪽 보고 엔진 → 축 북
+2. 엔진 북쪽에 Dynamo, 엔진을 보고(남) 설치 → 입력 남 / 출력 북
+3. 가동 시 Dynamo 비-I/O 4면 동일 수치; 엉뚱한 면은 0
+4. 체인도 앞단 출력축을 보고 같은 배치

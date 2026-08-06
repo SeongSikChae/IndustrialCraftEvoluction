@@ -29,7 +29,7 @@ Machine 전용 제작은 **기계 제작대**에서만 가능합니다. Material
 
 ## 1. 기계 제작대
 
-`machine:machine_crafting_table` · **블록** · Machine Crafting Table
+<img src="docs/machine_crafting_table.png" alt="기계 제작대" title="기계 제작대 (machine:machine_crafting_table)" width="32" /> · **블록** · Machine Crafting Table
 
 Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입 레시피만 매칭하며, 바닐라 제작은 할 수 없습니다. 바닐라 제작대와 같이 **레시피북**(녹색 책)으로 빠른 배치가 가능합니다.
 
@@ -41,13 +41,11 @@ Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입
 
 ### 제작 (바닐라 제작대)
 
-| | | |
-|:---:|:---:|:---:|
-| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> |
-| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Crafting_Table.png" alt="제작대" title="제작대 (minecraft:crafting_table)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> |
-| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> |
-
-→ `machine:machine_crafting_table` × 1
+| | | | | |
+|:---:|:---:|:---:|:---:|:---:|
+| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
+| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Crafting_Table.png" alt="제작대" title="제작대 (minecraft:crafting_table)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="docs/machine_crafting_table.png" alt="기계 제작대" title="기계 제작대 (machine:machine_crafting_table)" width="32" /> × 1 |
+| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
 
 우클릭으로 GUI를 엽니다. 레이아웃은 바닐라 제작대와 같습니다. Machine 레시피(기계 제작대·화로 엔진·Dynamo·조속기 부속 등)는 월드 시작 시 레시피북에 해금됩니다.
 

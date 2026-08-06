@@ -3,7 +3,7 @@ package com.industrialcraft.machine.block;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
-/** Placement / I/O faces must match docs/shaft-power-design.md §3. */
+/** Placement / I/O faces must match .cursor/rules/machine-shaft-power.mdc (dynamo). */
 public final class DynamoOrientationVerifier {
 	private DynamoOrientationVerifier() {
 	}
