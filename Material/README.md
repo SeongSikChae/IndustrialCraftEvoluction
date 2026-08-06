@@ -11,8 +11,8 @@ IndustrialCraft: Evolution의 연료·광물 모듈입니다. 바닐라 석탄�
 | <img src="docs/peat.png" alt="이탄" width="32" /> | 이탄 | Peat | `material:peat` | 400틱 (20초) |
 | <img src="docs/lignite.png" alt="갈탄" width="32" /> | 갈탄 | Lignite | `material:lignite` | 800틱 (40초) |
 | <img src="docs/sub_bituminous.png" alt="아역청탄" width="32" /> | 아역청탄 | Sub-bituminous | `material:sub_bituminous` | 1200틱 (60초) |
-| <img src="docs/charcoal.png" alt="숯" width="32" /> | 숯 | Charcoal | `minecraft:charcoal` | 1400틱 (70초) |
-| <img src="docs/coal.png" alt="역청탄" width="32" /> | 역청탄 | Bituminous | `minecraft:coal` | 1600틱 (80초) |
+| <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/charcoal.png" alt="숯" width="32" /> | 숯 | Charcoal | `minecraft:charcoal` | 1400틱 (70초) |
+| <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" width="32" /> | 역청탄 | Bituminous | `minecraft:coal` | 1600틱 (80초) |
 | <img src="docs/anthracite.png" alt="무연탄" width="32" /> | 무연탄 | Anthracite | `material:anthracite` | 2000틱 (100초) |
 
 바닐라 석탄(`minecraft:coal`)은 그대로 사용하며, 표시 이름만 **역청탄**으로 바꿉니다. 숯은 바닐라 기본값(1600틱 / 80초)보다 약한 **1400틱 / 70초**로 조정됩니다.
@@ -62,9 +62,9 @@ Machine 등 다른 모듈은 용광로 연료 값을 그대로 읽고, 엔진·�
 
 ### 역청탄 (Bituminous)
 
-<img src="docs/coal.png" alt="역청탄" width="64" />
-<img src="docs/coal_ore.png" alt="석탄 광석" width="64" />
-<img src="docs/deepslate_coal_ore.png" alt="심층 석탄 광석" width="64" />
+<img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" width="64" />
+<img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/coal_ore.png" alt="석탄 광석" width="64" />
+<img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/deepslate_coal_ore.png" alt="심층 석탄 광석" width="64" />
 
 바닐라 **석탄**에 해당하는 표준 등급입니다. 산업·가정용으로 널리 쓰이는 전형적인 석탄입니다.
 
@@ -84,7 +84,7 @@ Machine 등 다른 모듈은 용광로 연료 값을 그대로 읽고, 엔진·�
 
 ### 숯 (Charcoal)
 
-<img src="docs/charcoal.png" alt="숯" width="64" />
+<img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/charcoal.png" alt="숯" width="64" />
 
 나무를 무산소 환경에서 가열해 만든 **바이오매스 연료**입니다. 석탄 계열과는 생성 과정이 다르며, 이 모드에서는 역청탄보다 약간 약하게 탑니다.
 
@@ -122,14 +122,74 @@ Material 광석은 `#minecraft:mineable/pickaxe`에 등록되어 곡괭이로 �
 
 ## 레시피
 
-횃불은 `#minecraft:coals`를 쓰도록 재선언되어, Material 석탄류로도 횃불 ×4를 만들 수 있습니다.
+횃불은 `#minecraft:coals`를 쓰도록 재선언되어, Material 석탄류로도 횃불 ×4를 만들 수 있습니다. 윗칸 연료 + 막대기 → 횃불 ×4.
 
-```
-X
-#
-```
+<table>
+<tr>
+<td align="center">
 
-→ `minecraft:torch` × 4 (`X`=`#minecraft:coals`, `#`=막대기)
+**이탄**
+
+| | | |
+|:---:|:---:|:---:|
+| | <img src="docs/peat.png" alt="이탄" width="32" /> | |
+| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" width="32" /> | |
+
+→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" width="32" /> × 4
+
+</td>
+<td align="center">
+
+**갈탄**
+
+| | | |
+|:---:|:---:|:---:|
+| | <img src="docs/lignite.png" alt="갈탄" width="32" /> | |
+| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" width="32" /> | |
+
+→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" width="32" /> × 4
+
+</td>
+<td align="center">
+
+**아역청탄**
+
+| | | |
+|:---:|:---:|:---:|
+| | <img src="docs/sub_bituminous.png" alt="아역청탄" width="32" /> | |
+| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" width="32" /> | |
+
+→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" width="32" /> × 4
+
+</td>
+<td align="center">
+
+**역청탄**
+
+| | | |
+|:---:|:---:|:---:|
+| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" width="32" /> | |
+| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" width="32" /> | |
+
+→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" width="32" /> × 4
+
+</td>
+<td align="center">
+
+**무연탄**
+
+| | | |
+|:---:|:---:|:---:|
+| | <img src="docs/anthracite.png" alt="무연탄" width="32" /> | |
+| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" width="32" /> | |
+
+→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" width="32" /> × 4
+
+</td>
+</tr>
+</table>
+
+숯(`minecraft:charcoal`)도 `#minecraft:coals`에 포함되므로 동일하게 제작됩니다.
 
 제련·압축 등 추가 제작 레시피는 없습니다. 광석에서 연료 아이템이 드롭됩니다.
 
