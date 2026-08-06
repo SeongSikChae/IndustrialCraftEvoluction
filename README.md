@@ -1,5 +1,5 @@
-# IndustrialCraftEvoluction
-Fabric 기반 Minecraft 산업 모드(IndustrialCraft: Evoluction)
+# IndustrialCraftEvolution
+Fabric 기반 Minecraft 산업 모드(IndustrialCraft: Evolution)
 
 멀티 모듈로 구성되며, 각 모듈은 단독 JAR로 빌드·실행할 수 있습니다.
 
