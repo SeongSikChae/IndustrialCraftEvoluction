@@ -58,8 +58,7 @@ public class ReservoirScreen extends AbstractContainerScreen<ReservoirMenu> {
 			Component.translatable(
 				"gui.machine.reservoir.amount",
 				this.menu.getAmountFuLabel(),
-				this.menu.getCapacityFuLabel(),
-				this.menu.getPressurePuLabel()
+				this.menu.getCapacityFuLabel()
 			),
 			LABEL_X,
 			LABEL_Y,

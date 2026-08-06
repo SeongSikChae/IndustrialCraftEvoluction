@@ -11,7 +11,7 @@
 	"gui.machine.furnace_engine.omega": "Omega: %s",
 	"gui.machine.furnace_engine.power": "Power: %s",
 	"gui.machine.furnace_engine.throttle": "Output: %s%%",
-	"gui.machine.reservoir.amount": "Fluid: %s / %s FU | %s PU",
+	"gui.machine.reservoir.amount": "Fluid: %s / %s FU",
 	"gui.machine.fluid_pipe.empty": "Empty",
 	"gui.machine.fluid_pipe.amount": "%s %s / %s FU | %s PU",
 	"item.machine.furnace_engine_gear": "Furnace Engine Gear",

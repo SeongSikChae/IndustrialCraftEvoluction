@@ -11,7 +11,7 @@
 	"gui.machine.furnace_engine.omega": "각속도: %s",
 	"gui.machine.furnace_engine.power": "출력: %s",
 	"gui.machine.furnace_engine.throttle": "출력: %s%%",
-	"gui.machine.reservoir.amount": "유체: %s / %s FU | %s PU",
+	"gui.machine.reservoir.amount": "유체: %s / %s FU",
 	"gui.machine.fluid_pipe.empty": "비어 있음",
 	"gui.machine.fluid_pipe.amount": "%s %s / %s FU | %s PU",
 	"item.machine.furnace_engine_gear": "화로 엔진 톱니",

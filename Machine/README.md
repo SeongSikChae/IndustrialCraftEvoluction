@@ -238,7 +238,7 @@ I G I
 
 ## 리저버 (Reservoir)
 
-바닐라 유체를 최대 **64 FU**(내부 **64 000 mB**, 1 FU = 1000 mB = 1 버킷)까지 저장하는 탱크입니다. 단일 유체만 보관합니다. GUI에는 FU와 **PU(유압)** 이 함께 표시됩니다. 외관은 **철제 프레임 + 유리면 + 6면 파이프 플랜지**이며, 내부 수위는 BER로 보입니다.
+바닐라 유체를 최대 **64 FU**(내부 **64 000 mB**, 1 FU = 1000 mB = 1 버킷)까지 저장하는 탱크입니다. 단일 유체만 보관합니다. GUI에는 **FU**만 표시합니다(탱크는 라인 PU를 보관하지 않음). 외관은 **철제 프레임 + 유리면 + 6면 파이프 플랜지**이며, 내부 수위는 BER로 보입니다.
 
 | 항목 | 값 |
 |------|-----|
@@ -314,7 +314,7 @@ G I G
 | 블록 / 아이템 | `machine:machine_crafting_table` | 기계 제작대 (기능 블록 탭) |
 | 블록 / 아이템 | `machine:furnace_engine` | 화로 엔진 (기능 블록 탭) |
 | 블록 / 아이템 | `machine:dynamo` | Dynamo 중계기 (기능 블록 탭) |
-| 블록 / 아이템 | `machine:reservoir` | 리저버 — 64 FU + PU (기능 블록 탭) |
+| 블록 / 아이템 | `machine:reservoir` | 리저버 — 64 FU (기능 블록 탭) |
 | 블록 / 아이템 | `machine:fluid_pipe` | 유체 파이프 — 1 FU + PU (기능 블록 탭) |
 | 아이템 | `machine:governor_accessory` | 조속기 부속 — 화로 엔진 출력 1~100% 조절 (기능 블록 탭) |
 | 아이템 | `machine:furnace_engine_gear` | BER용 샤프트·톱니 메시 |

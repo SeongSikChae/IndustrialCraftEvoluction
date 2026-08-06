@@ -80,10 +80,6 @@ public class ReservoirMenu extends AbstractContainerMenu {
 		return FluidUnits.formatFu(FluidUnits.RESERVOIR_CAPACITY_MB);
 	}
 
-	public String getPressurePuLabel() {
-		return FluidUnits.formatPu(this.data.get(ReservoirBlockEntity.DATA_PRESSURE));
-	}
-
 	@Override
 	public ItemStack quickMoveStack(Player player, int slotIndex) {
 		ItemStack clicked = ItemStack.EMPTY;
