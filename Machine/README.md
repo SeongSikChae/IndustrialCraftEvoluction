@@ -107,12 +107,12 @@ Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입
 
 | | 연료 | 용광로 | 화로 엔진 |
 |---|------|--------|-----------|
-| | 이탄 | 400틱 | 900틱 (45초) |
-| | 갈탄 | 800틱 | 1800틱 (90초) |
-| | 아역청탄 | 1200틱 | 2700틱 (135초) |
+| <img src="../Material/docs/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | 이탄 | 400틱 | 900틱 (45초) |
+| <img src="../Material/docs/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | 갈탄 | 800틱 | 1800틱 (90초) |
+| <img src="../Material/docs/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | 아역청탄 | 1200틱 | 2700틱 (135초) |
 | <img src="https://minecraft.wiki/images/Invicon_Charcoal.png" alt="숯" title="숯 (minecraft:charcoal)" width="32" /> | 숯 | 1400틱 | 3150틱 (157.5초) |
 | <img src="https://minecraft.wiki/images/Invicon_Coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | 역청탄(석탄) | 1600틱 | 3600틱 (180초) |
-| | 무연탄 | 2000틱 | 4500틱 (225초) |
+| <img src="../Material/docs/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | 무연탄 | 2000틱 | 4500틱 (225초) |
 
 Material이 없으면 바닐라 석탄·숯만 사용되며, 각각의 용광로 연소 시간에 같은 비율이 적용됩니다. 현재 잔여 연료 + 추가분이 32000틱을 넘으면 새 연료를 소비하지 않습니다.
 
