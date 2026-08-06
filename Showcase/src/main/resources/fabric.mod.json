@@ -1,0 +1,28 @@
+{
+	"schemaVersion": 1,
+	"id": "showcase",
+	"version": "${version}",
+	"name": "Showcase",
+	"description": "Tooling module for IndustrialCraft: Evolution showcase clips (Minecraft 26.2)",
+	"authors": [
+		"IndustrialCraft: Evolution"
+	],
+	"contact": {},
+	"license": "MIT",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.industrialcraft.showcase.ShowcaseMod"
+		],
+		"client": [
+			"com.industrialcraft.showcase.client.ShowcaseClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*",
+		"material": "*"
+	}
+}
