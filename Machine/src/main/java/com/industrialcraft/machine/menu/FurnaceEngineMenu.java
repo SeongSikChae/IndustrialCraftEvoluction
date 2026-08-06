@@ -104,11 +104,7 @@ public class FurnaceEngineMenu extends AbstractContainerMenu {
 	}
 
 	public float getOutputScale() {
-		float t = this.getEffectiveThrottle();
-		if (t <= 0.0F) {
-			return 0.0F;
-		}
-		return this.getSpinFactor() * (float) Math.sqrt(t);
+		return FurnaceEngineBlockEntity.outputScale(this.getSpinFactor(), this.getEffectiveThrottle());
 	}
 
 	public double getTorque() {

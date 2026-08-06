@@ -36,7 +36,7 @@ public final class FluidPipeLookOverlay {
 
 		Component message;
 		if (pipe.getAmount() <= 0) {
-			message = Component.translatable("gui.machine.fluid_pipe.empty");
+			message = Component.translatable("gui.machine.fluid.empty");
 		} else {
 			message = Component.translatable(
 				"gui.machine.fluid_pipe.amount",

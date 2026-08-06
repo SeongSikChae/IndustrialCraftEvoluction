@@ -66,7 +66,7 @@
 - `FACING` = 출력, `inputFace = FACING.opposite()`
 - 배치: `FACING = look.opposite()` (look이 입력 방향)
 - authored: 출력 north(−Z) 칼라, 입력 south(+Z) 오목 베어링; blockstate는 FACING=출력에 맞게 CW
-- 출력 BER: 화로와 동일 `furnace_engine_gear`, ω에 비례 회전
+- 출력 BER: 공용 `shaft_gear`, ω에 비례 회전
 - `outputsToward` = 출력면만
 - 입력: 이웃이 `outputsToward(inputFace.opposite())`
 

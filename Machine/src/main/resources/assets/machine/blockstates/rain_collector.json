@@ -1,0 +1,7 @@
+{
+	"variants": {
+		"": {
+			"model": "machine:block/rain_collector"
+		}
+	}
+}

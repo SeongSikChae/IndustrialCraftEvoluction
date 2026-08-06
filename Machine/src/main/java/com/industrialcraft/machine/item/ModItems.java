@@ -9,8 +9,8 @@ import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 
 public final class ModItems {
-	/** Rigid shaft+sprocket mesh used only by the furnace engine BER. */
-	public static final Item FURNACE_ENGINE_GEAR = register(ModItemIds.FURNACE_ENGINE_GEAR, Item::new, new Item.Properties());
+	/** Shared shaft+sprocket mesh for engine/dynamo BER (not a craftable/tab item). */
+	public static final Item SHAFT_GEAR = register(ModItemIds.SHAFT_GEAR, Item::new, new Item.Properties());
 	public static final Item GOVERNOR_ACCESSORY = register(ModItemIds.GOVERNOR_ACCESSORY, Item::new, new Item.Properties());
 
 	private ModItems() {

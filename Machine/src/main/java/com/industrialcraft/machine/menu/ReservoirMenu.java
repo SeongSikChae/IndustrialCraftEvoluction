@@ -1,6 +1,7 @@
 package com.industrialcraft.machine.menu;
 
 import com.industrialcraft.machine.block.entity.ReservoirBlockEntity;
+import com.industrialcraft.machine.fluid.FluidBuckets;
 import com.industrialcraft.machine.fluid.FluidUnits;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
@@ -47,7 +48,7 @@ public class ReservoirMenu extends AbstractContainerMenu {
 		this.addSlot(new Slot(container, BUCKET_SLOT, BUCKET_SLOT_X, BUCKET_SLOT_Y) {
 			@Override
 			public boolean mayPlace(ItemStack stack) {
-				return ReservoirBlockEntity.isFillableBucket(stack);
+				return FluidBuckets.isFilledBucket(stack);
 			}
 
 			@Override
@@ -59,8 +60,13 @@ public class ReservoirMenu extends AbstractContainerMenu {
 		this.addDataSlots(data);
 	}
 
+	/**
+	 * Container set-data packets still carry values as a signed short.
+	 * Reconstruct unsigned 16-bit so amounts above 32767 mB (≈32.8 FU) do not appear negative.
+	 * Reservoir capacity is 64000 mB, which fits in 0..65535.
+	 */
 	public int getAmountMb() {
-		return this.data.get(ReservoirBlockEntity.DATA_AMOUNT);
+		return this.data.get(ReservoirBlockEntity.DATA_AMOUNT) & 0xFFFF;
 	}
 
 	public Fluid getFluid() {
@@ -91,7 +97,7 @@ public class ReservoirMenu extends AbstractContainerMenu {
 				if (!this.moveItemStackTo(stack, PLAYER_INV_START, this.slots.size(), true)) {
 					return ItemStack.EMPTY;
 				}
-			} else if (ReservoirBlockEntity.isFillableBucket(stack)) {
+			} else if (FluidBuckets.isFilledBucket(stack)) {
 				if (!this.moveItemStackTo(stack, BUCKET_SLOT, BUCKET_SLOT + 1, false)) {
 					return ItemStack.EMPTY;
 				}

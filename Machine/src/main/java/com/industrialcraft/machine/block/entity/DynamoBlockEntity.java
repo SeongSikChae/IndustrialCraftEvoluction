@@ -4,6 +4,7 @@ import com.industrialcraft.machine.block.DynamoBlock;
 import com.industrialcraft.machine.power.PowerSource;
 import com.industrialcraft.machine.power.ShaftPower;
 import com.industrialcraft.machine.power.ShaftVisuals;
+import com.industrialcraft.machine.util.BlockEntityClientSync;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -51,13 +52,7 @@ public class DynamoBlockEntity extends BlockEntity implements PowerSource {
 	}
 
 	private void tickShaftVisual() {
-		float speed = shaftDegreesPerTick();
-		if (speed > 0.0F) {
-			this.shaftAngle += speed;
-			if (this.shaftAngle >= 360.0F) {
-				this.shaftAngle %= 360.0F;
-			}
-		}
+		this.shaftAngle = ShaftVisuals.advanceAngle(this.shaftAngle, shaftDegreesPerTick());
 	}
 
 	/** Visual-only; uses log2(ω) via {@link ShaftVisuals}. */
@@ -66,7 +61,7 @@ public class DynamoBlockEntity extends BlockEntity implements PowerSource {
 	}
 
 	public float getShaftAngle(float partialTick) {
-		return this.shaftAngle + this.shaftDegreesPerTick() * partialTick;
+		return ShaftVisuals.interpolateAngle(this.shaftAngle, this.shaftDegreesPerTick(), partialTick);
 	}
 
 	@Override
@@ -109,9 +104,6 @@ public class DynamoBlockEntity extends BlockEntity implements PowerSource {
 	}
 
 	private void syncToClients() {
-		if (this.level != null && !this.level.isClientSide()) {
-			BlockState state = this.getBlockState();
-			this.level.sendBlockUpdated(this.worldPosition, state, state, 3);
-		}
+		BlockEntityClientSync.sync(this);
 	}
 }

@@ -8,6 +8,8 @@ import net.minecraft.world.level.material.Fluids;
  * Sender-centric transfer:
  * <ol>
  *   <li>carried PU = source PU ± direction</li>
+ *   <li>if carried PU &gt; {@link FluidUnits#MAX_SAFE_PRESSURE_PU} and the receiver ruptures,
+ *       waste the tick transfer from the source and rupture the receiver</li>
  *   <li>receiver gate: accept when {@code carried >= gate} (refuse only lower PU)</li>
  *   <li>rate from carried PU alone</li>
  *   <li>pipe↔pipe: move only toward {@code amount ∝ PU} so more fluid sits near the source</li>
@@ -36,6 +38,10 @@ public final class FluidTransfer {
 		}
 
 		int carriedEighths = carryPressureEighths(from.getPressureEighths(), moveDir);
+		if (FluidUnits.exceedsMaxSafePressure(carriedEighths) && to.rupturesAboveMaxPressure()) {
+			return ruptureOverpressure(from, to, maxMb, carriedEighths, simulate);
+		}
+
 		int gateEighths = to.getReceiveGatePressureEighths();
 		if (carriedEighths < gateEighths) {
 			return 0;
@@ -45,6 +51,27 @@ public final class FluidTransfer {
 		int rateMb = Math.min(maxMb, FluidUnits.flowRateMb(carriedPu));
 		rateMb = Math.min(rateMb, shareLimitedSendMb(from, to, carriedEighths));
 		return transfer(from, to, fluid, carriedEighths, rateMb, simulate);
+	}
+
+	/**
+	 * Overpressure path: remove the would-be tick transfer from the source (fluid lost) and rupture
+	 * the receiving pressure-rated handler.
+	 */
+	private static int ruptureOverpressure(
+		FluidHandler from,
+		FluidHandler to,
+		int maxMb,
+		int carriedEighths,
+		boolean simulate
+	) {
+		double carriedPu = FluidUnits.eighthsToPu(carriedEighths);
+		int wasteMb = Math.min(maxMb, FluidUnits.flowRateMb(carriedPu));
+		if (simulate) {
+			return Math.min(wasteMb, from.getAmount());
+		}
+		int wasted = from.extract(wasteMb, false);
+		to.ruptureFromOverpressure();
+		return wasted;
 	}
 
 	/**
@@ -68,11 +95,6 @@ public final class FluidTransfer {
 		long sumPu = (long) puFrom + puTo;
 		int wantFrom = (int) (total * puFrom / sumPu);
 		return Math.max(0, from.getAmount() - wantFrom);
-	}
-
-	/** Legacy horizontal-cap path. */
-	public static int move(FluidHandler from, FluidHandler to, int maxMb, boolean simulate) {
-		return move(from, to, Direction.NORTH, maxMb, simulate);
 	}
 
 	private static int transfer(

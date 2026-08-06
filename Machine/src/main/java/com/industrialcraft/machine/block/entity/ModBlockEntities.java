@@ -30,6 +30,11 @@ public final class ModBlockEntities {
 		FluidPipeBlockEntity::new,
 		ModBlocks.FLUID_PIPE
 	);
+	public static final BlockEntityType<RainCollectorBlockEntity> RAIN_COLLECTOR = register(
+		"rain_collector",
+		RainCollectorBlockEntity::new,
+		ModBlocks.RAIN_COLLECTOR
+	);
 
 	private ModBlockEntities() {
 	}

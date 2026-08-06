@@ -1,14 +1,14 @@
 {
 	"parent": "minecraft:block/block",
 	"textures": {
-		"frame": "machine:block/reservoir_frame",
+		"frame": "machine:block/metal_frame",
 		"glass": {
-			"sprite": "machine:block/reservoir_glass",
+			"sprite": "minecraft:block/glass",
 			"force_translucent": true
 		},
-		"top": "machine:block/reservoir_top",
+		"top": "machine:block/metal_plate",
 		"bottom": "machine:block/reservoir_bottom",
-		"particle": "machine:block/reservoir_frame"
+		"particle": "machine:block/metal_frame"
 	},
 	"elements": [
 		{

@@ -53,6 +53,18 @@ public interface FluidHandler {
 	}
 
 	/**
+	 * When true, carried pressure above {@link FluidUnits#MAX_SAFE_PRESSURE_PU} ruptures this handler
+	 * instead of inserting.
+	 */
+	default boolean rupturesAboveMaxPressure() {
+		return false;
+	}
+
+	/** Called when overpressure is supplied; no-op unless {@link #rupturesAboveMaxPressure()}. */
+	default void ruptureFromOverpressure() {
+	}
+
+	/**
 	 * Inserts with 0 PU (e.g. bucket fill).
 	 *
 	 * @return millibuckets actually inserted

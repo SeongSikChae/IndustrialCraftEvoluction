@@ -5,7 +5,6 @@ import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.core.Direction;
 
 public class FurnaceEngineRenderState extends BlockEntityRenderState {
-	public boolean lit;
 	public Direction facing = Direction.NORTH;
 	public float shaftAngle;
 	/** Single rigid shaft+sprocket mesh. */

@@ -6,6 +6,7 @@ import com.industrialcraft.machine.menu.FurnaceEngineMenu;
 import com.industrialcraft.machine.power.FuelDurations;
 import com.industrialcraft.machine.power.PowerSource;
 import com.industrialcraft.machine.power.ShaftVisuals;
+import com.industrialcraft.machine.util.BlockEntityClientSync;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -152,12 +153,7 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 		}
 
 		float shaftSpeed = entity.shaftDegreesPerTick();
-		if (shaftSpeed > 0.0F) {
-			entity.shaftAngle += shaftSpeed;
-			if (entity.shaftAngle >= 360.0F) {
-				entity.shaftAngle %= 360.0F;
-			}
-		}
+		entity.shaftAngle = ShaftVisuals.advanceAngle(entity.shaftAngle, shaftSpeed);
 	}
 
 	private boolean tickThrottleRamp() {
@@ -187,7 +183,7 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 	}
 
 	public float getShaftAngle(float partialTick) {
-		return this.shaftAngle + this.shaftDegreesPerTick() * partialTick;
+		return ShaftVisuals.interpolateAngle(this.shaftAngle, this.shaftDegreesPerTick(), partialTick);
 	}
 
 	public float getSpinFactor() {
@@ -233,13 +229,17 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 		}
 	}
 
-	/** spinFactor × √effectiveThrottle — shared by τ, ω, and shaft visuals. */
-	public float getOutputScale() {
-		float t = this.getEffectiveThrottle();
-		if (t <= 0.0F) {
+	/** spinFactor × √effectiveThrottle — shared by τ, ω, shaft visuals, and GUI. */
+	public static float outputScale(float spinFactor, float effectiveThrottle) {
+		if (effectiveThrottle <= 0.0F) {
 			return 0.0F;
 		}
-		return this.spinFactor * (float) Math.sqrt(t);
+		return spinFactor * (float) Math.sqrt(effectiveThrottle);
+	}
+
+	/** spinFactor × √effectiveThrottle — shared by τ, ω, and shaft visuals. */
+	public float getOutputScale() {
+		return outputScale(this.spinFactor, this.getEffectiveThrottle());
 	}
 
 	private void tryConsumeFuel(Level level) {
@@ -369,9 +369,6 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 	}
 
 	private void syncToClients() {
-		if (this.level != null && !this.level.isClientSide()) {
-			BlockState state = this.getBlockState();
-			this.level.sendBlockUpdated(this.worldPosition, state, state, 3);
-		}
+		BlockEntityClientSync.sync(this);
 	}
 }

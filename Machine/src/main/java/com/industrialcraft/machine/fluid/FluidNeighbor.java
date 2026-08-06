@@ -23,15 +23,4 @@ public final class FluidNeighbor {
 		}
 		return null;
 	}
-
-	/**
-	 * Finds a handler at the neighbor toward {@code face} that allows extract on the touching face.
-	 */
-	public static @Nullable FluidHandler findExtractable(BlockGetter level, BlockPos pos, Direction face) {
-		BlockEntity neighbor = level.getBlockEntity(pos.relative(face));
-		if (neighbor instanceof FluidHandler handler && handler.canExtract(face.getOpposite())) {
-			return handler;
-		}
-		return null;
-	}
 }

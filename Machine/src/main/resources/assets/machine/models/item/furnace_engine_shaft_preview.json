@@ -1,9 +1,9 @@
 {
 	"textures": {
-		"metal": "machine:block/furnace_engine_exhaust",
-		"dark": "machine:block/furnace_engine_inset",
-		"side": "machine:block/furnace_engine_side",
-		"particle": "machine:block/furnace_engine_exhaust"
+		"metal": "machine:block/machine_metal",
+		"dark": "machine:block/machine_inset",
+		"side": "machine:block/machine_casing",
+		"particle": "machine:block/machine_metal"
 	},
 	"gui_light": "side",
 	"elements": [

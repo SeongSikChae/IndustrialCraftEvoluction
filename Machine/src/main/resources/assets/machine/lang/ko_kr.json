@@ -4,6 +4,7 @@
 	"block.machine.dynamo": "다이너모",
 	"block.machine.reservoir": "리저버",
 	"block.machine.fluid_pipe": "유체 파이프",
+	"block.machine.rain_collector": "빗물받이",
 	"container.machine.machine_crafting_table": "기계 제작대",
 	"container.machine.furnace_engine": "화로 엔진",
 	"container.machine.reservoir": "리저버",
@@ -12,8 +13,8 @@
 	"gui.machine.furnace_engine.power": "출력: %s",
 	"gui.machine.furnace_engine.throttle": "출력: %s%%",
 	"gui.machine.reservoir.amount": "유체: %s / %s FU",
-	"gui.machine.fluid_pipe.empty": "비어 있음",
+	"gui.machine.fluid.empty": "비어 있음",
 	"gui.machine.fluid_pipe.amount": "%s %s / %s FU | %s PU",
-	"item.machine.furnace_engine_gear": "화로 엔진 톱니",
+	"item.machine.shaft_gear": "샤프트 톱니",
 	"item.machine.governor_accessory": "조속기 부속"
 }

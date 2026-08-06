@@ -1,12 +1,12 @@
 {
 	"textures": {
-		"particle": "machine:block/furnace_engine_side",
-		"body": "machine:block/furnace_engine_side",
+		"particle": "machine:block/machine_casing",
+		"body": "machine:block/machine_casing",
 		"front": "machine:block/furnace_engine_front",
-		"top": "machine:block/furnace_engine_top",
+		"top": "machine:block/machine_top",
 		"base": "machine:block/furnace_engine_base",
-		"inset": "machine:block/furnace_engine_inset",
-		"exhaust": "machine:block/furnace_engine_exhaust"
+		"inset": "machine:block/machine_inset",
+		"exhaust": "machine:block/machine_metal"
 	},
 	"elements": [
 		{

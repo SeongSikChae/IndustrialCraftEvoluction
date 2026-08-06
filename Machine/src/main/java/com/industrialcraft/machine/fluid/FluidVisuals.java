@@ -5,12 +5,12 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 /**
- * Shared display helpers for fluid amounts in GUIs / HUD / BER.
+ * Shared display helpers for fluid amounts in GUIs / HUD.
  */
 public final class FluidVisuals {
-	public static final int WATER_ARGB = 0x803F76E4;
+	public static final int WATER_ARGB = 0xC03F76E4;
 	public static final int LAVA_ARGB = 0xE0E85A16;
-	public static final int DEFAULT_ARGB = 0x807FDBFF;
+	public static final int DEFAULT_ARGB = 0xC07FDBFF;
 
 	private FluidVisuals() {
 	}
@@ -27,7 +27,7 @@ public final class FluidVisuals {
 
 	public static Component displayName(Fluid fluid) {
 		if (fluid == null || fluid == Fluids.EMPTY) {
-			return Component.translatable("gui.machine.fluid_pipe.empty");
+			return Component.translatable("gui.machine.fluid.empty");
 		}
 		return fluid.defaultFluidState().createLegacyBlock().getBlock().getName();
 	}

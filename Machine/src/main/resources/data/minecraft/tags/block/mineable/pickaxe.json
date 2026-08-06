@@ -3,6 +3,9 @@
 	"values": [
 		"machine:machine_crafting_table",
 		"machine:furnace_engine",
-		"machine:dynamo"
+		"machine:dynamo",
+		"machine:reservoir",
+		"machine:fluid_pipe",
+		"machine:rain_collector"
 	]
 }

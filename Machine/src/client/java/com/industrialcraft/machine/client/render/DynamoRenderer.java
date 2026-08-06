@@ -2,7 +2,6 @@ package com.industrialcraft.machine.client.render;
 
 import com.industrialcraft.machine.block.DynamoBlock;
 import com.industrialcraft.machine.block.entity.DynamoBlockEntity;
-import com.industrialcraft.machine.item.ModItems;
 import com.industrialcraft.machine.util.MetricFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -13,17 +12,14 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Output shaft (same gear mesh as furnace engine) + torque / omega / power on four non-I/O faces.
+ * Output shaft + torque / omega / power on four non-I/O faces.
  */
 public class DynamoRenderer implements BlockEntityRenderer<DynamoBlockEntity, DynamoRenderState> {
 	/** Place spinning hub along the extended output axle (nests toward neighbor input recess). */
@@ -68,14 +64,11 @@ public class DynamoRenderer implements BlockEntityRenderer<DynamoBlockEntity, Dy
 		state.torqueLabel = Component.literal(MetricFormat.formatWithUnit(blockEntity.getTorque(), "Nm"));
 		state.omegaLabel = Component.literal(MetricFormat.formatWithUnit(blockEntity.getOmega(), "rad/s"));
 		state.powerLabel = Component.literal(MetricFormat.formatWithUnit(blockEntity.getPower(), "W"));
-
-		this.itemModelResolver.updateForTopItem(
+		ShaftAssemblyRenderer.resolveGear(
+			this.itemModelResolver,
 			state.shaftAssembly,
-			new ItemStack(ModItems.FURNACE_ENGINE_GEAR),
-			ItemDisplayContext.FIXED,
 			blockEntity.getLevel(),
-			null,
-			(int) blockEntity.getBlockPos().asLong()
+			blockEntity.getBlockPos()
 		);
 	}
 
@@ -86,7 +79,16 @@ public class DynamoRenderer implements BlockEntityRenderer<DynamoBlockEntity, Dy
 		SubmitNodeCollector submitNodeCollector,
 		CameraRenderState camera
 	) {
-		submitShaft(state, poseStack, submitNodeCollector);
+		ShaftAssemblyRenderer.submit(
+			poseStack,
+			submitNodeCollector,
+			state.shaftAssembly,
+			state.facing,
+			state.shaftAngle,
+			ASSEMBLY_X,
+			ASSEMBLY_SCALE,
+			state.lightCoords
+		);
 
 		Direction axisPositive = state.facing;
 		for (Direction face : Direction.values()) {
@@ -98,26 +100,6 @@ public class DynamoRenderer implements BlockEntityRenderer<DynamoBlockEntity, Dy
 			submitFaceLabels(state, poseStack, submitNodeCollector);
 			poseStack.popPose();
 		}
-	}
-
-	private static void submitShaft(
-		DynamoRenderState state,
-		PoseStack poseStack,
-		SubmitNodeCollector submitNodeCollector
-	) {
-		if (state.shaftAssembly.isEmpty()) {
-			return;
-		}
-
-		poseStack.pushPose();
-		poseStack.translate(0.5F, 0.5F, 0.5F);
-		poseStack.mulPose(Axis.YP.rotationDegrees(-state.facing.getClockWise().toYRot()));
-		poseStack.translate(ASSEMBLY_X, 0.0F, 0.0F);
-		poseStack.mulPose(Axis.YP.rotationDegrees(90.0F));
-		poseStack.mulPose(Axis.ZP.rotationDegrees(state.shaftAngle));
-		poseStack.scale(ASSEMBLY_SCALE, ASSEMBLY_SCALE, ASSEMBLY_SCALE);
-		state.shaftAssembly.submit(poseStack, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
-		poseStack.popPose();
 	}
 
 	private void submitFaceLabels(

@@ -39,6 +39,11 @@ public final class ModBlocks {
 		FluidPipeBlock::new,
 		BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).noOcclusion().strength(0.5F)
 	);
+	public static final Block RAIN_COLLECTOR = register(
+		ModBlockItemIds.RAIN_COLLECTOR,
+		RainCollectorBlock::new,
+		BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().strength(2.0F)
+	);
 
 	private ModBlocks() {
 	}
@@ -63,6 +68,7 @@ public final class ModBlocks {
 				entries.accept(DYNAMO);
 				entries.accept(RESERVOIR);
 				entries.accept(FLUID_PIPE);
+				entries.accept(RAIN_COLLECTOR);
 			});
 	}
 }

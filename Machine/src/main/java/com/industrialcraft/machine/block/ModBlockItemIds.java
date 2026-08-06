@@ -10,6 +10,7 @@ public final class ModBlockItemIds {
 	public static final BlockItemId DYNAMO = create("dynamo");
 	public static final BlockItemId RESERVOIR = create("reservoir");
 	public static final BlockItemId FLUID_PIPE = create("fluid_pipe");
+	public static final BlockItemId RAIN_COLLECTOR = create("rain_collector");
 
 	private ModBlockItemIds() {
 	}

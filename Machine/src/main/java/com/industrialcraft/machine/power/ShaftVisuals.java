@@ -35,4 +35,18 @@ public final class ShaftVisuals {
 		float t = (float) (Math.log(clamped) / Math.log(2.0D)) / LOG2_OF_MAX;
 		return MIN_DEG_PER_TICK + (MAX_DEG_PER_TICK - MIN_DEG_PER_TICK) * Mth.clamp(t, 0.0F, 1.0F);
 	}
+
+	/** Advances shaft angle by one tick; wraps at 360°. */
+	public static float advanceAngle(float angleDegrees, float degreesPerTick) {
+		if (degreesPerTick <= 0.0F) {
+			return angleDegrees;
+		}
+		float next = angleDegrees + degreesPerTick;
+		return next >= 360.0F ? next % 360.0F : next;
+	}
+
+	/** Client interpolation between ticks. */
+	public static float interpolateAngle(float angleDegrees, float degreesPerTick, float partialTick) {
+		return angleDegrees + degreesPerTick * partialTick;
+	}
 }

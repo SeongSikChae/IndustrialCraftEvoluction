@@ -4,14 +4,8 @@ import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
-public class FluidPipeRenderState extends BlockEntityRenderState {
+public class FluidTankRenderState extends BlockEntityRenderState {
 	public int fillStep;
 	public int fluidArgb;
 	public Fluid fluid = Fluids.EMPTY;
-	public boolean north;
-	public boolean south;
-	public boolean east;
-	public boolean west;
-	public boolean up;
-	public boolean down;
 }

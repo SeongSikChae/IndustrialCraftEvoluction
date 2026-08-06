@@ -2,11 +2,14 @@ package com.industrialcraft.machine.block.entity;
 
 import com.industrialcraft.machine.fluid.FluidBuffer;
 import com.industrialcraft.machine.fluid.FluidBuckets;
+import com.industrialcraft.machine.fluid.FluidFillSteps;
 import com.industrialcraft.machine.fluid.FluidHandler;
 import com.industrialcraft.machine.fluid.FluidNeighbor;
 import com.industrialcraft.machine.fluid.FluidTransfer;
 import com.industrialcraft.machine.fluid.FluidUnits;
 import com.industrialcraft.machine.menu.ReservoirMenu;
+import com.industrialcraft.machine.util.BlockEntityClientSync;
+import com.industrialcraft.machine.MachineMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -26,6 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
@@ -40,12 +44,16 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 
 	private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
 	private final FluidBuffer buffer = new FluidBuffer(FluidUnits.RESERVOIR_CAPACITY_MB);
+	/** Last fill step / fluid pushed to clients for world visuals. */
+	private int syncedFillStep = -1;
+	private Fluid syncedFluid = Fluids.EMPTY;
 
 	private final ContainerData dataAccess = new ContainerData() {
 		@Override
 		public int get(int index) {
 			return switch (index) {
-				case DATA_AMOUNT -> ReservoirBlockEntity.this.buffer.getAmount();
+				// Packet is short-sized; keep low 16 bits so receivers can treat as unsigned.
+				case DATA_AMOUNT -> ReservoirBlockEntity.this.buffer.getAmount() & 0xFFFF;
 				case DATA_FLUID_ID -> BuiltInRegistries.FLUID.getId(ReservoirBlockEntity.this.buffer.getFluid());
 				case DATA_PRESSURE -> ReservoirBlockEntity.this.buffer.getPressureEighths();
 				default -> 0;
@@ -92,8 +100,7 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 		this.buffer.insert(fluid, FluidUnits.MB_PER_BUCKET, false);
 		ItemStack emptied = FluidBuckets.emptiedBucket(stack);
 		this.items.set(BUCKET_SLOT, emptied != null ? emptied : ItemStack.EMPTY);
-		this.setChanged();
-		this.syncToClients();
+		this.onFluidChanged();
 	}
 
 	private void pushDown(Level level, BlockPos pos) {
@@ -104,11 +111,7 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 		if (below == null) {
 			return;
 		}
-		int moved = FluidTransfer.move(this, below, Direction.DOWN, false);
-		if (moved > 0) {
-			this.setChanged();
-			this.syncToClients();
-		}
+		FluidTransfer.move(this, below, Direction.DOWN, false);
 	}
 
 	@Override
@@ -167,8 +170,7 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 	public int insert(Fluid fluid, int amountMb, int pressureEighths, boolean simulate) {
 		int moved = this.buffer.insert(fluid, amountMb, 0, simulate);
 		if (!simulate && moved > 0) {
-			this.setChanged();
-			this.syncToClients();
+			this.onFluidChanged();
 		}
 		return moved;
 	}
@@ -177,14 +179,9 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 	public int extract(int maxAmountMb, boolean simulate) {
 		int moved = this.buffer.extract(maxAmountMb, simulate);
 		if (!simulate && moved > 0) {
-			this.setChanged();
-			this.syncToClients();
+			this.onFluidChanged();
 		}
 		return moved;
-	}
-
-	public static boolean isFillableBucket(ItemStack stack) {
-		return FluidBuckets.isFilledBucket(stack);
 	}
 
 	@Override
@@ -209,12 +206,13 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 
 	@Override
 	protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
+		this.logVisualDiagnostics();
 		return new ReservoirMenu(containerId, inventory, this, this.dataAccess);
 	}
 
 	@Override
 	public boolean canPlaceItem(int slot, ItemStack stack) {
-		return slot == BUCKET_SLOT && isFillableBucket(stack);
+		return slot == BUCKET_SLOT && FluidBuckets.isFilledBucket(stack);
 	}
 
 	@Override
@@ -230,6 +228,8 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 		ContainerHelper.loadAllItems(input, this.items);
 		this.buffer.load(input);
+		this.syncedFillStep = FluidFillSteps.step(this.buffer.getAmount(), this.buffer.getCapacity());
+		this.syncedFluid = this.buffer.getFluid();
 	}
 
 	@Override
@@ -239,13 +239,49 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 
 	@Override
 	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-		return this.saveWithoutMetadata(registries);
+		CompoundTag tag = this.saveWithoutMetadata(registries);
+		tag.putString("Fluid", BuiltInRegistries.FLUID.getKey(this.buffer.getFluid()).toString());
+		tag.putInt("AmountMb", this.buffer.getAmount());
+		tag.putInt("PressureEighths", this.buffer.getPressureEighths());
+		return tag;
 	}
 
-	private void syncToClients() {
-		if (this.level != null && !this.level.isClientSide()) {
-			BlockState state = this.getBlockState();
-			this.level.sendBlockUpdated(this.worldPosition, state, state, 3);
+	/**
+	 * Persist always; sync to clients only when the discrete fill step or fluid type changes.
+	 */
+	private void onFluidChanged() {
+		this.setChanged();
+		int step = FluidFillSteps.step(this.buffer.getAmount(), this.buffer.getCapacity());
+		Fluid fluid = this.buffer.getFluid();
+		if (step == this.syncedFillStep && fluid.isSame(this.syncedFluid)) {
+			return;
 		}
+		this.syncedFillStep = step;
+		this.syncedFluid = fluid;
+		BlockEntityClientSync.sync(this);
+	}
+
+	/** Logged once when a player opens the reservoir GUI. */
+	public void logVisualDiagnostics() {
+		int amount = this.buffer.getAmount();
+		int capacity = this.buffer.getCapacity();
+		int step = FluidFillSteps.step(amount, capacity);
+		float fillRatio = FluidFillSteps.fillRatio(step);
+		MachineMod.LOGGER.info(
+			"ReservoirVisual GUI-open(server) @ [{}, {}, {}] amount={} mB ({} FU) cap={} step={}/{} fillRatio={} "
+				+ "syncedStep={} fluid={} syncedFluid={}",
+			this.worldPosition.getX(),
+			this.worldPosition.getY(),
+			this.worldPosition.getZ(),
+			amount,
+			FluidUnits.formatFu(amount),
+			capacity,
+			step,
+			FluidFillSteps.STEPS,
+			String.format("%.3f", fillRatio),
+			this.syncedFillStep,
+			BuiltInRegistries.FLUID.getKey(this.buffer.getFluid()),
+			BuiltInRegistries.FLUID.getKey(this.syncedFluid)
+		);
 	}
 }
