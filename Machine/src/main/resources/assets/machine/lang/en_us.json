@@ -2,12 +2,18 @@
 	"block.machine.machine_crafting_table": "Machine Crafting Table",
 	"block.machine.furnace_engine": "Furnace Engine",
 	"block.machine.dynamo": "Dynamo",
+	"block.machine.reservoir": "Reservoir",
+	"block.machine.fluid_pipe": "Fluid Pipe",
 	"container.machine.machine_crafting_table": "Machine Crafting Table",
 	"container.machine.furnace_engine": "Furnace Engine",
+	"container.machine.reservoir": "Reservoir",
 	"gui.machine.furnace_engine.torque": "Torque: %s",
 	"gui.machine.furnace_engine.omega": "Omega: %s",
 	"gui.machine.furnace_engine.power": "Power: %s",
 	"gui.machine.furnace_engine.throttle": "Output: %s%%",
+	"gui.machine.reservoir.amount": "Fluid: %s / %s FU | %s PU",
+	"gui.machine.fluid_pipe.empty": "Empty",
+	"gui.machine.fluid_pipe.amount": "%s %s / %s FU | %s PU",
 	"item.machine.furnace_engine_gear": "Furnace Engine Gear",
 	"item.machine.governor_accessory": "Governor Accessory"
 }

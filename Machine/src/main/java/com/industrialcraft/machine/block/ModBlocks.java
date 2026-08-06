@@ -29,6 +29,16 @@ public final class ModBlocks {
 		DynamoBlock::new,
 		BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()
 	);
+	public static final Block RESERVOIR = register(
+		ModBlockItemIds.RESERVOIR,
+		ReservoirBlock::new,
+		BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion()
+	);
+	public static final Block FLUID_PIPE = register(
+		ModBlockItemIds.FLUID_PIPE,
+		FluidPipeBlock::new,
+		BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS).noOcclusion().strength(0.5F)
+	);
 
 	private ModBlocks() {
 	}
@@ -51,6 +61,8 @@ public final class ModBlocks {
 				entries.accept(MACHINE_CRAFTING_TABLE);
 				entries.accept(FURNACE_ENGINE);
 				entries.accept(DYNAMO);
+				entries.accept(RESERVOIR);
+				entries.accept(FLUID_PIPE);
 			});
 	}
 }

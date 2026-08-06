@@ -11,14 +11,14 @@ Fabric 기반 Minecraft 산업 모드(IndustrialCraft: Evoluction)
 
 ### [Machine](Machine/README.md)
 
-기계 모듈입니다. 연료로 **회전 동력**(토크·각속도)을 내는 화로 엔진, 동력을 1:1로 중계하는 Dynamo, Machine 전용 **기계 제작대**를 제공합니다. Material이 있으면 등급별 연료를 쓰고, 없어도 바닐라 석탄·숯으로 동작합니다.
+기계 모듈입니다. 연료로 **회전 동력**(토크·각속도)을 내는 화로 엔진(선택 **조속기 부속**으로 출력 1~100%), 동력을 1:1로 중계하는 Dynamo, Machine 전용 **기계 제작대**, 그리고 **리저버·유체 파이프**에 유압(PU)·유속 기반 유체 저장/이송을 제공합니다. Material이 있으면 등급별 연료를 쓰고, 없어도 바닐라 석탄·숯으로 동작합니다.
 
 ## Build
 
 ### 요구 사항
 
 - JDK 25
-- Minecraft `26.2` / Fabric Loader / Fabric API (버전은 `gradle.properties` 참고)
+- Minecraft `26.2` / Fabric Loader `0.19.3` / Fabric API `0.156.0+26.2` (`gradle.properties` 기준)
 
 ### 빌드
 

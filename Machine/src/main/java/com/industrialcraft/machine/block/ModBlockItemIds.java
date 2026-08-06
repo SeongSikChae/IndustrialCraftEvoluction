@@ -8,6 +8,8 @@ public final class ModBlockItemIds {
 	public static final BlockItemId MACHINE_CRAFTING_TABLE = create("machine_crafting_table");
 	public static final BlockItemId FURNACE_ENGINE = create("furnace_engine");
 	public static final BlockItemId DYNAMO = create("dynamo");
+	public static final BlockItemId RESERVOIR = create("reservoir");
+	public static final BlockItemId FLUID_PIPE = create("fluid_pipe");
 
 	private ModBlockItemIds() {
 	}

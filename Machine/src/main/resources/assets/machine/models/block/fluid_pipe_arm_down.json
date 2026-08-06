@@ -1,0 +1,105 @@
+{
+	"parent": "minecraft:block/block",
+	"textures": {
+		"all": "machine:block/fluid_pipe",
+		"particle": "machine:block/fluid_pipe"
+	},
+	"elements": [
+		{
+			"from": [6, 0, 6],
+			"to": [7, 6, 7],
+			"faces": {
+				"north": { "texture": "#all" },
+				"east": { "texture": "#all" },
+				"south": { "texture": "#all" },
+				"west": { "texture": "#all" },
+				"up": { "texture": "#all" },
+				"down": { "texture": "#all" }
+			}
+		},
+		{
+			"from": [9, 0, 6],
+			"to": [10, 6, 7],
+			"faces": {
+				"north": { "texture": "#all" },
+				"east": { "texture": "#all" },
+				"south": { "texture": "#all" },
+				"west": { "texture": "#all" },
+				"up": { "texture": "#all" },
+				"down": { "texture": "#all" }
+			}
+		},
+		{
+			"from": [6, 0, 9],
+			"to": [7, 6, 10],
+			"faces": {
+				"north": { "texture": "#all" },
+				"east": { "texture": "#all" },
+				"south": { "texture": "#all" },
+				"west": { "texture": "#all" },
+				"up": { "texture": "#all" },
+				"down": { "texture": "#all" }
+			}
+		},
+		{
+			"from": [9, 0, 9],
+			"to": [10, 6, 10],
+			"faces": {
+				"north": { "texture": "#all" },
+				"east": { "texture": "#all" },
+				"south": { "texture": "#all" },
+				"west": { "texture": "#all" },
+				"up": { "texture": "#all" },
+				"down": { "texture": "#all" }
+			}
+		},
+		{
+			"from": [7, 0, 6],
+			"to": [9, 6, 7],
+			"faces": {
+				"north": { "texture": "#all" },
+				"east": { "texture": "#all" },
+				"south": { "texture": "#all" },
+				"west": { "texture": "#all" },
+				"up": { "texture": "#all" },
+				"down": { "texture": "#all" }
+			}
+		},
+		{
+			"from": [7, 0, 9],
+			"to": [9, 6, 10],
+			"faces": {
+				"north": { "texture": "#all" },
+				"east": { "texture": "#all" },
+				"south": { "texture": "#all" },
+				"west": { "texture": "#all" },
+				"up": { "texture": "#all" },
+				"down": { "texture": "#all" }
+			}
+		},
+		{
+			"from": [6, 0, 7],
+			"to": [7, 6, 9],
+			"faces": {
+				"north": { "texture": "#all" },
+				"east": { "texture": "#all" },
+				"south": { "texture": "#all" },
+				"west": { "texture": "#all" },
+				"up": { "texture": "#all" },
+				"down": { "texture": "#all" }
+			}
+		},
+		{
+			"from": [9, 0, 7],
+			"to": [10, 6, 9],
+			"faces": {
+				"north": { "texture": "#all" },
+				"east": { "texture": "#all" },
+				"south": { "texture": "#all" },
+				"west": { "texture": "#all" },
+				"up": { "texture": "#all" },
+				"down": { "texture": "#all" }
+			}
+		}
+	]
+}

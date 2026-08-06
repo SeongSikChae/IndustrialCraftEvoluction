@@ -1,0 +1,14 @@
+{
+	"type": "machine:machine_crafting",
+	"key": {
+		"G": "minecraft:glass_pane",
+		"I": "minecraft:iron_ingot"
+	},
+	"pattern": [
+		"GIG"
+	],
+	"result": {
+		"count": 8,
+		"id": "machine:fluid_pipe"
+	}
+}

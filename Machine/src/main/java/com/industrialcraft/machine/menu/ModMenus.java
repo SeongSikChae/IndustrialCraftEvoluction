@@ -10,6 +10,7 @@ import net.minecraft.world.inventory.MenuType;
 public final class ModMenus {
 	public static final MenuType<MachineCraftingTableMenu> MACHINE_CRAFTING_TABLE = register("machine_crafting_table", MachineCraftingTableMenu::new);
 	public static final MenuType<FurnaceEngineMenu> FURNACE_ENGINE = register("furnace_engine", FurnaceEngineMenu::new);
+	public static final MenuType<ReservoirMenu> RESERVOIR = register("reservoir", ReservoirMenu::new);
 
 	private ModMenus() {
 	}

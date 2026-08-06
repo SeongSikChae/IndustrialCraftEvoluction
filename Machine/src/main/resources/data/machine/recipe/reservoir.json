@@ -1,0 +1,17 @@
+{
+	"type": "machine:machine_crafting",
+	"key": {
+		"C": "minecraft:cauldron",
+		"G": "minecraft:glass",
+		"I": "minecraft:iron_ingot"
+	},
+	"pattern": [
+		"IGI",
+		"ICI",
+		"III"
+	],
+	"result": {
+		"count": 1,
+		"id": "machine:reservoir"
+	}
+}

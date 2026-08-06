@@ -1,0 +1,251 @@
+package com.industrialcraft.machine.block.entity;
+
+import com.industrialcraft.machine.fluid.FluidBuffer;
+import com.industrialcraft.machine.fluid.FluidBuckets;
+import com.industrialcraft.machine.fluid.FluidHandler;
+import com.industrialcraft.machine.fluid.FluidNeighbor;
+import com.industrialcraft.machine.fluid.FluidTransfer;
+import com.industrialcraft.machine.fluid.FluidUnits;
+import com.industrialcraft.machine.menu.ReservoirMenu;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
+import org.jspecify.annotations.Nullable;
+
+public class ReservoirBlockEntity extends BaseContainerBlockEntity implements FluidHandler {
+	public static final int BUCKET_SLOT = 0;
+	public static final int CONTAINER_SIZE = 1;
+	public static final int DATA_AMOUNT = 0;
+	public static final int DATA_FLUID_ID = 1;
+	public static final int DATA_PRESSURE = 2;
+	public static final int DATA_COUNT = 3;
+
+	private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
+	private final FluidBuffer buffer = new FluidBuffer(FluidUnits.RESERVOIR_CAPACITY_MB);
+
+	private final ContainerData dataAccess = new ContainerData() {
+		@Override
+		public int get(int index) {
+			return switch (index) {
+				case DATA_AMOUNT -> ReservoirBlockEntity.this.buffer.getAmount();
+				case DATA_FLUID_ID -> BuiltInRegistries.FLUID.getId(ReservoirBlockEntity.this.buffer.getFluid());
+				case DATA_PRESSURE -> ReservoirBlockEntity.this.buffer.getPressureEighths();
+				default -> 0;
+			};
+		}
+
+		@Override
+		public void set(int index, int value) {
+			// Client mirror via addDataSlots; buffer is authoritative on server.
+		}
+
+		@Override
+		public int getCount() {
+			return DATA_COUNT;
+		}
+	};
+
+	public ReservoirBlockEntity(BlockPos pos, BlockState state) {
+		super(ModBlockEntities.RESERVOIR, pos, state);
+	}
+
+	public ContainerData getDataAccess() {
+		return this.dataAccess;
+	}
+
+	public FluidBuffer getBuffer() {
+		return this.buffer;
+	}
+
+	public static void serverTick(Level level, BlockPos pos, BlockState state, ReservoirBlockEntity entity) {
+		entity.tryDrainBucket();
+		entity.pushDown(level, pos);
+	}
+
+	private void tryDrainBucket() {
+		ItemStack stack = this.items.get(BUCKET_SLOT);
+		if (!FluidBuckets.isFilledBucket(stack)) {
+			return;
+		}
+		Fluid fluid = FluidBuckets.getFluid(stack);
+		if (this.buffer.insert(fluid, FluidUnits.MB_PER_BUCKET, true) < FluidUnits.MB_PER_BUCKET) {
+			return;
+		}
+		this.buffer.insert(fluid, FluidUnits.MB_PER_BUCKET, false);
+		ItemStack emptied = FluidBuckets.emptiedBucket(stack);
+		this.items.set(BUCKET_SLOT, emptied != null ? emptied : ItemStack.EMPTY);
+		this.setChanged();
+		this.syncToClients();
+	}
+
+	private void pushDown(Level level, BlockPos pos) {
+		if (this.buffer.isEmpty()) {
+			return;
+		}
+		FluidHandler below = FluidNeighbor.findInsertable(level, pos, Direction.DOWN);
+		if (below == null) {
+			return;
+		}
+		int moved = FluidTransfer.move(this, below, Direction.DOWN, false);
+		if (moved > 0) {
+			this.setChanged();
+			this.syncToClients();
+		}
+	}
+
+	@Override
+	public boolean canInsert(Direction face) {
+		return face != Direction.DOWN;
+	}
+
+	@Override
+	public boolean canExtract(Direction face) {
+		return face == Direction.DOWN;
+	}
+
+	@Override
+	public Fluid getFluid() {
+		return this.buffer.getFluid();
+	}
+
+	@Override
+	public int getAmount() {
+		return this.buffer.getAmount();
+	}
+
+	@Override
+	public int getCapacity() {
+		return this.buffer.getCapacity();
+	}
+
+	@Override
+	public int getPressureEighths() {
+		return this.buffer.getPressureEighths();
+	}
+
+	/**
+	 * Intake gate is always 0 PU — line pressure is not retained in the tank.
+	 */
+	@Override
+	public int getReceiveGatePressureEighths() {
+		return 0;
+	}
+
+	@Override
+	public boolean sharesPressureVolume() {
+		return false;
+	}
+
+	/**
+	 * Reservoirs do not store line pressure. The receive gate is 0 PU; deposited fluid is stored at 0 PU
+	 * so outbound bottom extract does not re-export network head.
+	 */
+	@Override
+	public int insert(Fluid fluid, int amountMb, boolean simulate) {
+		return this.insert(fluid, amountMb, 0, simulate);
+	}
+
+	@Override
+	public int insert(Fluid fluid, int amountMb, int pressureEighths, boolean simulate) {
+		int moved = this.buffer.insert(fluid, amountMb, 0, simulate);
+		if (!simulate && moved > 0) {
+			this.setChanged();
+			this.syncToClients();
+		}
+		return moved;
+	}
+
+	@Override
+	public int extract(int maxAmountMb, boolean simulate) {
+		int moved = this.buffer.extract(maxAmountMb, simulate);
+		if (!simulate && moved > 0) {
+			this.setChanged();
+			this.syncToClients();
+		}
+		return moved;
+	}
+
+	public static boolean isFillableBucket(ItemStack stack) {
+		return FluidBuckets.isFilledBucket(stack);
+	}
+
+	@Override
+	protected Component getDefaultName() {
+		return Component.translatable("container.machine.reservoir");
+	}
+
+	@Override
+	protected NonNullList<ItemStack> getItems() {
+		return this.items;
+	}
+
+	@Override
+	protected void setItems(NonNullList<ItemStack> items) {
+		this.items = items;
+	}
+
+	@Override
+	public int getContainerSize() {
+		return CONTAINER_SIZE;
+	}
+
+	@Override
+	protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
+		return new ReservoirMenu(containerId, inventory, this, this.dataAccess);
+	}
+
+	@Override
+	public boolean canPlaceItem(int slot, ItemStack stack) {
+		return slot == BUCKET_SLOT && isFillableBucket(stack);
+	}
+
+	@Override
+	protected void saveAdditional(ValueOutput output) {
+		super.saveAdditional(output);
+		ContainerHelper.saveAllItems(output, this.items);
+		this.buffer.save(output);
+	}
+
+	@Override
+	protected void loadAdditional(ValueInput input) {
+		super.loadAdditional(input);
+		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
+		ContainerHelper.loadAllItems(input, this.items);
+		this.buffer.load(input);
+	}
+
+	@Override
+	public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
+		return ClientboundBlockEntityDataPacket.create(this);
+	}
+
+	@Override
+	public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+		return this.saveWithoutMetadata(registries);
+	}
+
+	private void syncToClients() {
+		if (this.level != null && !this.level.isClientSide()) {
+			BlockState state = this.getBlockState();
+			this.level.sendBlockUpdated(this.worldPosition, state, state, 3);
+		}
+	}
+}

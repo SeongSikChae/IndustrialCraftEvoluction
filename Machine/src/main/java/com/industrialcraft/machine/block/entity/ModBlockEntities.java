@@ -20,6 +20,16 @@ public final class ModBlockEntities {
 		DynamoBlockEntity::new,
 		ModBlocks.DYNAMO
 	);
+	public static final BlockEntityType<ReservoirBlockEntity> RESERVOIR = register(
+		"reservoir",
+		ReservoirBlockEntity::new,
+		ModBlocks.RESERVOIR
+	);
+	public static final BlockEntityType<FluidPipeBlockEntity> FLUID_PIPE = register(
+		"fluid_pipe",
+		FluidPipeBlockEntity::new,
+		ModBlocks.FLUID_PIPE
+	);
 
 	private ModBlockEntities() {
 	}
