@@ -8,12 +8,12 @@ IndustrialCraft: Evolution의 연료·광물 모듈입니다. 바닐라 석탄�
 
 | | 연료 | 영문명 | 아이템 | 연소 시간 |
 |---|------|--------|--------|-----------|
-| <img src="docs/peat.png" alt="이탄" width="32" /> | 이탄 | Peat | `material:peat` | 400틱 (20초) |
-| <img src="docs/lignite.png" alt="갈탄" width="32" /> | 갈탄 | Lignite | `material:lignite` | 800틱 (40초) |
-| <img src="docs/sub_bituminous.png" alt="아역청탄" width="32" /> | 아역청탄 | Sub-bituminous | `material:sub_bituminous` | 1200틱 (60초) |
-| <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/charcoal.png" alt="숯" width="32" /> | 숯 | Charcoal | `minecraft:charcoal` | 1400틱 (70초) |
-| <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" width="32" /> | 역청탄 | Bituminous | `minecraft:coal` | 1600틱 (80초) |
-| <img src="docs/anthracite.png" alt="무연탄" width="32" /> | 무연탄 | Anthracite | `material:anthracite` | 2000틱 (100초) |
+| <img src="docs/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | 이탄 | Peat | `material:peat` | 400틱 (20초) |
+| <img src="docs/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | 갈탄 | Lignite | `material:lignite` | 800틱 (40초) |
+| <img src="docs/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | 아역청탄 | Sub-bituminous | `material:sub_bituminous` | 1200틱 (60초) |
+| <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/charcoal.png" alt="숯" title="숯 (minecraft:charcoal)" width="32" /> | 숯 | Charcoal | `minecraft:charcoal` | 1400틱 (70초) |
+| <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | 역청탄 | Bituminous | `minecraft:coal` | 1600틱 (80초) |
+| <img src="docs/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | 무연탄 | Anthracite | `material:anthracite` | 2000틱 (100초) |
 
 바닐라 석탄(`minecraft:coal`)은 그대로 사용하며, 표시 이름만 **역청탄**으로 바꿉니다. 숯은 바닐라 기본값(1600틱 / 80초)보다 약한 **1400틱 / 70초**로 조정됩니다.
 
@@ -29,9 +29,9 @@ Machine 등 다른 모듈은 용광로 연료 값을 그대로 읽고, 엔진·�
 
 ### 이탄 (Peat)
 
-<img src="docs/peat.png" alt="이탄" width="64" />
-<img src="docs/peat_ore.png" alt="이탄 광석" width="64" />
-<img src="docs/deepslate_peat_ore.png" alt="심층 이탄 광석" width="64" />
+<img src="docs/peat.png" alt="이탄" title="이탄 (material:peat)" width="64" />
+<img src="docs/peat_ore.png" alt="이탄 광석" title="이탄 광석 (material:peat_ore)" width="64" />
+<img src="docs/deepslate_peat_ore.png" alt="심층 이탄 광석" title="심층 이탄 광석 (material:deepslate_peat_ore)" width="64" />
 
 식물이 늪지에서 쌓여 부분적으로 분해된 **가장 낮은 등급**의 연료입니다. 수분·불순물이 많아 화력이 약합니다.
 
@@ -40,9 +40,9 @@ Machine 등 다른 모듈은 용광로 연료 값을 그대로 읽고, 엔진·�
 
 ### 갈탄 (Lignite)
 
-<img src="docs/lignite.png" alt="갈탄" width="64" />
-<img src="docs/lignite_ore.png" alt="갈탄 광석" width="64" />
-<img src="docs/deepslate_lignite_ore.png" alt="심층 갈탄 광석" width="64" />
+<img src="docs/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="64" />
+<img src="docs/lignite_ore.png" alt="갈탄 광석" title="갈탄 광석 (material:lignite_ore)" width="64" />
+<img src="docs/deepslate_lignite_ore.png" alt="심층 갈탄 광석" title="심층 갈탄 광석 (material:deepslate_lignite_ore)" width="64" />
 
 이탄이 더 압축·탄화된 단계입니다. 갈색을 띠며 이탄보다 화력이 세지만, 여전히 저등급 석탄에 속합니다.
 
@@ -51,9 +51,9 @@ Machine 등 다른 모듈은 용광로 연료 값을 그대로 읽고, 엔진·�
 
 ### 아역청탄 (Sub-bituminous)
 
-<img src="docs/sub_bituminous.png" alt="아역청탄" width="64" />
-<img src="docs/sub_bituminous_ore.png" alt="아역청탄 광석" width="64" />
-<img src="docs/deepslate_sub_bituminous_ore.png" alt="심층 아역청탄 광석" width="64" />
+<img src="docs/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="64" />
+<img src="docs/sub_bituminous_ore.png" alt="아역청탄 광석" title="아역청탄 광석 (material:sub_bituminous_ore)" width="64" />
+<img src="docs/deepslate_sub_bituminous_ore.png" alt="심층 아역청탄 광석" title="심층 아역청탄 광석 (material:deepslate_sub_bituminous_ore)" width="64" />
 
 갈탄과 역청탄 사이의 중간 등급입니다. 수분과 휘발분이 줄어들며 연소 효율이 나아집니다.
 
@@ -62,9 +62,9 @@ Machine 등 다른 모듈은 용광로 연료 값을 그대로 읽고, 엔진·�
 
 ### 역청탄 (Bituminous)
 
-<img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" width="64" />
-<img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/coal_ore.png" alt="석탄 광석" width="64" />
-<img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/deepslate_coal_ore.png" alt="심층 석탄 광석" width="64" />
+<img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="64" />
+<img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/coal_ore.png" alt="석탄 광석" title="역청탄 광석 (minecraft:coal_ore)" width="64" />
+<img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/deepslate_coal_ore.png" alt="심층 석탄 광석" title="심층 역청탄 광석 (minecraft:deepslate_coal_ore)" width="64" />
 
 바닐라 **석탄**에 해당하는 표준 등급입니다. 산업·가정용으로 널리 쓰이는 전형적인 석탄입니다.
 
@@ -73,9 +73,9 @@ Machine 등 다른 모듈은 용광로 연료 값을 그대로 읽고, 엔진·�
 
 ### 무연탄 (Anthracite)
 
-<img src="docs/anthracite.png" alt="무연탄" width="64" />
-<img src="docs/anthracite_ore.png" alt="무연탄 광석" width="64" />
-<img src="docs/deepslate_anthracite_ore.png" alt="심층 무연탄 광석" width="64" />
+<img src="docs/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="64" />
+<img src="docs/anthracite_ore.png" alt="무연탄 광석" title="무연탄 광석 (material:anthracite_ore)" width="64" />
+<img src="docs/deepslate_anthracite_ore.png" alt="심층 무연탄 광석" title="심층 무연탄 광석 (material:deepslate_anthracite_ore)" width="64" />
 
 탄화도가 가장 높은 **고급 석탄**입니다. 탄소 함량이 높아 오래, 세게 탑니다.
 
@@ -84,7 +84,7 @@ Machine 등 다른 모듈은 용광로 연료 값을 그대로 읽고, 엔진·�
 
 ### 숯 (Charcoal)
 
-<img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/charcoal.png" alt="숯" width="64" />
+<img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/charcoal.png" alt="숯" title="숯 (minecraft:charcoal)" width="64" />
 
 나무를 무산소 환경에서 가열해 만든 **바이오매스 연료**입니다. 석탄 계열과는 생성 과정이 다르며, 이 모드에서는 역청탄보다 약간 약하게 탑니다.
 
@@ -132,10 +132,10 @@ Material 광석은 `#minecraft:mineable/pickaxe`에 등록되어 곡괭이로 �
 
 | | | |
 |:---:|:---:|:---:|
-| | <img src="docs/peat.png" alt="이탄" width="32" /> | |
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" width="32" /> | |
+| | <img src="docs/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | |
+| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" /> | |
 
-→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" width="32" /> × 4
+→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" /> × 4
 
 </td>
 <td align="center">
@@ -144,10 +144,10 @@ Material 광석은 `#minecraft:mineable/pickaxe`에 등록되어 곡괭이로 �
 
 | | | |
 |:---:|:---:|:---:|
-| | <img src="docs/lignite.png" alt="갈탄" width="32" /> | |
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" width="32" /> | |
+| | <img src="docs/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | |
+| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" /> | |
 
-→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" width="32" /> × 4
+→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" /> × 4
 
 </td>
 <td align="center">
@@ -156,10 +156,10 @@ Material 광석은 `#minecraft:mineable/pickaxe`에 등록되어 곡괭이로 �
 
 | | | |
 |:---:|:---:|:---:|
-| | <img src="docs/sub_bituminous.png" alt="아역청탄" width="32" /> | |
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" width="32" /> | |
+| | <img src="docs/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | |
+| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" /> | |
 
-→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" width="32" /> × 4
+→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" /> × 4
 
 </td>
 <td align="center">
@@ -168,10 +168,10 @@ Material 광석은 `#minecraft:mineable/pickaxe`에 등록되어 곡괭이로 �
 
 | | | |
 |:---:|:---:|:---:|
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" width="32" /> | |
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" width="32" /> | |
+| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | |
+| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" /> | |
 
-→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" width="32" /> × 4
+→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" /> × 4
 
 </td>
 <td align="center">
@@ -180,10 +180,10 @@ Material 광석은 `#minecraft:mineable/pickaxe`에 등록되어 곡괭이로 �
 
 | | | |
 |:---:|:---:|:---:|
-| | <img src="docs/anthracite.png" alt="무연탄" width="32" /> | |
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" width="32" /> | |
+| | <img src="docs/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | |
+| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" /> | |
 
-→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" width="32" /> × 4
+→ <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" /> × 4
 
 </td>
 </tr>
