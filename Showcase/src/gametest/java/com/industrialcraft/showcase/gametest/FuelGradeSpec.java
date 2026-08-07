@@ -18,6 +18,6 @@ public record FuelGradeSpec(
 ) {
 	public String fuelSubtitle() {
 		int seconds = burnTicks / 20;
-		return "용광로 기준 연료 · " + burnTicks + "틱 (" + seconds + "초)";
+		return "화로 기준 연료 · " + burnTicks + "틱 (" + seconds + "초)";
 	}
 }

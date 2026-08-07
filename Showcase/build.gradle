@@ -69,11 +69,21 @@ def runClipsRoot = layout.buildDirectory.dir('run/clientGameTest/docs/clips')
 def localFfmpeg = layout.projectDirectory.file('_tools/ffmpeg/bin/ffmpeg.exe').asFile
 
 def fuelClipCaptions = [
-	peat           : [['이탄', '용광로 기준 연료 · 400틱 (20초)'], ['이탄 광석', '돌 지층에서 채굴'], ['심층암 이탄 광석', '심층암 지층에서 채굴']],
-	lignite        : [['갈탄', '용광로 기준 연료 · 800틱 (40초)'], ['갈탄 광석', '돌 지층에서 채굴'], ['심층암 갈탄 광석', '심층암 지층에서 채굴']],
-	sub_bituminous : [['아역청탄', '용광로 기준 연료 · 1200틱 (60초)'], ['아역청탄 광석', '돌 지층에서 채굴'], ['심층암 아역청탄 광석', '심층암 지층에서 채굴']],
-	bituminous     : [['역청탄', '용광로 기준 연료 · 1600틱 (80초)'], ['역청탄 광석', '돌 지층에서 채굴'], ['심층 역청탄 광석', '심층암 지층에서 채굴']],
-	anthracite     : [['무연탄', '용광로 기준 연료 · 2000틱 (100초)'], ['무연탄 광석', '돌 지층에서 채굴'], ['심층암 무연탄 광석', '심층암 지층에서 채굴']],
+	peat           : [['이탄', '화로 기준 연료 · 400틱 (20초)'], ['이탄 광석', '돌 지층에서 채굴'], ['심층암 이탄 광석', '심층암 지층에서 채굴']],
+	lignite        : [['갈탄', '화로 기준 연료 · 800틱 (40초)'], ['갈탄 광석', '돌 지층에서 채굴'], ['심층암 갈탄 광석', '심층암 지층에서 채굴']],
+	sub_bituminous : [['아역청탄', '화로 기준 연료 · 1200틱 (60초)'], ['아역청탄 광석', '돌 지층에서 채굴'], ['심층암 아역청탄 광석', '심층암 지층에서 채굴']],
+	bituminous     : [['역청탄', '화로 기준 연료 · 1600틱 (80초)'], ['역청탄 광석', '돌 지층에서 채굴'], ['심층 역청탄 광석', '심층암 지층에서 채굴']],
+	anthracite     : [['무연탄', '화로 기준 연료 · 2000틱 (100초)'], ['무연탄 광석', '돌 지층에서 채굴'], ['심층암 무연탄 광석', '심층암 지층에서 채굴']],
+]
+
+// Timed captions for furnace_fuels (5× timelapse). Each entry: [title, sub, durationSec]
+// Furnace cook = 200 ticks → items = burnTicks / 200.
+def furnaceFuelCaptions = [
+	['이탄 1개 + 철광석 64', '화로 GUI · 20초→4초(×5) · 예상 철괴 2개', 4],
+	['갈탄 1개 + 철광석 64', '화로 GUI · 40초→8초(×5) · 예상 철괴 4개', 8],
+	['아역청탄 1개 + 철광석 64', '화로 GUI · 60초→12초(×5) · 예상 철괴 6개', 12],
+	['역청탄 1개 + 철광석 64', '화로 GUI · 80초→16초(×5) · 예상 철괴 8개', 16],
+	['무연탄 1개 + 철광석 64', '화로 GUI · 100초→20초(×5) · 예상 철괴 10개', 20],
 ]
 
 def resolveFfmpeg = {
@@ -104,6 +114,22 @@ def captionFilter = { List segments, String fontEsc ->
 	return parts.join(',')
 }
 
+def captionFilterTimed = { List segments, String fontEsc ->
+	def parts = []
+	def t = 0
+	segments.each { seg ->
+		def title = seg[0].replace("'", "\\'")
+		def sub = seg[1].replace("'", "\\'")
+		def dur = seg[2] as int
+		def t0 = t
+		def t1 = t + dur
+		parts << "drawtext=fontfile='${fontEsc}':text='${title}':fontsize=32:fontcolor=white:borderw=2:bordercolor=black@0.8:x=(w-text_w)/2:y=h-78:enable='between(t\\,${t0}\\,${t1})'"
+		parts << "drawtext=fontfile='${fontEsc}':text='${sub}':fontsize=20:fontcolor=white@0.92:borderw=1:bordercolor=black@0.7:x=(w-text_w)/2:y=h-42:enable='between(t\\,${t0}\\,${t1})'"
+		t = t1
+	}
+	return parts.join(',')
+}
+
 def syncClipFrames = { String clipId ->
 	def src = new File(runClipsRoot.get().asFile, clipId)
 	def frames = src.exists() ? src.listFiles({ File f -> f.name.startsWith('frame_') && f.name.endsWith('.png') } as java.io.FileFilter) : null
@@ -127,44 +153,54 @@ def deleteClipFrames = { String clipId ->
 	}
 }
 
+def encodeOneClip = { String clipId, String vf, int framerate = 10 ->
+	def n = syncClipFrames(clipId)
+	def frame0 = clipsDir.dir(clipId).file('frame_0000.png').asFile
+	if (!frame0.exists()) {
+		println "Skip encode ${clipId}: no frames (synced=${n})"
+		return false
+	}
+	def ffmpegBin = resolveFfmpeg()
+	def pattern = clipsDir.dir(clipId).file('frame_%04d.png').asFile.absolutePath.replace('\\', '/')
+	def mp4 = clipsDir.dir(clipId).file("${clipId}.mp4").asFile
+	def cmd = [
+		ffmpegBin.toString(), '-y',
+		'-framerate', String.valueOf(framerate),
+		'-i', pattern.toString(),
+		'-vf', vf.toString(),
+		'-c:v', 'libx264',
+		'-pix_fmt', 'yuv420p',
+		mp4.absolutePath.toString()
+	]
+	def pb = new ProcessBuilder(cmd)
+	pb.directory(project.projectDir)
+	pb.redirectErrorStream(true)
+	def proc = pb.start()
+	proc.inputStream.eachLine { println it }
+	def code = proc.waitFor()
+	if (code != 0) {
+		throw new GradleException("ffmpeg failed for ${clipId} (exit ${code})")
+	}
+	println "Encoded ${mp4} (from ${n} synced frames)"
+	deleteClipFrames(clipId)
+	return true
+}
+
 tasks.register('encodeShowcaseClips') {
 	group = 'showcase'
 	description = 'Syncs GameTest frames then encodes docs/clips/<id>/<id>.mp4 with Korean captions'
 	mustRunAfter 'runClientGameTest'
 
 	doLast {
-		def ffmpegBin = resolveFfmpeg()
 		def fontEsc = resolveFontEsc()
 		def encoded = 0
 		fuelClipCaptions.each { clipId, segments ->
-			def n = syncClipFrames(clipId)
-			def frame0 = clipsDir.dir(clipId).file('frame_0000.png').asFile
-			if (!frame0.exists()) {
-				println "Skip encode ${clipId}: no frames (synced=${n})"
-				return
+			if (encodeOneClip(clipId, captionFilter(segments, fontEsc))) {
+				encoded++
 			}
-			def pattern = clipsDir.dir(clipId).file('frame_%04d.png').asFile.absolutePath.replace('\\', '/')
-			def mp4 = clipsDir.dir(clipId).file("${clipId}.mp4").asFile
-			def vf = captionFilter(segments, fontEsc)
-			def cmd = [ffmpegBin, '-y',
-				'-framerate', '10',
-				'-i', pattern,
-				'-vf', vf,
-				'-c:v', 'libx264',
-				'-pix_fmt', 'yuv420p',
-				mp4.absolutePath]
-			def pb = new ProcessBuilder(cmd)
-			pb.directory(project.projectDir)
-			pb.redirectErrorStream(true)
-			def proc = pb.start()
-			proc.inputStream.eachLine { println it }
-			def code = proc.waitFor()
-			if (code != 0) {
-				throw new GradleException("ffmpeg failed for ${clipId} (exit ${code})")
-			}
-			println "Encoded ${mp4} (from ${n} synced frames)"
+		}
+		if (encodeOneClip('furnace_fuels', captionFilterTimed(furnaceFuelCaptions, fontEsc))) {
 			encoded++
-			deleteClipFrames(clipId)
 		}
 		if (encoded == 0) {
 			throw new GradleException("No clip frames found under ${runClipsRoot.get().asFile}. Run :Showcase:runClientGameTest first.")
@@ -182,4 +218,16 @@ tasks.register('recordPeatShowcase') {
 	group = 'showcase'
 	description = 'Alias for recordCoalGradeShowcase (entrypoint controls which clips are captured)'
 	dependsOn 'recordCoalGradeShowcase'
+}
+
+tasks.register('recordFurnaceFuelShowcase') {
+	group = 'showcase'
+	description = 'Records furnace_fuels time-lapse (5 grades, ≤60s @5x, furnace GUI) and encodes mp4'
+	dependsOn 'runClientGameTest', 'encodeShowcaseClips'
+}
+
+tasks.register('recordBlastFurnaceFuelShowcase') {
+	group = 'showcase'
+	description = 'Deprecated alias → recordFurnaceFuelShowcase'
+	dependsOn 'recordFurnaceFuelShowcase'
 }

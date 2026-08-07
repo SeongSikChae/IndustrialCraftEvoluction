@@ -6,7 +6,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"fabric-client-gametest": [
-			"com.industrialcraft.showcase.gametest.CoalGradeShowcaseClipTest"
+			"com.industrialcraft.showcase.gametest.FurnaceFuelShowcaseClipTest"
 		]
 	}
 }

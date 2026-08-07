@@ -11,6 +11,8 @@ import net.fabricmc.fabric.api.client.gametest.v1.screenshot.TestScreenshotOptio
 public final class FrameCapture {
 	public static final int DEFAULT_WIDTH = 1280;
 	public static final int DEFAULT_HEIGHT = 720;
+	/** Encode / assumed playback framerate for clip math. */
+	public static final int DEFAULT_FPS = 10;
 	/** Capture every N game ticks → at 20 TPS, N=2 yields 10 fps video. */
 	public static final int DEFAULT_TICKS_PER_FRAME = 2;
 
