@@ -1,0 +1,8 @@
+{
+	"variants": {
+		"facing=south": { "model": "machine:block/water_pump" },
+		"facing=west": { "model": "machine:block/water_pump", "y": 90 },
+		"facing=north": { "model": "machine:block/water_pump", "y": 180 },
+		"facing=east": { "model": "machine:block/water_pump", "y": 270 }
+	}
+}

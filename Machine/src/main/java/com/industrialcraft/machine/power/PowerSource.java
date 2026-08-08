@@ -3,16 +3,20 @@ package com.industrialcraft.machine.power;
 import net.minecraft.core.Direction;
 
 /**
- * Minimal rotary power output contract. Shaft networks and machines can query
- * this without depending on engine-specific inventory/fuel logic.
+ * Rotary power output contract in SI units.
+ * <p>
+ * Torque is N·m, angular velocity is rad/s, mechanical power is W ({@code τ × ω}).
+ * Arithmetic uses {@code double} with no fixed-point milli scaling.
  */
 public interface PowerSource {
-	int getTorque();
+	/** Torque in newton-metres (Nm). */
+	double getTorque();
 
-	int getOmega();
+	/** Angular velocity in rad/s. */
+	double getOmega();
 
 	default boolean isGenerating() {
-		return getTorque() > 0 && getOmega() > 0;
+		return this.getTorque() > 0.0 && this.getOmega() > 0.0;
 	}
 
 	/**
@@ -23,8 +27,16 @@ public interface PowerSource {
 		return true;
 	}
 
-	/** Mechanical power in watts ({@code torque × omega}). */
-	default int getPower() {
-		return getTorque() * getOmega();
+	/** Mechanical power in watts ({@code τ × ω}). */
+	default double getPower() {
+		return this.getTorque() * this.getOmega();
+	}
+
+	/** Non-finite or negative → 0. */
+	static double sanitize(double si) {
+		if (!Double.isFinite(si) || si <= 0.0) {
+			return 0.0;
+		}
+		return si;
 	}
 }

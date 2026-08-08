@@ -1,15 +1,11 @@
 package com.industrialcraft.machine.block;
 
-import com.industrialcraft.machine.MachineMod;
 import com.industrialcraft.machine.block.entity.FluidPipeBlockEntity;
 import com.industrialcraft.machine.block.entity.ModBlockEntities;
-import com.industrialcraft.machine.fluid.FluidUnits;
+import com.industrialcraft.machine.block.entity.ReservoirBlockEntity;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -24,14 +20,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
 /**
- * 1 FU fluid conduit with visual connections to pipes and reservoirs.
+ * 1 B fluid conduit with visual connections to compatible pipes, reservoirs, and water pumps.
  */
 public class FluidPipeBlock extends BaseEntityBlock {
 	public static final MapCodec<FluidPipeBlock> CODEC = simpleCodec(FluidPipeBlock::new);
@@ -110,51 +107,6 @@ public class FluidPipeBlock extends BaseEntityBlock {
 			: createTickerHelper(type, ModBlockEntities.FLUID_PIPE, FluidPipeBlockEntity::serverTick);
 	}
 
-	/**
-	 * Empty-hand right-click dumps this pipe's fluid state to the game log (server only).
-	 */
-	@Override
-	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		if (!level.isClientSide() && level.getBlockEntity(pos) instanceof FluidPipeBlockEntity pipe) {
-			logPipeState(state, pos, pipe, hit.getDirection());
-		}
-		return InteractionResult.SUCCESS;
-	}
-
-	private static void logPipeState(BlockState state, BlockPos pos, FluidPipeBlockEntity pipe, Direction hitFace) {
-		int amountMb = pipe.getAmount();
-		int pressure = pipe.getPressureEighths();
-		int gate = pipe.getReceiveGatePressureEighths();
-		String fluidId = BuiltInRegistries.FLUID.getKey(pipe.getFluid()).toString();
-		StringBuilder connections = new StringBuilder();
-		for (Direction direction : Direction.values()) {
-			if (isConnected(state, direction)) {
-				if (!connections.isEmpty()) {
-					connections.append(',');
-				}
-				connections.append(direction.getSerializedName());
-			}
-		}
-		if (connections.isEmpty()) {
-			connections.append("none");
-		}
-		MachineMod.LOGGER.info(
-			"FluidPipe @ [{}, {}, {}] face={} fluid={} amount={} mB ({} FU) pressure={} PU ({} eighths) gate={} PU cap={} mB connections=[{}]",
-			pos.getX(),
-			pos.getY(),
-			pos.getZ(),
-			hitFace.getSerializedName(),
-			fluidId,
-			amountMb,
-			FluidUnits.formatFu(amountMb),
-			FluidUnits.formatPu(pressure),
-			pressure,
-			FluidUnits.formatPu(gate),
-			pipe.getCapacity(),
-			connections
-		);
-	}
-
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return withConnections(this.defaultBlockState(), context.getLevel(), context.getClickedPos());
@@ -195,13 +147,33 @@ public class FluidPipeBlock extends BaseEntityBlock {
 		BlockState neighbor = level.getBlockState(neighborPos);
 		Block block = neighbor.getBlock();
 		if (block instanceof FluidPipeBlock) {
-			return true;
+			return fluidsCompatible(level, pos, neighborPos);
 		}
 		if (block instanceof ReservoirBlock) {
-			// Visual prep for future side/top insert; bottom already used for output.
-			return true;
+			return ReservoirBlockEntity.allowsPipeConnection(level, neighborPos, face.getOpposite());
+		}
+		if (block instanceof WaterPumpBlock) {
+			return WaterPumpBlock.allowsPipeConnection(level, neighborPos, face.getOpposite());
 		}
 		return false;
+	}
+
+	/** Empty↔empty or same fluid; different fluids do not connect. */
+	private static boolean fluidsCompatible(BlockGetter level, BlockPos a, BlockPos b) {
+		Fluid fa = pipeFluid(level, a);
+		Fluid fb = pipeFluid(level, b);
+		if (fa == Fluids.EMPTY || fb == Fluids.EMPTY) {
+			return true;
+		}
+		return fa.isSame(fb);
+	}
+
+	private static Fluid pipeFluid(BlockGetter level, BlockPos pos) {
+		BlockEntity be = level.getBlockEntity(pos);
+		if (be instanceof FluidPipeBlockEntity pipe) {
+			return pipe.getFluid();
+		}
+		return Fluids.EMPTY;
 	}
 
 	public static BlockState withConnections(BlockState state, BlockGetter level, BlockPos pos) {

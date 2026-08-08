@@ -79,11 +79,11 @@ public class ReservoirMenu extends AbstractContainerMenu {
 	}
 
 	public String getAmountFuLabel() {
-		return FluidUnits.formatFu(this.getAmountMb());
+		return FluidUnits.formatBuckets(this.getAmountMb());
 	}
 
 	public String getCapacityFuLabel() {
-		return FluidUnits.formatFu(FluidUnits.RESERVOIR_CAPACITY_MB);
+		return FluidUnits.formatBuckets(FluidUnits.RESERVOIR_CAPACITY_MB);
 	}
 
 	@Override

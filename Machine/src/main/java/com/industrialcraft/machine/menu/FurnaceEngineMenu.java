@@ -19,6 +19,10 @@ public class FurnaceEngineMenu extends AbstractContainerMenu {
 	private static final int FUEL_SLOT_Y = 53;
 	private static final int GOVERNOR_SLOT_X = 110;
 	private static final int GOVERNOR_SLOT_Y = 53;
+	/** Slot caption centers (18×18 slots). */
+	public static final int FUEL_SLOT_LABEL_X = FUEL_SLOT_X + 9;
+	public static final int GOVERNOR_SLOT_LABEL_X = GOVERNOR_SLOT_X + 9;
+	public static final int SLOT_LABEL_Y = 72;
 	private static final int INVENTORY_START_X = 8;
 	private static final int INVENTORY_START_Y = 84;
 	private static final int PLAYER_INV_START = FurnaceEngineBlockEntity.CONTAINER_SIZE;

@@ -41,9 +41,9 @@ public final class FluidPipeLookOverlay {
 			message = Component.translatable(
 				"gui.machine.fluid_pipe.amount",
 				FluidVisuals.displayName(pipe.getFluid()),
-				FluidUnits.formatFu(pipe.getAmount()),
-				FluidUnits.formatFu(pipe.getCapacity()),
-				FluidUnits.formatPu(pipe.getPressureEighths())
+				FluidUnits.formatBuckets(pipe.getAmount()),
+				FluidUnits.formatBuckets(pipe.getCapacity()),
+				FluidUnits.formatKpa(pipe.getPressureMilli())
 			);
 		}
 		minecraft.player.sendOverlayMessage(message);

@@ -4,6 +4,7 @@ import com.industrialcraft.machine.block.DynamoOrientationVerifier;
 import com.industrialcraft.machine.block.FurnaceEngineOrientationVerifier;
 import com.industrialcraft.machine.block.ModBlocks;
 import com.industrialcraft.machine.block.entity.ModBlockEntities;
+import com.industrialcraft.machine.item.ModCreativeTabs;
 import com.industrialcraft.machine.item.ModItems;
 import com.industrialcraft.machine.menu.ModMenus;
 import com.industrialcraft.machine.recipe.ModRecipeBookCategories;
@@ -21,6 +22,7 @@ public class MachineMod implements ModInitializer {
 	public void onInitialize() {
 		ModRecipes.initialize();
 		ModRecipeBookCategories.initialize();
+		ModCreativeTabs.initialize();
 		ModItems.initialize();
 		ModBlocks.initialize();
 		ModBlockEntities.initialize();

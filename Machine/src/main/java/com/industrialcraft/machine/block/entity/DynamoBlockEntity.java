@@ -21,11 +21,11 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * Relays adjacent rotary power 1:1 from the input face to the output face.
- * Values are cached each tick to keep multi-dynamo chains acyclic.
+ * Values are cached each tick to keep multi-dynamo chains acyclic (SI {@code double}).
  */
 public class DynamoBlockEntity extends BlockEntity implements PowerSource {
-	private int torque;
-	private int omega;
+	private double torque;
+	private double omega;
 	private float shaftAngle;
 
 	public DynamoBlockEntity(BlockPos pos, BlockState state) {
@@ -40,8 +40,8 @@ public class DynamoBlockEntity extends BlockEntity implements PowerSource {
 
 		Direction inputFace = DynamoBlock.getInputFace(state);
 		PowerSource source = ShaftPower.findIncoming(level, pos, inputFace);
-		int nextTorque = source != null ? source.getTorque() : 0;
-		int nextOmega = source != null ? source.getOmega() : 0;
+		double nextTorque = source != null ? PowerSource.sanitize(source.getTorque()) : 0.0;
+		double nextOmega = source != null ? PowerSource.sanitize(source.getOmega()) : 0.0;
 
 		if (nextTorque != entity.torque || nextOmega != entity.omega) {
 			entity.torque = nextTorque;
@@ -57,7 +57,7 @@ public class DynamoBlockEntity extends BlockEntity implements PowerSource {
 
 	/** Visual-only; uses log2(ω) via {@link ShaftVisuals}. */
 	private float shaftDegreesPerTick() {
-		return ShaftVisuals.degreesPerTick(this.omega);
+		return ShaftVisuals.degreesPerTick((float) this.omega);
 	}
 
 	public float getShaftAngle(float partialTick) {
@@ -65,12 +65,12 @@ public class DynamoBlockEntity extends BlockEntity implements PowerSource {
 	}
 
 	@Override
-	public int getTorque() {
+	public double getTorque() {
 		return this.torque;
 	}
 
 	@Override
-	public int getOmega() {
+	public double getOmega() {
 		return this.omega;
 	}
 
@@ -82,15 +82,29 @@ public class DynamoBlockEntity extends BlockEntity implements PowerSource {
 	@Override
 	protected void saveAdditional(ValueOutput output) {
 		super.saveAdditional(output);
-		output.putInt("Torque", this.torque);
-		output.putInt("Omega", this.omega);
+		output.putDouble("TorqueNm", this.torque);
+		output.putDouble("OmegaRadPerSec", this.omega);
 	}
 
 	@Override
 	protected void loadAdditional(ValueInput input) {
 		super.loadAdditional(input);
-		this.torque = input.getIntOr("Torque", 0);
-		this.omega = input.getIntOr("Omega", 0);
+		this.torque = readSi(input, "TorqueNm", "TorqueMilli", "Torque");
+		this.omega = readSi(input, "OmegaRadPerSec", "OmegaMilli", "Omega");
+	}
+
+	/** Prefer SI doubles; migrate milli / legacy whole-SI ints. */
+	private static double readSi(ValueInput input, String siKey, String milliKey, String legacyKey) {
+		double si = input.getDoubleOr(siKey, Double.NaN);
+		if (Double.isFinite(si)) {
+			return PowerSource.sanitize(si);
+		}
+		int milli = input.getIntOr(milliKey, Integer.MIN_VALUE);
+		if (milli != Integer.MIN_VALUE) {
+			return PowerSource.sanitize(milli / 1000.0);
+		}
+		int legacy = input.getIntOr(legacyKey, 0);
+		return PowerSource.sanitize(legacy);
 	}
 
 	@Override

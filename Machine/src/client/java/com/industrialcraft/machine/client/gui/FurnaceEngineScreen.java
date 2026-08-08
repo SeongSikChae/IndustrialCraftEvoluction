@@ -133,6 +133,24 @@ public class FurnaceEngineScreen extends AbstractContainerScreen<FurnaceEngineMe
 				false
 			);
 		}
+
+		this.renderSlotCaption(
+			graphics,
+			Component.translatable("gui.machine.furnace_engine.slot.governor"),
+			FurnaceEngineMenu.GOVERNOR_SLOT_LABEL_X,
+			FurnaceEngineMenu.SLOT_LABEL_Y
+		);
+		this.renderSlotCaption(
+			graphics,
+			Component.translatable("gui.machine.furnace_engine.slot.fuel"),
+			FurnaceEngineMenu.FUEL_SLOT_LABEL_X,
+			FurnaceEngineMenu.SLOT_LABEL_Y
+		);
+	}
+
+	private void renderSlotCaption(GuiGraphicsExtractor graphics, Component text, int slotCenterX, int y) {
+		int width = this.font.width(text);
+		graphics.text(this.font, text, slotCenterX - width / 2, y, LABEL_COLOR, false);
 	}
 
 	@Override

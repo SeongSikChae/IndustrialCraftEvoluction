@@ -6,6 +6,7 @@
 		"machine:dynamo",
 		"machine:reservoir",
 		"machine:fluid_pipe",
-		"machine:rain_collector"
+		"machine:rain_collector",
+		"machine:water_pump"
 	]
 }

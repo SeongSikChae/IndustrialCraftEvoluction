@@ -9,6 +9,7 @@ public final class ModItemIds {
 	/** Shared shaft+sprocket mesh for engine/dynamo BER (not a craftable/tab item). */
 	public static final ResourceKey<Item> SHAFT_GEAR = create("shaft_gear");
 	public static final ResourceKey<Item> GOVERNOR_ACCESSORY = create("governor_accessory");
+	public static final ResourceKey<Item> CHECK_VALVE_ACCESSORY = create("check_valve_accessory");
 
 	private ModItemIds() {
 	}

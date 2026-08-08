@@ -5,14 +5,18 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 
 /**
- * Sender-centric transfer:
+ * Sender-centric transfer. Locked principles:
  * <ol>
- *   <li>carried PU = source PU ± direction</li>
- *   <li>if carried PU &gt; {@link FluidUnits#MAX_SAFE_PRESSURE_PU} and the receiver ruptures,
- *       waste the tick transfer from the source and rupture the receiver</li>
- *   <li>receiver gate: accept when {@code carried >= gate} (refuse only lower PU)</li>
- *   <li>rate from carried PU alone</li>
- *   <li>pipe↔pipe: move only toward {@code amount ∝ PU} so more fluid sits near the source</li>
+ *   <li>Fluid flows from higher hydraulic pressure to lower (carried kPa &gt; receiver gate).</li>
+ *   <li>Connected pipes ({@link FluidHandler#sharesPressureVolume()}) also <b>balance amounts</b>
+ *       toward equality even when pressures are equal (rate still applies, min 1 mB when moving).
+ *       The {@code ⌊excess/2⌋} amount-balance cap uses {@code max(1, ⌊excess/2⌋)} so a single leftover
+ *       millibucket can still move under pressure drive (otherwise U-bends stall).</li>
+ *   <li>Height adjustment is applied before the pressure comparison.</li>
+ *   <li>Rate comes from carried kPa and sender fill fraction; after a gate pass, rounded-down 0
+ *       becomes at least 1 mB while the sender still has fluid. Pumps set outlet pressure separately.</li>
+ *   <li>Inserted pressure is always the height-adjusted carried value (never the raw sender reading).
+ *       Otherwise vertical amount-balance would ignore −10 kPa/block and hydrostatic share would ratchet.</li>
  * </ol>
  */
 public final class FluidTransfer {
@@ -36,21 +40,51 @@ public final class FluidTransfer {
 		if (fluid == Fluids.EMPTY || from.getAmount() <= 0) {
 			return 0;
 		}
-
-		int carriedEighths = carryPressureEighths(from.getPressureEighths(), moveDir);
-		if (FluidUnits.exceedsMaxSafePressure(carriedEighths) && to.rupturesAboveMaxPressure()) {
-			return ruptureOverpressure(from, to, maxMb, carriedEighths, simulate);
-		}
-
-		int gateEighths = to.getReceiveGatePressureEighths();
-		if (carriedEighths < gateEighths) {
+		if (!to.getFluid().isSame(fluid) && to.getAmount() > 0) {
 			return 0;
 		}
 
-		double carriedPu = FluidUnits.eighthsToPu(carriedEighths);
-		int rateMb = Math.min(maxMb, FluidUnits.flowRateMb(carriedPu));
-		rateMb = Math.min(rateMb, shareLimitedSendMb(from, to, carriedEighths));
-		return transfer(from, to, fluid, carriedEighths, rateMb, simulate);
+		int carriedMilli = carryPressureMilli(from.getPressureMilli(), moveDir);
+		if (FluidUnits.exceedsMaxSafePressure(carriedMilli) && to.rupturesAboveMaxPressure()) {
+			return ruptureOverpressure(from, to, maxMb, carriedMilli, simulate);
+		}
+
+		int gateMilli = to.getReceiveGatePressureMilli();
+		boolean pressureDrive = carriedMilli > gateMilli;
+		boolean lineBalance = from.sharesPressureVolume() && to.sharesPressureVolume();
+		int excess = from.getAmount() - to.getAmount();
+
+		if (!pressureDrive && !lineBalance) {
+			return 0;
+		}
+		// Pipe↔pipe balance: only push toward the emptier neighbor.
+		if (lineBalance && excess <= 0) {
+			return 0;
+		}
+		if (!pressureDrive && excess <= 1) {
+			// Integer equality (diff 0 or 1) — nothing useful to balance.
+			return 0;
+		}
+
+		int capacity = Math.max(1, from.getCapacity());
+		int rateBasisMilli = pressureDrive
+			? carriedMilli
+			: Math.max(from.getPressureMilli(), to.getPressureMilli());
+		int rateMb = FluidUnits.flowRateMbFromMilli(rateBasisMilli, from.getAmount(), capacity);
+		if (rateMb <= 0 && from.getAmount() > 0 && (pressureDrive || lineBalance)) {
+			rateMb = 1;
+		}
+		rateMb = Math.min(maxMb, rateMb);
+		if (lineBalance) {
+			// Cap by ⌊excess/2⌋ for stability, but never floor to 0 when excess ≥ 1 —
+			// pressure drive with excess==1 was stalling pressurized U-bends (leftover mB).
+			rateMb = Math.min(rateMb, Math.max(1, excess / 2));
+		}
+		if (rateMb <= 0) {
+			return 0;
+		}
+
+		return transfer(from, to, fluid, carriedMilli, rateMb, simulate);
 	}
 
 	/**
@@ -61,11 +95,14 @@ public final class FluidTransfer {
 		FluidHandler from,
 		FluidHandler to,
 		int maxMb,
-		int carriedEighths,
+		int carriedMilli,
 		boolean simulate
 	) {
-		double carriedPu = FluidUnits.eighthsToPu(carriedEighths);
-		int wasteMb = Math.min(maxMb, FluidUnits.flowRateMb(carriedPu));
+		int capacity = Math.max(1, from.getCapacity());
+		int wasteMb = Math.min(
+			maxMb,
+			Math.max(1, FluidUnits.flowRateMbFromMilli(carriedMilli, from.getAmount(), capacity))
+		);
 		if (simulate) {
 			return Math.min(wasteMb, from.getAmount());
 		}
@@ -74,34 +111,11 @@ public final class FluidTransfer {
 		return wasted;
 	}
 
-	/**
-	 * Caps send so the pair's amounts move toward {@code amount ∝ PU}.
-	 * Tanks (no pressure share) are uncapped here — rate + gate only.
-	 */
-	private static int shareLimitedSendMb(FluidHandler from, FluidHandler to, int carriedEighths) {
-		if (!from.sharesPressureVolume() || !to.sharesPressureVolume()) {
-			return Integer.MAX_VALUE;
-		}
-		int puFrom = from.getPressureEighths();
-		if (puFrom <= 0) {
-			return Integer.MAX_VALUE;
-		}
-		int puTo = to.getAmount() <= 0 ? carriedEighths : to.getPressureEighths();
-		if (puTo <= 0) {
-			// Next hop would arrive at 0 PU — do not push further for share fill.
-			return 0;
-		}
-		long total = (long) from.getAmount() + to.getAmount();
-		long sumPu = (long) puFrom + puTo;
-		int wantFrom = (int) (total * puFrom / sumPu);
-		return Math.max(0, from.getAmount() - wantFrom);
-	}
-
 	private static int transfer(
 		FluidHandler from,
 		FluidHandler to,
 		Fluid fluid,
-		int carriedEighths,
+		int carriedMilli,
 		int rateMb,
 		boolean simulate
 	) {
@@ -112,15 +126,15 @@ public final class FluidTransfer {
 		if (available <= 0) {
 			return 0;
 		}
-		int accepted = to.insert(fluid, available, carriedEighths, true);
+		int accepted = to.insert(fluid, available, carriedMilli, true);
 		if (accepted <= 0) {
 			return 0;
 		}
 		if (!simulate) {
 			int extracted = from.extract(accepted, false);
-			int inserted = to.insert(fluid, extracted, carriedEighths, false);
+			int inserted = to.insert(fluid, extracted, carriedMilli, false);
 			if (inserted < extracted) {
-				from.insert(fluid, extracted - inserted, carriedEighths, false);
+				from.insert(fluid, extracted - inserted, carriedMilli, false);
 				return inserted;
 			}
 			return extracted;
@@ -128,14 +142,12 @@ public final class FluidTransfer {
 		return accepted;
 	}
 
-	public static int carryPressureEighths(int sourceEighths, Direction moveDir) {
-		int carried = Math.max(0, sourceEighths);
+	public static int carryPressureMilli(int sourceMilli, Direction moveDir) {
+		int carried = Math.max(0, sourceMilli);
 		if (moveDir == Direction.DOWN) {
-			carried += FluidUnits.FALL_PRESSURE_EIGHTHS;
+			carried += FluidUnits.VERTICAL_PRESSURE_MILLI;
 		} else if (moveDir == Direction.UP) {
-			carried = Math.max(0, carried - FluidUnits.FALL_PRESSURE_EIGHTHS);
-		} else if (moveDir.getAxis().isHorizontal()) {
-			carried = Math.max(0, carried - FluidUnits.HORIZONTAL_PRESSURE_LOSS_EIGHTHS);
+			carried = Math.max(0, carried - FluidUnits.VERTICAL_PRESSURE_MILLI);
 		}
 		return carried;
 	}

@@ -16,7 +16,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.ContainerHelper;
@@ -48,10 +47,10 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 	public static final int THROTTLE_PERCENT_MIN = 1;
 	public static final int THROTTLE_PERCENT_MAX = 100;
 	public static final float THROTTLE_MIN = THROTTLE_PERCENT_MIN / 100.0F;
-	private static final float SPIN_ACCEL = 0.05F;
+	private static final float SPIN_ACCEL = 0.025F;
 	private static final float SPIN_DECEL = 0.0125F;
-	/** Linear ramp rate so 0↔100% takes ~1.25s (25 ticks). */
-	private static final float THROTTLE_RAMP = 0.04F;
+	/** Linear ramp: 0↔100% ≈ 20 ticks. */
+	private static final float THROTTLE_RAMP = 0.05F;
 
 	private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
 	private int burnTime;
@@ -229,15 +228,15 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 		}
 	}
 
-	/** spinFactor × √effectiveThrottle — shared by τ, ω, shaft visuals, and GUI. */
+	/** spinFactor × effectiveThrottle — shared by τ, ω, shaft visuals, and GUI. */
 	public static float outputScale(float spinFactor, float effectiveThrottle) {
 		if (effectiveThrottle <= 0.0F) {
 			return 0.0F;
 		}
-		return spinFactor * (float) Math.sqrt(effectiveThrottle);
+		return spinFactor * effectiveThrottle;
 	}
 
-	/** spinFactor × √effectiveThrottle — shared by τ, ω, and shaft visuals. */
+	/** spinFactor × effectiveThrottle — shared by τ, ω, and shaft visuals. */
 	public float getOutputScale() {
 		return outputScale(this.spinFactor, this.getEffectiveThrottle());
 	}
@@ -249,7 +248,7 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 			return;
 		}
 
-		int add = FuelDurations.minecartStyleFuelTicks(level, fuel);
+		int add = FuelDurations.engineFuelTicks(level, fuel);
 		if (!FuelDurations.canAcceptFuel(this.burnTime, add)) {
 			return;
 		}
@@ -264,7 +263,7 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 	}
 
 	public static boolean isFuel(ItemStack stack) {
-		return stack.is(ItemTags.FURNACE_MINECART_FUEL);
+		return FuelDurations.isEngineFuel(stack);
 	}
 
 	public static boolean isGovernor(ItemStack stack) {
@@ -276,13 +275,13 @@ public class FurnaceEngineBlockEntity extends BaseContainerBlockEntity implement
 	}
 
 	@Override
-	public int getTorque() {
-		return Math.round(TORQUE * this.getOutputScale());
+	public double getTorque() {
+		return TORQUE * this.getOutputScale();
 	}
 
 	@Override
-	public int getOmega() {
-		return Math.round(OMEGA * this.getOutputScale());
+	public double getOmega() {
+		return OMEGA * this.getOutputScale();
 	}
 
 	@Override

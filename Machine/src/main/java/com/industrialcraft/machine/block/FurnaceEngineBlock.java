@@ -50,19 +50,20 @@ public class FurnaceEngineBlock extends BaseEntityBlock {
 
 	private static final VoxelShape BASE = Block.box(-1.0, 0.0, -1.0, 17.0, 1.0, 17.0);
 	private static final VoxelShape CORE = Block.box(1.0, 1.0, 0.0, 15.0, 15.5, 15.0);
-	private static final VoxelShape EXHAUST_NORTH = Block.box(5.5, 15.5, 10.0, 10.5, 24.0, 14.5);
-	private static final VoxelShape EXHAUST_SOUTH = Block.box(5.5, 15.5, 1.5, 10.5, 24.0, 6.0);
-	private static final VoxelShape EXHAUST_WEST = Block.box(10.0, 15.5, 5.5, 14.5, 24.0, 10.5);
-	private static final VoxelShape EXHAUST_EAST = Block.box(1.5, 15.5, 5.5, 6.0, 24.0, 10.5);
+	/** Exhaust stack after blockstate y-rotation (authored mesh at +Z / south). */
+	private static final VoxelShape EXHAUST_SOUTH = Block.box(5.5, 15.5, 10.0, 10.5, 24.0, 14.5);
+	private static final VoxelShape EXHAUST_NORTH = Block.box(5.5, 15.5, 1.5, 10.5, 24.0, 6.0);
+	private static final VoxelShape EXHAUST_EAST = Block.box(10.0, 15.5, 5.5, 14.5, 24.0, 10.5);
+	private static final VoxelShape EXHAUST_WEST = Block.box(1.5, 15.5, 5.5, 6.0, 24.0, 10.5);
 	/** Compact axle stub past the body (~15 → 17). */
 	private static final VoxelShape SHAFT_EAST = Block.box(15.0, 6.0, 6.0, 17.0, 10.0, 10.0);
 	private static final VoxelShape SHAFT_WEST = Block.box(-1.0, 6.0, 6.0, 1.0, 10.0, 10.0);
 	private static final VoxelShape SHAFT_SOUTH = Block.box(6.0, 6.0, 15.0, 10.0, 10.0, 17.0);
 	private static final VoxelShape SHAFT_NORTH = Block.box(6.0, 6.0, -1.0, 10.0, 10.0, 1.0);
-	/** Exhaust authored at +Z; rotate with the same CW y table as blockstates. */
-	private static final VoxelShape SHAPE_EAST = Shapes.or(BASE, CORE, EXHAUST_NORTH, SHAFT_EAST);
+	/** Same CW y table as blockstates: east=0 → south, south=90 → west, west=180 → north, north=270 → east. */
+	private static final VoxelShape SHAPE_EAST = Shapes.or(BASE, CORE, EXHAUST_SOUTH, SHAFT_EAST);
 	private static final VoxelShape SHAPE_SOUTH = Shapes.or(BASE, CORE, EXHAUST_WEST, SHAFT_SOUTH);
-	private static final VoxelShape SHAPE_WEST = Shapes.or(BASE, CORE, EXHAUST_SOUTH, SHAFT_WEST);
+	private static final VoxelShape SHAPE_WEST = Shapes.or(BASE, CORE, EXHAUST_NORTH, SHAFT_WEST);
 	private static final VoxelShape SHAPE_NORTH = Shapes.or(BASE, CORE, EXHAUST_EAST, SHAFT_NORTH);
 
 	public FurnaceEngineBlock(BlockBehaviour.Properties properties) {

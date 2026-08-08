@@ -9,7 +9,6 @@ import com.industrialcraft.machine.fluid.FluidTransfer;
 import com.industrialcraft.machine.fluid.FluidUnits;
 import com.industrialcraft.machine.menu.ReservoirMenu;
 import com.industrialcraft.machine.util.BlockEntityClientSync;
-import com.industrialcraft.machine.MachineMod;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -27,6 +26,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
@@ -42,8 +42,19 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 	public static final int DATA_PRESSURE = 2;
 	public static final int DATA_COUNT = 3;
 
+	/** Claim order for the single pipe input (UP + horizontals). */
+	private static final Direction[] INPUT_CLAIM_ORDER = {
+		Direction.UP,
+		Direction.NORTH,
+		Direction.EAST,
+		Direction.WEST,
+		Direction.SOUTH
+	};
+
 	private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
 	private final FluidBuffer buffer = new FluidBuffer(FluidUnits.RESERVOIR_CAPACITY_MB);
+	/** Sticky input; null until a pipe is present on an input face. */
+	private @Nullable Direction lockedInputFace;
 	/** Last fill step / fluid pushed to clients for world visuals. */
 	private int syncedFillStep = -1;
 	private Fluid syncedFluid = Fluids.EMPTY;
@@ -55,7 +66,7 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 				// Packet is short-sized; keep low 16 bits so receivers can treat as unsigned.
 				case DATA_AMOUNT -> ReservoirBlockEntity.this.buffer.getAmount() & 0xFFFF;
 				case DATA_FLUID_ID -> BuiltInRegistries.FLUID.getId(ReservoirBlockEntity.this.buffer.getFluid());
-				case DATA_PRESSURE -> ReservoirBlockEntity.this.buffer.getPressureEighths();
+				case DATA_PRESSURE -> ReservoirBlockEntity.this.buffer.getPressureMilli();
 				default -> 0;
 			};
 		}
@@ -84,8 +95,62 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, ReservoirBlockEntity entity) {
+		entity.refreshInputLock(level, pos);
 		entity.tryDrainBucket();
 		entity.pushDown(level, pos);
+	}
+
+	public void refreshInputLock(Level level, BlockPos pos) {
+		Direction previous = this.lockedInputFace;
+		if (this.lockedInputFace != null && !isPipe(level, pos.relative(this.lockedInputFace))) {
+			this.lockedInputFace = null;
+		}
+		if (this.lockedInputFace == null) {
+			for (Direction face : INPUT_CLAIM_ORDER) {
+				if (isPipe(level, pos.relative(face))) {
+					this.lockedInputFace = face;
+					break;
+				}
+			}
+		}
+		if (this.lockedInputFace != previous) {
+			this.setChanged();
+			this.syncNeighborPipes(level, pos);
+		}
+	}
+
+	public static boolean allowsPipeConnection(net.minecraft.world.level.BlockGetter level, BlockPos reservoirPos, Direction reservoirFace) {
+		if (reservoirFace == Direction.DOWN) {
+			return true;
+		}
+		if (reservoirFace == Direction.UP || reservoirFace.getAxis().isHorizontal()) {
+			BlockEntity be = level.getBlockEntity(reservoirPos);
+			if (be instanceof ReservoirBlockEntity reservoir) {
+				if (level instanceof Level serverLevel && !serverLevel.isClientSide()) {
+					reservoir.refreshInputLock(serverLevel, reservoirPos);
+				}
+				return reservoirFace == reservoir.lockedInputFace;
+			}
+			return false;
+		}
+		return false;
+	}
+
+	private static boolean isPipe(Level level, BlockPos pos) {
+		return level.getBlockState(pos).getBlock() instanceof com.industrialcraft.machine.block.FluidPipeBlock;
+	}
+
+	private void syncNeighborPipes(Level level, BlockPos pos) {
+		for (Direction face : Direction.values()) {
+			BlockPos neighborPos = pos.relative(face);
+			BlockState neighbor = level.getBlockState(neighborPos);
+			if (neighbor.getBlock() instanceof com.industrialcraft.machine.block.FluidPipeBlock) {
+				BlockState updated = com.industrialcraft.machine.block.FluidPipeBlock.withConnections(neighbor, level, neighborPos);
+				if (updated != neighbor) {
+					level.setBlock(neighborPos, updated, net.minecraft.world.level.block.Block.UPDATE_ALL);
+				}
+			}
+		}
 	}
 
 	private void tryDrainBucket() {
@@ -116,7 +181,7 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 
 	@Override
 	public boolean canInsert(Direction face) {
-		return face != Direction.DOWN;
+		return face == this.lockedInputFace;
 	}
 
 	@Override
@@ -139,16 +204,24 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 		return this.buffer.getCapacity();
 	}
 
+	/**
+	 * Line pressure is not stored. Outbound head is hydrostatic: {@code 100 kPa × (q / C)}.
+	 */
 	@Override
-	public int getPressureEighths() {
-		return this.buffer.getPressureEighths();
+	public int getPressureMilli() {
+		if (this.buffer.isEmpty()) {
+			return 0;
+		}
+		double headKpa = FluidUnits.RESERVOIR_FULL_HEAD_KPA
+			* (this.buffer.getAmount() / (double) FluidUnits.RESERVOIR_CAPACITY_MB);
+		return FluidUnits.kpaToMilli(headKpa);
 	}
 
 	/**
-	 * Intake gate is always 0 PU — line pressure is not retained in the tank.
+	 * Intake gate is always 0 kPa — line pressure is not retained in the tank.
 	 */
 	@Override
-	public int getReceiveGatePressureEighths() {
+	public int getReceiveGatePressureMilli() {
 		return 0;
 	}
 
@@ -158,8 +231,7 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 	}
 
 	/**
-	 * Reservoirs do not store line pressure. The receive gate is 0 PU; deposited fluid is stored at 0 PU
-	 * so outbound bottom extract does not re-export network head.
+	 * Reservoirs do not store line pressure. The receive gate is 0 kPa; deposited fluid is stored at 0 kPa.
 	 */
 	@Override
 	public int insert(Fluid fluid, int amountMb, boolean simulate) {
@@ -167,7 +239,7 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 	}
 
 	@Override
-	public int insert(Fluid fluid, int amountMb, int pressureEighths, boolean simulate) {
+	public int insert(Fluid fluid, int amountMb, int pressureMilli, boolean simulate) {
 		int moved = this.buffer.insert(fluid, amountMb, 0, simulate);
 		if (!simulate && moved > 0) {
 			this.onFluidChanged();
@@ -206,7 +278,6 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 
 	@Override
 	protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
-		this.logVisualDiagnostics();
 		return new ReservoirMenu(containerId, inventory, this, this.dataAccess);
 	}
 
@@ -220,6 +291,9 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 		super.saveAdditional(output);
 		ContainerHelper.saveAllItems(output, this.items);
 		this.buffer.save(output);
+		if (this.lockedInputFace != null) {
+			output.putString("LockedInputFace", this.lockedInputFace.getSerializedName());
+		}
 	}
 
 	@Override
@@ -228,6 +302,10 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 		this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
 		ContainerHelper.loadAllItems(input, this.items);
 		this.buffer.load(input);
+		this.lockedInputFace = Direction.byName(input.getStringOr("LockedInputFace", ""));
+		if (this.lockedInputFace == Direction.DOWN) {
+			this.lockedInputFace = null;
+		}
 		this.syncedFillStep = FluidFillSteps.step(this.buffer.getAmount(), this.buffer.getCapacity());
 		this.syncedFluid = this.buffer.getFluid();
 	}
@@ -242,7 +320,7 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 		CompoundTag tag = this.saveWithoutMetadata(registries);
 		tag.putString("Fluid", BuiltInRegistries.FLUID.getKey(this.buffer.getFluid()).toString());
 		tag.putInt("AmountMb", this.buffer.getAmount());
-		tag.putInt("PressureEighths", this.buffer.getPressureEighths());
+		tag.putInt("PressureMilli", this.buffer.getPressureMilli());
 		return tag;
 	}
 
@@ -259,29 +337,5 @@ public class ReservoirBlockEntity extends BaseContainerBlockEntity implements Fl
 		this.syncedFillStep = step;
 		this.syncedFluid = fluid;
 		BlockEntityClientSync.sync(this);
-	}
-
-	/** Logged once when a player opens the reservoir GUI. */
-	public void logVisualDiagnostics() {
-		int amount = this.buffer.getAmount();
-		int capacity = this.buffer.getCapacity();
-		int step = FluidFillSteps.step(amount, capacity);
-		float fillRatio = FluidFillSteps.fillRatio(step);
-		MachineMod.LOGGER.info(
-			"ReservoirVisual GUI-open(server) @ [{}, {}, {}] amount={} mB ({} FU) cap={} step={}/{} fillRatio={} "
-				+ "syncedStep={} fluid={} syncedFluid={}",
-			this.worldPosition.getX(),
-			this.worldPosition.getY(),
-			this.worldPosition.getZ(),
-			amount,
-			FluidUnits.formatFu(amount),
-			capacity,
-			step,
-			FluidFillSteps.STEPS,
-			String.format("%.3f", fillRatio),
-			this.syncedFillStep,
-			BuiltInRegistries.FLUID.getKey(this.buffer.getFluid()),
-			BuiltInRegistries.FLUID.getKey(this.syncedFluid)
-		);
 	}
 }

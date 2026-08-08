@@ -1,23 +1,16 @@
 package com.industrialcraft.machine.client.gui;
 
 import com.industrialcraft.machine.MachineMod;
-import com.industrialcraft.machine.block.entity.ReservoirBlockEntity;
-import com.industrialcraft.machine.fluid.FluidFillSteps;
 import com.industrialcraft.machine.fluid.FluidUnits;
 import com.industrialcraft.machine.fluid.FluidVisuals;
 import com.industrialcraft.machine.menu.ReservoirMenu;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 
 public class ReservoirScreen extends AbstractContainerScreen<ReservoirMenu> {
 	private static final Identifier TEXTURE = MachineMod.id("textures/gui/container/reservoir.png");
@@ -37,50 +30,6 @@ public class ReservoirScreen extends AbstractContainerScreen<ReservoirMenu> {
 		this.titleLabelX = (this.imageWidth - this.font.width(this.title)) / 2;
 		// Default inventoryLabelY is imageHeight - 94 (=72); keep it clear of the FU line.
 		this.inventoryLabelY = 74;
-	}
-
-	@Override
-	protected void init() {
-		super.init();
-		this.logOpenDiagnostics();
-	}
-
-	private void logOpenDiagnostics() {
-		int guiMb = this.menu.getAmountMb();
-		int guiStep = FluidFillSteps.step(guiMb, FluidUnits.RESERVOIR_CAPACITY_MB);
-		String bePart = "be=n/a";
-		if (this.minecraft != null
-			&& this.minecraft.level != null
-			&& this.minecraft.hitResult != null
-			&& this.minecraft.hitResult.getType() == HitResult.Type.BLOCK) {
-			BlockPos pos = ((BlockHitResult) this.minecraft.hitResult).getBlockPos();
-			BlockEntity be = this.minecraft.level.getBlockEntity(pos);
-			if (be instanceof ReservoirBlockEntity reservoir) {
-				int beMb = reservoir.getAmount();
-				int beStep = FluidFillSteps.step(beMb, reservoir.getCapacity());
-				bePart = String.format(
-					"bePos=[%d,%d,%d] beAmount=%d mB (%s FU) beStep=%d/%d beFluid=%s beArgb=0x%s willSubmit=%s",
-					pos.getX(),
-					pos.getY(),
-					pos.getZ(),
-					beMb,
-					FluidUnits.formatFu(beMb),
-					beStep,
-					FluidFillSteps.STEPS,
-					BuiltInRegistries.FLUID.getKey(reservoir.getFluid()),
-					Integer.toHexString(FluidVisuals.argb(reservoir.getFluid())),
-					beStep > 0
-				);
-			}
-		}
-		MachineMod.LOGGER.info(
-			"ReservoirVisual GUI-open(client) guiAmount={} mB ({} FU) guiStep={}/{} {}",
-			guiMb,
-			FluidUnits.formatFu(guiMb),
-			guiStep,
-			FluidFillSteps.STEPS,
-			bePart
-		);
 	}
 
 	@Override

@@ -7,8 +7,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -22,7 +20,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -95,17 +92,6 @@ public class RainCollectorBlock extends BaseEntityBlock {
 		if (!state.canSurvive(level, pos)) {
 			level.destroyBlock(pos, true);
 		}
-	}
-
-	/**
-	 * Empty-hand right-click dumps rain/sky/below-handler diagnostics to the game log (server only).
-	 */
-	@Override
-	protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
-		if (!level.isClientSide() && level.getBlockEntity(pos) instanceof RainCollectorBlockEntity collector) {
-			collector.logDiagnostics();
-		}
-		return InteractionResult.SUCCESS;
 	}
 
 	@Override

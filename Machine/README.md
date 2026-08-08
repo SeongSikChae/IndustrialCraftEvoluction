@@ -1,10 +1,10 @@
-# Machine
+﻿# Machine
 
-IndustrialCraft: Evolution의 기계 모듈입니다. 연료를 소모해 **회전 동력**(토크·각속도)을 내는 엔진과, 그 동력을 1:1로 중계하는 Dynamo부터 시작합니다. 또한 **리저버**(유체 저장)·**유체 파이프**로 바닐라 유체를 다룰 수 있습니다.
+IndustrialCraft: Evolution의 기계 모듈입니다. 연료를 소모해 **회전 동력**(토크·각속도)을 내는 엔진과, 그 동력을 1:1로 중계하는 Dynamo부터 시작합니다. 또한 **리저버**(유체 저장)·**유체 파이프**·**워터 펌프**로 바닐라 유체를 다룰 수 있습니다.
 
-Machine 전용 제작은 **기계 제작대**에서만 가능합니다. Material 모듈이 있으면 등급별 석탄류 연료 값·태그를 그대로 활용합니다. Material이 없어도 바닐라 `#furnace_minecart_fuel`(석탄·숯)로 동작합니다.
+Machine 전용 제작은 **기계 제작대**에서만 가능합니다. 화로 엔진 연료는 Material 석탄 계열(아이템·압축 블록)과 숯이며, 규칙은 [`.cursor/rules/machine.mdc`](../.cursor/rules/machine.mdc)를 따릅니다.
 
-아이템 창 썸네일은 **3D 블록 모델**(엔진·Dynamo는 샤프트 프리뷰 composite 포함)을 쓰고, 조속기 부속만 **2D 아이템** 텍스처입니다.
+아이템 창 썸네일은 **3D 블록 모델**(엔진·Dynamo는 샤프트 프리뷰 composite 포함)을 쓰고, 조속기·체크 밸브 부속은 **2D 아이템** 텍스처입니다.
 
 ## 목차
 
@@ -15,10 +15,12 @@ Machine 전용 제작은 **기계 제작대**에서만 가능합니다. Material
 | 1 | [기계 제작대](#1-기계-제작대) | `machine:machine_crafting_table` |
 | 2 | [화로 엔진](#2-화로-엔진) | `machine:furnace_engine` |
 | 3 | [조속기 부속](#3-조속기-부속) | `machine:governor_accessory` |
+| 3b | [체크 밸브 부속](#3b-체크-밸브-부속) | `machine:check_valve_accessory` |
 | 4 | [Dynamo](#4-dynamo) | `machine:dynamo` |
 | 5 | [리저버](#5-리저버) | `machine:reservoir` |
 | 6 | [빗물받이](#6-빗물받이) | `machine:rain_collector` |
 | 7 | [유체 파이프](#7-유체-파이프) | `machine:fluid_pipe` |
+| 8 | [워터 펌프](#8-워터-펌프) | `machine:water_pump` |
 
 **공통**
 
@@ -29,7 +31,7 @@ Machine 전용 제작은 **기계 제작대**에서만 가능합니다. Material
 
 ## 1. 기계 제작대
 
-<img src="docs/machine_crafting_table.png" alt="기계 제작대" title="기계 제작대 (machine:machine_crafting_table)" width="32" /> · **블록** · Machine Crafting Table
+<img src="src/main/resources/assets/machine/textures/item/machine_crafting_table.png" alt="기계 제작대" title="기계 제작대 (machine:machine_crafting_table)" width="32" /> · **블록** · Machine Crafting Table
 
 Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입 레시피만 매칭하며, 바닐라 제작은 할 수 없습니다. 바닐라 제작대와 같이 **레시피북**(녹색 책)으로 빠른 배치가 가능합니다.
 
@@ -44,7 +46,7 @@ Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입
 | | | | | |
 |:---:|:---:|:---:|:---:|:---:|
 | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
-| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Crafting_Table.png" alt="제작대" title="제작대 (minecraft:crafting_table)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="docs/machine_crafting_table.png" alt="기계 제작대" title="기계 제작대 (machine:machine_crafting_table)" width="32" /> × 1 |
+| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Crafting_Table.png" alt="제작대" title="제작대 (minecraft:crafting_table)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="src/main/resources/assets/machine/textures/item/machine_crafting_table.png" alt="기계 제작대" title="기계 제작대 (machine:machine_crafting_table)" width="32" /> × 1 |
 | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
 
 우클릭으로 GUI를 엽니다. 레이아웃은 바닐라 제작대와 같습니다. Machine 레시피(기계 제작대·화로 엔진·Dynamo·조속기 부속 등)는 월드 시작 시 레시피북에 해금됩니다.
@@ -53,7 +55,7 @@ Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입
 
 ## 2. 화로 엔진
 
-<img src="docs/furnace_engine.png" alt="화로 엔진" title="화로 엔진 (machine:furnace_engine)" width="32" /> · **블록** · Furnace Engine
+<img src="src/main/resources/assets/machine/textures/item/furnace_engine.png" alt="화로 엔진" title="화로 엔진 (machine:furnace_engine)" width="32" /> · **블록** · Furnace Engine
 
 연료를 태워 플라이휠을 가속하고, 샤프트로 회전 동력을 출력하는 기초 엔진입니다. **조속기 부속**을 장착하면 GUI에서 출력을 1~100%로 조절할 수 있습니다.
 
@@ -62,11 +64,14 @@ Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입
 | 블록 | `machine:furnace_engine` |
 | 연료 슬롯 | 1칸 |
 | 조속기 슬롯 | 1칸 (`machine:governor_accessory`, 스택 1) |
-| 연료 태그 | `#minecraft:furnace_minecart_fuel` |
-| 최대 연료 버퍼 | 32000틱 |
+| 연료 | Material 석탄 계열 아이템·압축 블록 + 숯 (광석 제외) |
+| 최대 연료 버퍼 | 40000틱 |
 | 정격 토크 | 4 Nm |
 | 정격 각속도 | 256 rad/s |
 | 정격 출력 | 1024 W (토크 × 각속도) |
+| 가속 / 감속 | +0.025 / −0.0125 per tick |
+| 조속기 램프 | ±0.05 per tick |
+| 출력 스케일 | τ·ω ∝ s × t (선형) |
 | 아이템 모델 | composite: 블록 3D + `furnace_engine_shaft_preview` |
 
 우클릭으로 GUI를 엽니다. 연료 게이지(불꽃)·현재 토크·각속도·출력을 확인할 수 있습니다. 조속기가 있으면 출력 % 슬라이더가 추가로 표시됩니다.
@@ -76,7 +81,7 @@ Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입
 | | | | | |
 |:---:|:---:|:---:|:---:|:---:|
 | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
-| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Furnace.png" alt="화로" title="화로 (minecraft:furnace)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="docs/furnace_engine.png" alt="화로 엔진" title="화로 엔진 (machine:furnace_engine)" width="32" /> × 1 |
+| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Furnace.png" alt="화로" title="화로 (minecraft:furnace)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="src/main/resources/assets/machine/textures/item/furnace_engine.png" alt="화로 엔진" title="화로 엔진 (machine:furnace_engine)" width="32" /> × 1 |
 | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Piston.png" alt="피스톤" title="피스톤 (minecraft:piston)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
 
 바닐라 제작대에서는 만들 수 없습니다.
@@ -103,26 +108,28 @@ Machine 모듈 전용 3×3 제작대입니다. `machine:machine_crafting` 타입
 
 | | 연료 | 용광로 | 화로 엔진 |
 |---|------|--------|-----------|
-| <img src="../Material/docs/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | 이탄 | 400틱 | 900틱 (45초) |
-| <img src="../Material/docs/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | 갈탄 | 800틱 | 1800틱 (90초) |
-| <img src="../Material/docs/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | 아역청탄 | 1200틱 | 2700틱 (135초) |
+| <img src="../Material/src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | 이탄 | 400틱 | 900틱 (45초) |
+| <img src="../Material/src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | 갈탄 | 800틱 | 1800틱 (90초) |
+| <img src="../Material/src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | 아역청탄 | 1200틱 | 2700틱 (135초) |
 | <img src="https://minecraft.wiki/images/Invicon_Charcoal.png" alt="숯" title="숯 (minecraft:charcoal)" width="32" /> | 숯 | 1400틱 | 3150틱 (157.5초) |
 | <img src="https://minecraft.wiki/images/Invicon_Coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | 역청탄(석탄) | 1600틱 | 3600틱 (180초) |
-| <img src="../Material/docs/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | 무연탄 | 2000틱 | 4500틱 (225초) |
+| <img src="../Material/src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | 무연탄 | 2000틱 | 4500틱 (225초) |
 
-Material이 없으면 바닐라 석탄·숯만 사용되며, 각각의 용광로 연소 시간에 같은 비율이 적용됩니다. 현재 잔여 연료 + 추가분이 32000틱을 넘으면 새 연료를 소비하지 않습니다.
+Material이 없으면 바닐라 석탄·숯만 사용됩니다. 현재 잔여 연료 + 추가분이 **40000틱**을 넘으면 새 연료를 소비하지 않습니다.
 
 조속기로 출력을 낮추면 **적용 스로틀** 비율만큼 연소가 느려져 같은 연료로 더 오래 갑니다 (예: 50%면 약 2배).
 
 ### 동력 출력
 
-`PowerSource` 인터페이스로 토크·각속도를 제공합니다. 실제 값은 **스핀 계수** \(s\)(0~1)와 **적용 스로틀** \(t\)(조속기 없을 때 1)에 따릅니다.
+`PowerSource` 인터페이스로 토크·각속도를 제공합니다. 실제 값은 **스핀 계수** \(s\)(0~1)와 **적용 스로틀** \(t\)(조속기 없을 때 1)에 따릅니다: \(\tau=4st\), \(\omega=256st\). API·유압 내부는 같은 **milli** 격자이며 **1 Nm ≡ 10 kPa**입니다. 산술은 격자 그대로, 반올림은 표시에만.
 
 ```
 τ = 4 × s × √t
 ω = 256 × s × √t
 P = τ × ω  ∝  s² × t
 ```
+
+펌프 출구 압력 = \(p_\mathrm{pump}=10\tau\) (`1 Nm ≡ 10 kPa`).
 
 풀스핀·스로틀 100% 기준 1024 W이며, 스로틀 %에 **출력(W)이 선형**으로 맞춰집니다.
 
@@ -152,7 +159,7 @@ P = τ × ω  ∝  s² × t
 
 ## 3. 조속기 부속
 
-<img src="docs/governor_accessory.png" alt="조속기 부속" title="조속기 부속 (machine:governor_accessory)" width="32" /> · **아이템** · Governor Accessory
+<img src="src/main/resources/assets/machine/textures/item/governor_accessory.png" alt="조속기 부속" title="조속기 부속 (machine:governor_accessory)" width="32" /> · **아이템** · Governor Accessory
 
 화로 엔진 전용 옵션 아이템입니다. 엔진 GUI 왼쪽 슬롯에 넣으면 **출력 1~100%**를 조절할 수 있고, 출력을 낮출수록 연료가 더 오래갑니다.
 
@@ -161,7 +168,7 @@ P = τ × ω  ∝  s² × t
 | 아이템 | `machine:governor_accessory` |
 | 장착 | 화로 엔진 조속기 슬롯 (스택 1) |
 | 조절 범위 | **1~100%** (0% 불가 — 연료가 동결되지 않도록) |
-| 목표→적용 | 선형 램프, 틱당 0.04 (전 구간 약 1.25초) |
+| 목표→적용 | 선형 램프, 틱당 **0.05** (0↔100% ≈ 20틱) |
 | 아이템 모델 | `machine:item/governor_accessory` 2D (`layer0`) |
 | 크리에이티브 탭 | 기능 블록 |
 
@@ -172,7 +179,7 @@ P = τ × ω  ∝  s² × t
 | | | | | |
 |:---:|:---:|:---:|:---:|:---:|
 | | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | | |
-| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Redstone.png" alt="레드스톤" title="레드스톤 (minecraft:redstone)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="docs/governor_accessory.png" alt="조속기 부속" title="조속기 부속 (machine:governor_accessory)" width="32" /> × 1 |
+| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Redstone.png" alt="레드스톤" title="레드스톤 (minecraft:redstone)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="src/main/resources/assets/machine/textures/item/governor_accessory.png" alt="조속기 부속" title="조속기 부속 (machine:governor_accessory)" width="32" /> × 1 |
 | | <img src="https://minecraft.wiki/images/Invicon_Lever.png" alt="레버" title="레버 (minecraft:lever)" width="32" /> | | | |
 
 바닐라 제작대에서는 만들 수 없습니다.
@@ -180,18 +187,33 @@ P = τ × ω  ∝  s² × t
 ### 상호작용 요약
 
 1. 화로 엔진 GUI에서 **연료 슬롯 왼쪽**에 조속기 부속을 넣습니다.
-2. 하단에 슬라이더와 `출력: N%` 라벨이 나타납니다. 드래그/클릭으로 목표 %를 바꿉니다.
-3. 토크·각속도·출력 수치는 **적용 스로틀**에 맞춰 서서히 변합니다.
-4. 연소 소모율 = 적용 스로틀이므로, 낮은 %일수록 같은 연료로 더 오래 돌아갑니다.
-5. 조속기를 빼면 슬라이더가 사라지고 엔진은 100%로 복귀합니다. Shift+클릭으로 슬롯 ↔ 인벤토리 이동이 가능합니다.
+2. 출력 슬라이더로 목표 %를 정합니다 (적용 값은 틱당 0.05로 따라갑니다).
+3. GUI의 τ/ω/W는 **적용** 스로틀 기준, % 라벨은 **목표**입니다.
 
-Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 조절이 체인 출력에 그대로 반영됩니다.
+---
+
+## 3b. 체크 밸브 부속
+
+<img src="src/main/resources/assets/machine/textures/item/check_valve_accessory.png" alt="체크 밸브 부속" title="체크 밸브 부속 (machine:check_valve_accessory)" width="32" /> · **아이템** · Check Valve Accessory
+
+워터 펌프 전용 부속입니다. 장착 시 인접 출력 파이프 유압이 펌프보다 높아도 전달하며, 출력 파이프가 만재이면 **10틱마다** \(p_\mathrm{pump}\)만큼 가압합니다 (2560 kPa 초과 시 파이프 파손).
+
+| 항목 | 값 |
+|------|-----|
+| 아이템 | `machine:check_valve_accessory` |
+| 장착 | 워터 펌프 GUI 슬롯 (스택 1) |
+| 아이템 모델 | `machine:item/check_valve_accessory` 2D |
+| 크리에이티브 탭 | IndustrialCraft: Functional Blocks |
+
+### 제작 (기계 제작대)
+
+철괴·호퍼·레드스톤 조합 (`recipe/check_valve_accessory.json`).
 
 ---
 
 ## 4. Dynamo
 
-<img src="docs/dynamo.png" alt="Dynamo" title="Dynamo (machine:dynamo)" width="32" /> · **블록** · Dynamo
+<img src="src/main/resources/assets/machine/textures/item/dynamo.png" alt="Dynamo" title="Dynamo (machine:dynamo)" width="32" /> · **블록** · Dynamo
 
 출력 축을 입력으로 받아 **토크·각속도를 1:1**로 반대쪽 출력 축에 넘기는 중계기입니다. I/O가 아닌 네 면에 실시간 토크 / 각속도 / 출력을 LCD 스타일로 표시합니다.
 
@@ -208,7 +230,7 @@ Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 
 | | | | | |
 |:---:|:---:|:---:|:---:|:---:|
 | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Glass_Pane.png" alt="유리판" title="유리판 (minecraft:glass_pane)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
-| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Redstone_Comparator.png" alt="비교기" title="비교기 (minecraft:comparator)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="docs/dynamo.png" alt="Dynamo" title="Dynamo (machine:dynamo)" width="32" /> × 1 |
+| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Redstone_Comparator.png" alt="비교기" title="비교기 (minecraft:comparator)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="src/main/resources/assets/machine/textures/item/dynamo.png" alt="Dynamo" title="Dynamo (machine:dynamo)" width="32" /> × 1 |
 | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Glass_Pane.png" alt="유리판" title="유리판 (minecraft:glass_pane)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
 
 바닐라 제작대에서는 만들 수 없습니다.
@@ -228,7 +250,7 @@ Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 
 
 ## 5. 리저버
 
-<img src="docs/reservoir.png" alt="리저버" title="리저버 (machine:reservoir)" width="32" /> · **블록** · Reservoir
+<img src="src/main/resources/assets/machine/textures/item/reservoir.png" alt="리저버" title="리저버 (machine:reservoir)" width="32" /> · **블록** · Reservoir
 
 바닐라 유체를 최대 **64 FU**(내부 **64 000 mB**, 1 FU = 1000 mB = 1 버킷)까지 저장하는 탱크입니다. 단일 유체만 보관합니다. GUI에는 **FU**만 표시합니다(탱크는 라인 PU를 보관하지 않음). 외관은 **철제 프레임 + 유리면 + 6면 파이프 플랜지**이며, 월드 수위는 **8단계**로만 보이며 단계가 바뀔 때만 클라에 동기화합니다.
 
@@ -239,7 +261,6 @@ Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 
 | GUI | 왼쪽 게이지 + 중앙 버킷 슬롯 1칸 (게이지 아래 라벨) |
 | GUI 슬롯 | 버킷 1칸 — 주입 시 +1000 mB |
 | 월드 수위 | 8단계 — 단계 변경 시만 클라 동기화 |
-| 디버그 | Reservoir GUI 오픈 시 서버/클라 진단 로그 1회 (`ReservoirVisual GUI-open`) |
 | 출력 면 | 하단(`DOWN`)만 — 압력 구동 (`FluidTransfer`, 낙하 시 운반 PU +1) |
 | 입력 면 | 상·북·서·동·남 — 파이프 자동 주입 가능 |
 | 유압 | **수신 게이트 = 0 PU**. 탱크에는 라인 PU를 쌓지 않음. 파이프끼리 유량 분배(`수량 ∝ PU`)에는 참여하지 않음 |
@@ -250,7 +271,7 @@ Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 
 | | | | | |
 |:---:|:---:|:---:|:---:|:---:|
 | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Glass.png" alt="유리" title="유리 (minecraft:glass)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
-| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Cauldron.png" alt="가마솥" title="가마솥 (minecraft:cauldron)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="docs/reservoir.png" alt="리저버" title="리저버 (machine:reservoir)" width="32" /> × 1 |
+| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Cauldron.png" alt="가마솥" title="가마솥 (minecraft:cauldron)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="src/main/resources/assets/machine/textures/item/reservoir.png" alt="리저버" title="리저버 (machine:reservoir)" width="32" /> × 1 |
 | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
 
 ### 사용법
@@ -264,7 +285,7 @@ Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 
 
 ## 6. 빗물받이
 
-<img src="docs/rain_collector.png" alt="빗물받이" title="빗물받이 (machine:rain_collector)" width="32" /> · **블록** · Rain Collector
+<img src="src/main/resources/assets/machine/textures/item/rain_collector.png" alt="빗물받이" title="빗물받이 (machine:rain_collector)" width="32" /> · **블록** · Rain Collector
 
 리저버 **바로 위**에만 설치할 수 있는 선택형 수집 블록입니다. 하늘이 열려 있고 비가 오면 아래 리저버에 물을 채웁니다. 리저버에 기본 장착되지는 않습니다.
 
@@ -276,14 +297,13 @@ Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 
 | 수집량 | **25 mB/틱** (0.5 FU/s, 64 FU 만충 ≈ 128초) |
 | 유체 | 물만 — 비어 있거나 이미 물일 때 주입 (다른 유체면 무시) |
 | 압력 | 0 PU (버킷 주입과 동일) |
-| 디버그 | **빈손 우클릭** → 서버/게임 로그에 비·하늘·높이맵·하단 핸들러·시뮬 주입량 |
 | 아이템 모델 | `machine:block/rain_collector` 3D |
 
 ### 제작 (기계 제작대)
 
 | | | | | |
 |:---:|:---:|:---:|:---:|:---:|
-| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Glass_Pane.png" alt="유리판" title="유리판 (minecraft:glass_pane)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="docs/rain_collector.png" alt="빗물받이" title="빗물받이 (machine:rain_collector)" width="32" /> × 1 |
+| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Glass_Pane.png" alt="유리판" title="유리판 (minecraft:glass_pane)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | → | <img src="src/main/resources/assets/machine/textures/item/rain_collector.png" alt="빗물받이" title="빗물받이 (machine:rain_collector)" width="32" /> × 1 |
 | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
 
 바닐라 제작대에서는 만들 수 없습니다.
@@ -293,30 +313,27 @@ Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 
 1. 리저버 위에 빗물받이를 놓습니다.
 2. 위쪽 하늘이 막히지 않은 곳에서 비가 오면 리저버에 물이 쌓입니다.
 3. 리저버가 가득 차거나 다른 유체가 들어 있으면 더 이상 채워지지 않습니다.
-4. (디버그) 빗물받이를 **빈손 우클릭**하면 로그에 `verdict=`와 비/하늘/높이맵/하단 tank 상태가 출력됩니다.
 
 ---
 
 ## 7. 유체 파이프
 
-<img src="docs/fluid_pipe.png" alt="유체 파이프" title="유체 파이프 (machine:fluid_pipe)" width="32" /> · **블록** · Fluid Pipe
+<img src="src/main/resources/assets/machine/textures/item/fluid_pipe.png" alt="유체 파이프" title="유체 파이프 (machine:fluid_pipe)" width="32" /> · **블록** · Fluid Pipe
 
-블록당 **1000 mB**(1 FU) 버퍼와 **유압(PU)** 을 갖는 배관입니다. 처리 순서는 **송신 PU → 방향 보정 → (과압 검사) → 게이트 → 유속 → (파이프끼리) 수량∝PU 상한** 입니다.
+블록당 **1000 mB**(1 FU) 버퍼와 **유압(milli-PU, 1 PU = 1000)** 을 갖는 배관입니다. 처리 순서는 **송신 PU → 방향 보정 → (과압 검사) → 고압→저압 게이트 → 유속** 입니다.
 
 | 항목 | 값 |
 |------|-----|
 | 블록 | `machine:fluid_pipe` |
 | 용량 | 1000 mB (1 FU) |
-| 최대 안전 PU | **256 PU** (그 초과 시 파손) |
-| 낙하 전송 (`DOWN`) | 운반 PU **+1** |
-| 상승 전송 (`UP`) | 운반 PU **−1** (바닥 0) |
-| 수평 전송 | 운반 PU **−0.125** (바닥 0) |
-| 게이트 | 운반 PU ≥ 수신 게이트 (더 낮은 PU만 거절) |
-| 유속 | 운반 PU **≤ 0이면 0**; 그 외 ≈ `50 × (1 + 운반PU)` mB/틱, **최대 1000** |
-| 유량 분배 | 이웃 두 칸은 `수량 ∝ PU` 목표까지만 이동 (소스 쪽이 더 많음) |
-| 연결 | 파이프 / 리저버 |
+| 최대 안전 유압 | **2560 kPa** (초과 시 파손 → `fluid_pipe` 드롭) |
+| 낙하 (`DOWN`) | 운반 **+10 kPa** |
+| 상승 (`UP`) | 운반 **−10 kPa** (바닥 0) |
+| 수평 | 가감 없음 |
+| 흐름 | 고압→저압 (`운반 > 게이트`) |
+| 유속 | `min(1000, round((1000/2560)×p_kPa×(q/C)))` mB/틱 |
+| 연결 | 파이프 / 리저버 / 워터 펌프(하단 흡입·잠긴 출력면만) |
 | 표시 | 월드 채움 **8단계**(단계 변경 시만 동기화) + 응시 시 `유체 FU \| PU` |
-| 디버그 | **빈손 우클릭** → 서버/게임 로그에 좌표·유체·mB/FU·PU·게이트·연결면 출력 |
 | 아이템 모델 | `machine:block/fluid_pipe` 3D |
 
 ### 과압 파손
@@ -331,7 +348,7 @@ Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 
 
 | | | | | |
 |:---:|:---:|:---:|:---:|:---:|
-| <img src="https://minecraft.wiki/images/Invicon_Glass_Pane.png" alt="유리판" title="유리판 (minecraft:glass_pane)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Glass_Pane.png" alt="유리판" title="유리판 (minecraft:glass_pane)" width="32" /> | → | <img src="docs/fluid_pipe.png" alt="유체 파이프" title="유체 파이프 (machine:fluid_pipe)" width="32" /> × 8 |
+| <img src="https://minecraft.wiki/images/Invicon_Glass_Pane.png" alt="유리판" title="유리판 (minecraft:glass_pane)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Glass_Pane.png" alt="유리판" title="유리판 (minecraft:glass_pane)" width="32" /> | → | <img src="src/main/resources/assets/machine/textures/item/fluid_pipe.png" alt="유체 파이프" title="유체 파이프 (machine:fluid_pipe)" width="32" /> × 8 |
 
 ### 테스트 경로 (리저버 2개)
 
@@ -342,7 +359,57 @@ Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 
   → 낮은 리저버 (파이프 주입)
 ```
 
-운반 PU가 클수록 틱당 mB가 커지고, 같은 줄에서는 높은 PU 칸에 유량이 더 많이 남습니다. 상승 구간은 칸마다 −1 PU라, 수두가 부족하면 위로 흐르지 않습니다.
+운반 PU가 클수록 틱당 mB가 커집니다. **고압 칸의 유체는 저압(또는 리저버 게이트 0) 쪽으로 흘러 나가며**, 동일 압력이면 이동하지 않습니다. 상승 구간은 칸마다 −1 PU라 수두가 부족하면 위로 흐르지 않습니다.
+
+---
+
+## 8. 워터 펌프
+
+<img src="src/main/resources/assets/machine/textures/item/water_pump.png" alt="워터 펌프" title="워터 펌프 (machine:water_pump)" width="32" /> · **블록** · Water Pump
+
+동력원을 **보고** 설치하면 그 면이 동력 입력이 됩니다. 아래 유체(소스 또는 하단 파이프)를 **1 B** 버퍼에 담고, 출구에서 \(p_\mathrm{pump}=10\tau\)로 가압해 sticky 출력면으로 밀어냅니다.
+
+| 항목 | 값 |
+|------|-----|
+| 블록 | `machine:water_pump` |
+| 동력 입력 | `FACING` = 시선 방향 (`ShaftPower.findIncoming`) — 말단 소비자 |
+| 유체 흡입 | **DOWN**: 하단 **파이프가 있으면 파이프 push만** (월드 소스와 동시 불가). 파이프 없으면 아래 **소스**에서 ω 비율로 연속 주입(소스 블록 미제거) |
+| 유체 출력 | **UP + 수평(입력면 제외)** 중 sticky 잠금면 하나 |
+| 버퍼 | 1000 mB (1 B). 라인 유압 미보관. \(p_\mathrm{pump}=10\tau\) |
+| 유량 | `round(1000 × ω_eff / 256)` mB/틱 → ω 256 시 **1 B/틱** |
+| 출구 유압 | \(p_\mathrm{pump} = 10\tau\) (1 Nm ≡ 10 kPa) |
+| 슬립 | ω만 max 256; τ 슬립 없음 |
+| 체크 밸브 | `check_valve_accessory` — 역압 전달·만재 시 10틱마다 가압 |
+| GUI | 버퍼·입/출 B/s·kPa·τ/ω + 체크 밸브 슬롯 |
+| sticky | 처음 붙은 출력 파이프 면을 잠금 → 그 면만 연결 허용 → 분리 시 해제 후 재획득 |
+| 아이템 모델 | 세로형 원통 + 남쪽 모터 3D (`gui_light`) + `FACING` 방향 샤프트 BER |
+
+### 제작 (기계 제작대)
+
+| | | | | |
+|:---:|:---:|:---:|:---:|:---:|
+| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Glass_Pane.png" alt="유리판" title="유리판 (minecraft:glass_pane)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
+| <img src="https://minecraft.wiki/images/Invicon_Piston.png" alt="피스톤" title="피스톤 (minecraft:piston)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Bucket.png" alt="양동이" title="양동이 (minecraft:bucket)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Piston.png" alt="피스톤" title="피스톤 (minecraft:piston)" width="32" /> | → | <img src="src/main/resources/assets/machine/textures/item/water_pump.png" alt="워터 펌프" title="워터 펌프 (machine:water_pump)" width="32" /> × 1 |
+| <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Glass_Pane.png" alt="유리판" title="유리판 (minecraft:glass_pane)" width="32" /> | <img src="https://minecraft.wiki/images/Invicon_Iron_Ingot.png" alt="철괴" title="철괴 (minecraft:iron_ingot)" width="32" /> | | |
+
+바닐라 제작대에서는 만들 수 없습니다.
+
+### 사용법
+
+1. 엔진/Dynamo **출력축을 보고** 펌프를 설치합니다 (시선 = 동력 입력).
+2. **아래**에 물·용암 소스 **또는** 흡입 파이프를 둡니다 (둘 다 있으면 파이프만 사용).
+3. UP·수평(입력면 제외) 중 **한 면**에만 출력 파이프를 연결합니다.
+4. 가동 시 출구 PU ≈ 입구(버퍼) PU + 적용 토크. 지형 소스만 흡입하면 입구 0 PU입니다.
+5. 우클릭으로 GUI에서 버퍼·입/출 유량(FU/s)·PU·τ/ω를 확인합니다.
+
+### 검증 시나리오
+
+1. 엔진을 보고 펌프 설치 + 아래 3×3 물 + 반대쪽/옆 출력 파이프 → 연속 흐름, 출구 ≈ τ PU.
+2. 하단에 파이프(물 위) → 월드 흡입 없음; 파이프에 유체가 있을 때만 버퍼 증가.
+3. 출력면 잠금 후 다른 면에 파이프 → 미연결·전송 없음.
+4. 잠금 파이프 제거 후 다른 면 연결 → 새 잠금면.
+5. τ/ω > 256 공급 시에도 적용값은 256 상한과 동일.
+6. 입구 파이프 1 PU + τ=1 → 출구 carry 전 약 2 PU (방향 손실은 기존 규칙).
 
 ---
 
@@ -352,7 +419,7 @@ Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 
 
 ## 샤프트 시각 회전 (`ShaftVisuals`)
 
-적용 대상: [2. 화로 엔진](#2-화로-엔진), [4. Dynamo](#4-dynamo)
+적용 대상: [2. 화로 엔진](#2-화로-엔진), [4. Dynamo](#4-dynamo), [8. 워터 펌프](#8-워터-펌프)
 
 패널·GUI에 찍히는 ω는 그대로 두고, **BER 톱니 회전 속도만** `log2`로 매핑합니다. 화로 엔진과 Dynamo가 같은 공식을 씁니다.
 
@@ -370,7 +437,7 @@ Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 
 | `MAX` | 15.0 °/tick | ω = 32768 일 때 |
 
 구현: `ShaftVisuals.degreesPerTick(omega)`  
-엔진은 `degreesPerTick(OMEGA × s × √t)`, Dynamo는 `degreesPerTick(수신 omega)`.
+엔진은 `degreesPerTick(OMEGA × s × √t)`, Dynamo·워터 펌프는 `degreesPerTick(수신/적용 omega)`.
 
 참고 값:
 
@@ -392,6 +459,8 @@ Dynamo 등 다운스트림은 엔진이 내는 τ/ω만 받으므로, 조속기 
 | 블록 / 아이템 | `machine:reservoir` | 리저버 — 64 FU (기능 블록 탭) |
 | 블록 / 아이템 | `machine:fluid_pipe` | 유체 파이프 — 1 FU + PU (최대 256 PU, 초과 시 파손) |
 | 블록 / 아이템 | `machine:rain_collector` | 빗물받이 — 리저버 상단, 비 올 때 물 수집 (0.5 FU/s) |
+| 블록 / 아이템 | `machine:water_pump` | 워터 펌프 — 시선=동력 입력, 1 FU 버퍼, sticky 단일 출력 |
 | 아이템 | `machine:governor_accessory` | 조속기 부속 — 화로 엔진 출력 1~100% 조절 (기능 블록 탭) |
+| 아이템 | `machine:check_valve_accessory` | 체크 밸브 부속 — 워터 펌프 역압·가압 |
 | 아이템 | `machine:shaft_gear` | BER용 샤프트·톱니 메시 (엔진·Dynamo 공용) |
 | 레시피 타입 | `machine:machine_crafting` | 기계 제작대 전용 shaped 레시피 |

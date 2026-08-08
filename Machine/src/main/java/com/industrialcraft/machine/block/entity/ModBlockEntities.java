@@ -35,6 +35,11 @@ public final class ModBlockEntities {
 		RainCollectorBlockEntity::new,
 		ModBlocks.RAIN_COLLECTOR
 	);
+	public static final BlockEntityType<WaterPumpBlockEntity> WATER_PUMP = register(
+		"water_pump",
+		WaterPumpBlockEntity::new,
+		ModBlocks.WATER_PUMP
+	);
 
 	private ModBlockEntities() {
 	}

@@ -1,13 +1,11 @@
 package com.industrialcraft.machine.block;
 
 import java.util.function.Function;
-import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -44,6 +42,11 @@ public final class ModBlocks {
 		RainCollectorBlock::new,
 		BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().strength(2.0F)
 	);
+	public static final Block WATER_PUMP = register(
+		ModBlockItemIds.WATER_PUMP,
+		WaterPumpBlock::new,
+		BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().strength(2.0F)
+	);
 
 	private ModBlocks() {
 	}
@@ -61,14 +64,6 @@ public final class ModBlocks {
 	}
 
 	public static void initialize() {
-		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS)
-			.register(entries -> {
-				entries.accept(MACHINE_CRAFTING_TABLE);
-				entries.accept(FURNACE_ENGINE);
-				entries.accept(DYNAMO);
-				entries.accept(RESERVOIR);
-				entries.accept(FLUID_PIPE);
-				entries.accept(RAIN_COLLECTOR);
-			});
+		// Creative listings live in ModCreativeTabs (IndustrialCraft: Functional Blocks).
 	}
 }

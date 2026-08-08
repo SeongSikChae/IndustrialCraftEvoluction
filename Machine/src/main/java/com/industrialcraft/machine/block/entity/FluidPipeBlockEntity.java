@@ -40,11 +40,17 @@ public class FluidPipeBlockEntity extends BlockEntity implements FluidHandler {
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState state, FluidPipeBlockEntity entity) {
-		if (FluidUnits.exceedsMaxSafePressure(entity.getPressureEighths())) {
+		if (FluidUnits.exceedsMaxSafePressure(entity.getPressureMilli())) {
 			entity.ruptureFromOverpressure();
 			return;
 		}
+		BlockState connected = FluidPipeBlock.withConnections(state, level, pos);
+		if (connected != state) {
+			level.setBlock(pos, connected, Block.UPDATE_ALL);
+			state = connected;
+		}
 		entity.propagate(level, pos, state);
+		entity.equalizePressureWithNeighbors(level, pos, state);
 	}
 
 	private void propagate(Level level, BlockPos pos, BlockState state) {
@@ -77,6 +83,47 @@ public class FluidPipeBlockEntity extends BlockEntity implements FluidHandler {
 		}
 	}
 
+	/**
+	 * Connected pipes share line pressure each tick.
+	 * Horizontal: amount-weighted equal p. Vertical: hydrostatic (upper = max(0, lower − 10 kPa)).
+	 */
+	private void equalizePressureWithNeighbors(Level level, BlockPos pos, BlockState state) {
+		if (this.buffer.isEmpty()) {
+			return;
+		}
+		Fluid fluid = this.buffer.getFluid();
+		for (Direction direction : Direction.values()) {
+			if (!FluidPipeBlock.isConnected(state, direction)) {
+				continue;
+			}
+			BlockEntity be = level.getBlockEntity(pos.relative(direction));
+			if (!(be instanceof FluidPipeBlockEntity other) || other.buffer.isEmpty()) {
+				continue;
+			}
+			if (!other.getFluid().isSame(fluid)) {
+				continue;
+			}
+			int[] next = FluidUnits.equalizeAdjacentPipePressures(
+				this.buffer.getPressureMilli(),
+				this.buffer.getAmount(),
+				other.buffer.getPressureMilli(),
+				other.buffer.getAmount(),
+				direction
+			);
+			int selfNext = next[0];
+			int otherNext = next[1];
+			if (selfNext == this.buffer.getPressureMilli() && otherNext == other.buffer.getPressureMilli()) {
+				continue;
+			}
+			this.buffer.setPressureMilli(selfNext);
+			other.buffer.setPressureMilli(otherNext);
+			this.setChanged();
+			other.setChanged();
+			BlockEntityClientSync.sync(this);
+			BlockEntityClientSync.sync(other);
+		}
+	}
+
 	@Override
 	public boolean canInsert(Direction face) {
 		return FluidPipeBlock.isConnected(this.getBlockState(), face);
@@ -103,13 +150,24 @@ public class FluidPipeBlockEntity extends BlockEntity implements FluidHandler {
 	}
 
 	@Override
-	public int getPressureEighths() {
-		return this.buffer.getPressureEighths();
+	public int getPressureMilli() {
+		return this.buffer.getPressureMilli();
 	}
 
-	@Override
-	public boolean rupturesAboveMaxPressure() {
-		return true;
+	/**
+	 * Check-valve boost: raise stored pressure without moving fluid. Syncs/ruptures as needed.
+	 */
+	public void boostPressureMilli(int deltaMilli) {
+		if (deltaMilli <= 0 || this.buffer.isEmpty()) {
+			return;
+		}
+		this.buffer.addPressureMilli(deltaMilli);
+		this.setChanged();
+		if (FluidUnits.exceedsMaxSafePressure(this.buffer.getPressureMilli())) {
+			this.ruptureFromOverpressure();
+		} else {
+			BlockEntityClientSync.sync(this);
+		}
 	}
 
 	@Override
@@ -133,14 +191,14 @@ public class FluidPipeBlockEntity extends BlockEntity implements FluidHandler {
 	}
 
 	@Override
-	public int insert(Fluid fluid, int amountMb, int pressureEighths, boolean simulate) {
-		if (FluidUnits.exceedsMaxSafePressure(pressureEighths)) {
+	public int insert(Fluid fluid, int amountMb, int pressureMilli, boolean simulate) {
+		if (FluidUnits.exceedsMaxSafePressure(pressureMilli)) {
 			if (!simulate) {
 				this.ruptureFromOverpressure();
 			}
 			return 0;
 		}
-		int moved = this.buffer.insert(fluid, amountMb, pressureEighths, simulate);
+		int moved = this.buffer.insert(fluid, amountMb, pressureMilli, simulate);
 		if (!simulate && moved > 0) {
 			this.onFluidChanged();
 		}
@@ -180,7 +238,7 @@ public class FluidPipeBlockEntity extends BlockEntity implements FluidHandler {
 		CompoundTag tag = this.saveWithoutMetadata(registries);
 		tag.putString("Fluid", BuiltInRegistries.FLUID.getKey(this.buffer.getFluid()).toString());
 		tag.putInt("AmountMb", this.buffer.getAmount());
-		tag.putInt("PressureEighths", this.buffer.getPressureEighths());
+		tag.putInt("PressureMilli", this.buffer.getPressureMilli());
 		return tag;
 	}
 

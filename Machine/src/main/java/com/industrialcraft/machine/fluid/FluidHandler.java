@@ -5,12 +5,11 @@ import net.minecraft.world.level.material.Fluid;
 
 /**
  * Face-aware fluid insert/extract contract, analogous to {@link com.industrialcraft.machine.power.PowerSource}.
- * All amounts are millibuckets (mB); 1000 mB = 1 FU. Pressure is in eighths (1 PU = 8).
+ * All amounts are millibuckets (mB); 1000 mB = 1 B. Pressure is milli-kPa (1 kPa = 1000), same grid as milli-Nm.
  * <p>
- * Receivers act as a <b>pressure gate</b>: fluid enters when carried PU ≥
- * {@link #getReceiveGatePressureEighths()} (strictly lower PU is refused).
- * Reservoirs use gate 0; pipes use stored buffer PU.
- * Pipe↔pipe amounts are steered toward {@code amount ∝ PU} so more fluid sits nearer the source.
+ * Flow is <b>high → low</b>: fluid enters when carried kPa &gt; {@link #getReceiveGatePressureMilli()}
+ * (equal or lower carrier is refused). Reservoirs use gate 0; pipes use stored buffer kPa.
+ * Pumps impose outlet pressure ({@code 10τ} under {@code 1 Nm ≡ 10 kPa}).
  */
 public interface FluidHandler {
 	boolean canInsert(Direction face);
@@ -25,35 +24,35 @@ public interface FluidHandler {
 	/** Capacity in mB. */
 	int getCapacity();
 
-	/** Buffer pressure in eighths (0 when empty). */
-	int getPressureEighths();
+	/** Buffer pressure in milli-kPa (0 when empty). */
+	int getPressureMilli();
 
-	default double getPressurePu() {
-		return FluidUnits.eighthsToPu(this.getPressureEighths());
+	default double getPressureKpa() {
+		return FluidUnits.milliToKpa(this.getPressureMilli());
 	}
 
 	/**
 	 * Minimum incoming (carried) pressure required to insert into this handler.
 	 * Default: current buffer pressure (empty → 0). Reservoirs override to always 0.
 	 */
-	default int getReceiveGatePressureEighths() {
-		return this.getAmount() <= 0 ? 0 : this.getPressureEighths();
+	default int getReceiveGatePressureMilli() {
+		return this.getAmount() <= 0 ? 0 : this.getPressureMilli();
 	}
 
 	/**
-	 * When true, pipe↔pipe transfer is capped so amounts move toward {@code amount ∝ PU}.
-	 * Reservoirs override to false (storage only).
+	 * When true, this handler participates in line-pressure gating like a pipe.
+	 * Reservoirs override to false (storage only; gate stays 0).
 	 */
 	default boolean sharesPressureVolume() {
 		return true;
 	}
 
-	default double getReceiveGatePressurePu() {
-		return FluidUnits.eighthsToPu(this.getReceiveGatePressureEighths());
+	default double getReceiveGatePressureKpa() {
+		return FluidUnits.milliToKpa(this.getReceiveGatePressureMilli());
 	}
 
 	/**
-	 * When true, carried pressure above {@link FluidUnits#MAX_SAFE_PRESSURE_PU} ruptures this handler
+	 * When true, carried pressure above {@link FluidUnits#MAX_SAFE_PRESSURE_KPA} ruptures this handler
 	 * instead of inserting.
 	 */
 	default boolean rupturesAboveMaxPressure() {
@@ -65,18 +64,18 @@ public interface FluidHandler {
 	}
 
 	/**
-	 * Inserts with 0 PU (e.g. bucket fill).
+	 * Inserts with 0 kPa (e.g. bucket fill).
 	 *
 	 * @return millibuckets actually inserted
 	 */
 	int insert(Fluid fluid, int amountMb, boolean simulate);
 
 	/**
-	 * Inserts carrying pressure (eighths), mixed by amount-weighted average on the receiver.
+	 * Inserts carrying pressure (milli-PU), mixed by amount-weighted average on the receiver.
 	 *
 	 * @return millibuckets actually inserted
 	 */
-	int insert(Fluid fluid, int amountMb, int pressureEighths, boolean simulate);
+	int insert(Fluid fluid, int amountMb, int pressureMilli, boolean simulate);
 
 	/**
 	 * Extracts up to {@code maxAmountMb} of the currently stored fluid.

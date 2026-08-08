@@ -1,0 +1,18 @@
+{
+	"type": "machine:machine_crafting",
+	"key": {
+		"G": "minecraft:glass_pane",
+		"I": "minecraft:iron_ingot",
+		"P": "minecraft:piston",
+		"B": "minecraft:bucket"
+	},
+	"pattern": [
+		"IGI",
+		"PBP",
+		"IGI"
+	],
+	"result": {
+		"count": 1,
+		"id": "machine:water_pump"
+	}
+}
