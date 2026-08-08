@@ -1,4 +1,4 @@
-﻿# Material
+# Material
 
 IndustrialCraft: Evolution의 연료·광물 모듈입니다. 바닐라 `minecraft:coal`을 **역청탄**으로 재해석하고, 등급별 연료 계열을 추가합니다. 현재 콘텐츠는 **석탄 계열 연료·광석·압축 블록**에 한정되며, 도구·금속·주괴는 없습니다.
 
@@ -156,72 +156,90 @@ Material 광석·압축 블록은 `#minecraft:mineable/pickaxe`에 등록되어 
 <table>
 <tr>
 <td align="center" valign="top">
-
-**이탄**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| | <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | | | |
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" /> | | → | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" /> ×4 |
-| | | | | |
-
+<p><strong>이탄</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" height="32" /> &times;4</td>
+</tr>
+</table>
 </td>
 <td align="center" valign="top">
-
-**갈탄**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| | <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | | | |
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" /> | | → | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" /> ×4 |
-| | | | | |
-
+<p><strong>갈탄</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" height="32" /> &times;4</td>
+</tr>
+</table>
 </td>
 <td align="center" valign="top">
-
-**아역청탄**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| | <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | | | |
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" /> | | → | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" /> ×4 |
-| | | | | |
-
+<p><strong>아역청탄</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" height="32" /> &times;4</td>
+</tr>
+</table>
 </td>
 </tr>
 <tr>
 <td align="center" valign="top">
-
-**역청탄**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | | | |
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" /> | | → | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" /> ×4 |
-| | | | | |
-
+<p><strong>역청탄</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" height="32" /> &times;4</td>
+</tr>
+</table>
 </td>
 <td align="center" valign="top">
-
-**무연탄**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| | <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | | | |
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" /> | | → | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" /> ×4 |
-| | | | | |
-
+<p><strong>무연탄</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" height="32" /> &times;4</td>
+</tr>
+</table>
 </td>
 <td align="center" valign="top">
-
-**숯**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/charcoal.png" alt="숯" title="숯 (minecraft:charcoal)" width="32" /> | | | |
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" /> | | → | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" /> ×4 |
-| | | | | |
-
+<p><strong>숯</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/charcoal.png" alt="숯" title="숯 (minecraft:charcoal)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/stick.png" alt="막대기" title="막대기 (minecraft:stick)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/torch.png" alt="횃불" title="횃불 (minecraft:torch)" width="32" height="32" /> &times;4</td>
+</tr>
+</table>
 </td>
 </tr>
 </table>
@@ -235,63 +253,78 @@ Material 광석·압축 블록은 `#minecraft:mineable/pickaxe`에 등록되어 
 <table>
 <tr>
 <td align="center" valign="top">
-
-**이탄 블록**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | | |
-| <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | → | <img src="src/main/resources/assets/material/textures/block/peat_block.png" alt="이탄 블록" title="이탄 블록 (material:peat_block)" width="32" /> ×1 |
-| <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> | | |
-
+<p><strong>이탄 블록</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /></td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="src/main/resources/assets/material/textures/block/peat_block.png" alt="이탄 블록" title="이탄 블록 (material:peat_block)" width="32" height="32" /> &times;1</td>
+</tr>
+</table>
 </td>
 <td align="center" valign="top">
-
-**갈탄 블록**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | | |
-| <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | → | <img src="src/main/resources/assets/material/textures/block/lignite_block.png" alt="갈탄 블록" title="갈탄 블록 (material:lignite_block)" width="32" /> ×1 |
-| <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> | | |
-
+<p><strong>갈탄 블록</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /></td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="src/main/resources/assets/material/textures/block/lignite_block.png" alt="갈탄 블록" title="갈탄 블록 (material:lignite_block)" width="32" height="32" /> &times;1</td>
+</tr>
+</table>
 </td>
 </tr>
 <tr>
 <td align="center" valign="top">
-
-**아역청탄 블록**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | | |
-| <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | → | <img src="src/main/resources/assets/material/textures/block/sub_bituminous_block.png" alt="아역청탄 블록" title="아역청탄 블록 (material:sub_bituminous_block)" width="32" /> ×1 |
-| <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> | | |
-
+<p><strong>아역청탄 블록</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /></td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="src/main/resources/assets/material/textures/block/sub_bituminous_block.png" alt="아역청탄 블록" title="아역청탄 블록 (material:sub_bituminous_block)" width="32" height="32" /> &times;1</td>
+</tr>
+</table>
 </td>
 <td align="center" valign="top">
-
-**무연탄 블록**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | | |
-| <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | → | <img src="src/main/resources/assets/material/textures/block/anthracite_block.png" alt="무연탄 블록" title="무연탄 블록 (material:anthracite_block)" width="32" /> ×1 |
-| <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> | | |
-
+<p><strong>무연탄 블록</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /></td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="src/main/resources/assets/material/textures/block/anthracite_block.png" alt="무연탄 블록" title="무연탄 블록 (material:anthracite_block)" width="32" height="32" /> &times;1</td>
+</tr>
+</table>
 </td>
 </tr>
 <tr>
 <td align="center" valign="top">
-
-**역청탄 블록** (바닐라)
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | | |
-| <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | → | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/coal_block.png" alt="역청탄 블록" title="역청탄 블록 (minecraft:coal_block)" width="32" /> ×1 |
-| <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> | | |
-
+<p><strong>역청탄 블록 (바닐라)</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /></td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/coal_block.png" alt="역청탄 블록" title="역청탄 블록 (minecraft:coal_block)" width="32" height="32" /> &times;1</td>
+</tr>
+</table>
 </td>
 <td></td>
 </tr>
@@ -302,61 +335,76 @@ Material 광석·압축 블록은 `#minecraft:mineable/pickaxe`에 등록되어 
 <table>
 <tr>
 <td align="center" valign="top">
-
-**이탄**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| | | | | |
-| | <img src="src/main/resources/assets/material/textures/block/peat_block.png" alt="이탄 블록" title="이탄 블록 (material:peat_block)" width="32" /> | | → | <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> ×9 |
-| | | | | |
-
+<p><strong>이탄</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/block/peat_block.png" alt="이탄 블록" title="이탄 블록 (material:peat_block)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /> &times;9</td>
+</tr>
+</table>
 </td>
 <td align="center" valign="top">
-
-**갈탄**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| | | | | |
-| | <img src="src/main/resources/assets/material/textures/block/lignite_block.png" alt="갈탄 블록" title="갈탄 블록 (material:lignite_block)" width="32" /> | | → | <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> ×9 |
-| | | | | |
-
+<p><strong>갈탄</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/block/lignite_block.png" alt="갈탄 블록" title="갈탄 블록 (material:lignite_block)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /> &times;9</td>
+</tr>
+</table>
 </td>
 <td align="center" valign="top">
-
-**아역청탄**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| | | | | |
-| | <img src="src/main/resources/assets/material/textures/block/sub_bituminous_block.png" alt="아역청탄 블록" title="아역청탄 블록 (material:sub_bituminous_block)" width="32" /> | | → | <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> ×9 |
-| | | | | |
-
+<p><strong>아역청탄</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/block/sub_bituminous_block.png" alt="아역청탄 블록" title="아역청탄 블록 (material:sub_bituminous_block)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /> &times;9</td>
+</tr>
+</table>
 </td>
 </tr>
 <tr>
 <td align="center" valign="top">
-
-**무연탄**
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| | | | | |
-| | <img src="src/main/resources/assets/material/textures/block/anthracite_block.png" alt="무연탄 블록" title="무연탄 블록 (material:anthracite_block)" width="32" /> | | → | <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> ×9 |
-| | | | | |
-
+<p><strong>무연탄</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/block/anthracite_block.png" alt="무연탄 블록" title="무연탄 블록 (material:anthracite_block)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /> &times;9</td>
+</tr>
+</table>
 </td>
 <td align="center" valign="top">
-
-**역청탄** (바닐라)
-
-| | | | | |
-|:---:|:---:|:---:|:---:|:---:|
-| | | | | |
-| | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/coal_block.png" alt="역청탄 블록" title="역청탄 블록 (minecraft:coal_block)" width="32" /> | | → | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> ×9 |
-| | | | | |
-
+<p><strong>역청탄 (바닐라)</strong></p>
+<table>
+<tr>
+<td valign="middle"><table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/coal_block.png" alt="역청탄 블록" title="역청탄 블록 (minecraft:coal_block)" width="32" height="32" /></td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+<tr><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td><td width="40" height="40" align="center" valign="middle">&nbsp;</td></tr>
+</table></td>
+<td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td>
+<td valign="middle" align="center"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /> &times;9</td>
+</tr>
+</table>
 </td>
 <td></td>
 </tr>
@@ -364,11 +412,11 @@ Material 광석·압축 블록은 `#minecraft:mineable/pickaxe`에 등록되어 
 
 | 조합 | 결과 | 블록 연소 |
 |------|------|-----------|
-| 이탄 ×9 | <img src="src/main/resources/assets/material/textures/block/peat_block.png" alt="이탄 블록" title="이탄 블록 (material:peat_block)" width="24" /> `material:peat_block` | 4000틱 |
-| 갈탄 ×9 | <img src="src/main/resources/assets/material/textures/block/lignite_block.png" alt="갈탄 블록" title="갈탄 블록 (material:lignite_block)" width="24" /> `material:lignite_block` | 8000틱 |
-| 아역청탄 ×9 | <img src="src/main/resources/assets/material/textures/block/sub_bituminous_block.png" alt="아역청탄 블록" title="아역청탄 블록 (material:sub_bituminous_block)" width="24" /> `material:sub_bituminous_block` | 12000틱 |
-| 역청탄 ×9 | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/coal_block.png" alt="역청탄 블록" title="역청탄 블록 (minecraft:coal_block)" width="24" /> `minecraft:coal_block` | 16000틱 |
-| 무연탄 ×9 | <img src="src/main/resources/assets/material/textures/block/anthracite_block.png" alt="무연탄 블록" title="무연탄 블록 (material:anthracite_block)" width="24" /> `material:anthracite_block` | 20000틱 |
+| 이탄 ×9 | <img src="src/main/resources/assets/material/textures/block/peat_block.png" alt="이탄 블록" title="이탄 블록 (material:peat_block)" width="32" height="32" /> `material:peat_block` | 4000틱 |
+| 갈탄 ×9 | <img src="src/main/resources/assets/material/textures/block/lignite_block.png" alt="갈탄 블록" title="갈탄 블록 (material:lignite_block)" width="32" height="32" /> `material:lignite_block` | 8000틱 |
+| 아역청탄 ×9 | <img src="src/main/resources/assets/material/textures/block/sub_bituminous_block.png" alt="아역청탄 블록" title="아역청탄 블록 (material:sub_bituminous_block)" width="32" height="32" /> `material:sub_bituminous_block` | 12000틱 |
+| 역청탄 ×9 | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/coal_block.png" alt="역청탄 블록" title="역청탄 블록 (minecraft:coal_block)" width="32" height="32" /> `minecraft:coal_block` | 16000틱 |
+| 무연탄 ×9 | <img src="src/main/resources/assets/material/textures/block/anthracite_block.png" alt="무연탄 블록" title="무연탄 블록 (material:anthracite_block)" width="32" height="32" /> `material:anthracite_block` | 20000틱 |
 
 압축 블록은 용광로 연료이며 화로 광차에는 넣을 수 없습니다.
 
@@ -381,56 +429,41 @@ Material 광석·압축 블록은 `#minecraft:mineable/pickaxe`에 등록되어 
 <table>
 <tr>
 <td align="center" valign="top">
-
-**이탄**
-
-| | | |
-|:---:|:---:|:---:|
-| <img src="src/main/resources/assets/material/textures/block/peat_ore.png" alt="이탄 광석" title="이탄 광석 (material:peat_ore)" width="32" /> | → | <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> |
-| <img src="src/main/resources/assets/material/textures/block/deepslate_peat_ore.png" alt="심층 이탄 광석" title="심층 이탄 광석 (material:deepslate_peat_ore)" width="32" /> | → | <img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" /> |
-
+<p><strong>이탄</strong></p>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/block/peat_ore.png" alt="이탄 광석" title="이탄 광석 (material:peat_ore)" width="32" height="32" /></td><td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/block/deepslate_peat_ore.png" alt="심층 이탄 광석" title="심층 이탄 광석 (material:deepslate_peat_ore)" width="32" height="32" /></td><td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/peat.png" alt="이탄" title="이탄 (material:peat)" width="32" height="32" /></td></tr>
+</table>
 </td>
 <td align="center" valign="top">
-
-**갈탄**
-
-| | | |
-|:---:|:---:|:---:|
-| <img src="src/main/resources/assets/material/textures/block/lignite_ore.png" alt="갈탄 광석" title="갈탄 광석 (material:lignite_ore)" width="32" /> | → | <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> |
-| <img src="src/main/resources/assets/material/textures/block/deepslate_lignite_ore.png" alt="심층 갈탄 광석" title="심층 갈탄 광석 (material:deepslate_lignite_ore)" width="32" /> | → | <img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" /> |
-
+<p><strong>갈탄</strong></p>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/block/lignite_ore.png" alt="갈탄 광석" title="갈탄 광석 (material:lignite_ore)" width="32" height="32" /></td><td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/block/deepslate_lignite_ore.png" alt="심층 갈탄 광석" title="심층 갈탄 광석 (material:deepslate_lignite_ore)" width="32" height="32" /></td><td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/lignite.png" alt="갈탄" title="갈탄 (material:lignite)" width="32" height="32" /></td></tr>
+</table>
 </td>
 <td align="center" valign="top">
-
-**아역청탄**
-
-| | | |
-|:---:|:---:|:---:|
-| <img src="src/main/resources/assets/material/textures/block/sub_bituminous_ore.png" alt="아역청탄 광석" title="아역청탄 광석 (material:sub_bituminous_ore)" width="32" /> | → | <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> |
-| <img src="src/main/resources/assets/material/textures/block/deepslate_sub_bituminous_ore.png" alt="심층 아역청탄 광석" title="심층 아역청탄 광석 (material:deepslate_sub_bituminous_ore)" width="32" /> | → | <img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" /> |
-
+<p><strong>아역청탄</strong></p>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/block/sub_bituminous_ore.png" alt="아역청탄 광석" title="아역청탄 광석 (material:sub_bituminous_ore)" width="32" height="32" /></td><td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/block/deepslate_sub_bituminous_ore.png" alt="심층 아역청탄 광석" title="심층 아역청탄 광석 (material:deepslate_sub_bituminous_ore)" width="32" height="32" /></td><td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/sub_bituminous.png" alt="아역청탄" title="아역청탄 (material:sub_bituminous)" width="32" height="32" /></td></tr>
+</table>
 </td>
 </tr>
 <tr>
 <td align="center" valign="top">
-
-**역청탄** (바닐라)
-
-| | | |
-|:---:|:---:|:---:|
-| <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/coal_ore.png" alt="역청탄 광석" title="역청탄 광석 (minecraft:coal_ore)" width="32" /> | → | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> |
-| <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/deepslate_coal_ore.png" alt="심층 역청탄 광석" title="심층 역청탄 광석 (minecraft:deepslate_coal_ore)" width="32" /> | → | <img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" /> |
-
+<p><strong>역청탄 (바닐라)</strong></p>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/coal_ore.png" alt="역청탄 광석" title="역청탄 광석 (minecraft:coal_ore)" width="32" height="32" /></td><td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/block/deepslate_coal_ore.png" alt="심층 역청탄 광석" title="심층 역청탄 광석 (minecraft:deepslate_coal_ore)" width="32" height="32" /></td><td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/coal.png" alt="역청탄" title="역청탄 (minecraft:coal)" width="32" height="32" /></td></tr>
+</table>
 </td>
 <td align="center" valign="top">
-
-**무연탄**
-
-| | | |
-|:---:|:---:|:---:|
-| <img src="src/main/resources/assets/material/textures/block/anthracite_ore.png" alt="무연탄 광석" title="무연탄 광석 (material:anthracite_ore)" width="32" /> | → | <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> |
-| <img src="src/main/resources/assets/material/textures/block/deepslate_anthracite_ore.png" alt="심층 무연탄 광석" title="심층 무연탄 광석 (material:deepslate_anthracite_ore)" width="32" /> | → | <img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" /> |
-
+<p><strong>무연탄</strong></p>
+<table border="1" cellpadding="4" cellspacing="0">
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/block/anthracite_ore.png" alt="무연탄 광석" title="무연탄 광석 (material:anthracite_ore)" width="32" height="32" /></td><td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /></td></tr>
+<tr><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/block/deepslate_anthracite_ore.png" alt="심층 무연탄 광석" title="심층 무연탄 광석 (material:deepslate_anthracite_ore)" width="32" height="32" /></td><td valign="middle" align="center">&nbsp;&rarr;&nbsp;</td><td width="40" height="40" align="center" valign="middle"><img src="src/main/resources/assets/material/textures/item/anthracite.png" alt="무연탄" title="무연탄 (material:anthracite)" width="32" height="32" /></td></tr>
+</table>
 </td>
 <td></td>
 </tr>
