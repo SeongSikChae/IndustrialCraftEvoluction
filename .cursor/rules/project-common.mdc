@@ -5,7 +5,7 @@ alwaysApply: true
 
 # 프로젝트 공통 (모듈 전반)
 
-Material · Machine · Showcase 등 **모든 세부 모드**에 통용한다. 모듈별 설계 규칙과 별개이며, 충돌 시 이 문서의 docs/assets·모델링·레시피 핸드북·GameTest·크리에이티브 탭·CI 검증 구분 규칙을 우선한다.
+Material · Machine 등 **모든 세부 모드**에 통용한다. 모듈별 설계 규칙과 별개이며, 충돌 시 이 문서의 docs/assets·모델링·레시피 핸드북·GameTest·크리에이티브 탭·CI 검증 구분 규칙을 우선한다.
 
 ## 1. `docs/`
 
@@ -66,8 +66,7 @@ assets/{namespace}/
 - 아이템·블록 등 콘텐츠를 추가하면서 **관련 기능**(동작·로직·상호작용 등)을 넣을 때는, 그 기능을 검증하는 **GameTest 코드도 같이** 추가한다.
 - 테스트는 **해당 모듈**의 기존 GameTest 관례를 따른다 (서버 GameTest / Client GameTest / `src/gametest` 배치·등록 방식 등).
 - 순수 에셋·lang·단순 등록만이고 검증할 동작이 없으면 GameTest는 생략해도 된다. 동작이 있으면 등록·에셋만으로 끝내지 않는다.
-- Showcase 클립/시나리오는 문서·캡처용이므로, 기능 회귀 검증용 GameTest를 대체하지 않는다 (요청·모듈 규칙이 있을 때만 함께 둔다).
-- **CI vs 로컬**: 서버(헤드리스) GameTest는 GitHub Actions에 연결할 수 있다. Client GameTest·Showcase 클립은 **로컬 전용**이며 Actions에서 실행하지 않는다 (§7).
+- **CI vs 로컬**: 서버(헤드리스) GameTest는 GitHub Actions에 연결할 수 있다. Client GameTest는 **로컬 전용**이며 Actions에서 실행하지 않는다 (§7).
 
 ## 6. 크리에이티브 탭
 
@@ -89,12 +88,11 @@ assets/{namespace}/
 
 - **Client GameTest** (`runClientGameTest` 등)
 - **모델 렌더·시각 미리보기** (`Render-McModel.ps1`, `Render-BlockIso.ps1`, 아이콘 크롭 등)
-- **Showcase** 클립 캡처·ffmpeg 인코딩·수동/시각 검수
 
 ### 적용
 
 - 새 검증을 추가할 때 CI 가능 여부에 따라 태스크·문서를 나눈다. CI 불가능 검증을 `.github/workflows`에 연결하지 않는다.
-- CI workflow(`build.yml` 등)는 위 **실행 가능** 항목만 돌린다. `runClientGameTest`·렌더 스크립트·Showcase 인코딩을 Actions step으로 추가하지 않는다.
+- CI workflow(`build.yml` 등)는 위 **실행 가능** 항목만 돌린다. `runClientGameTest`·렌더 스크립트를 Actions step으로 추가하지 않는다.
 - 로컬 전용 검증도 개발 시 생략하지 않는다. CI에 안 넣는다와 “안 한다”를 같게 보지 않는다.
 
 ## 적용

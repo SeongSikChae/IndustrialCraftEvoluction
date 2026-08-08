@@ -27,10 +27,6 @@ tasks.register('collectModJars', Copy) {
 
 subprojects { sub ->
 	plugins.withId('net.fabricmc.fabric-loom') {
-		// Showcase is tooling-only (clip capture); do not ship as a player mod jar.
-		if (sub.name == 'Showcase') {
-			return
-		}
 		rootProject.tasks.named('collectModJars', Copy).configure { copy ->
 			def jarTask = sub.tasks.names.contains('remapJar')
 				? sub.tasks.named('remapJar')

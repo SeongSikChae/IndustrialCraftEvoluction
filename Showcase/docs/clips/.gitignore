@@ -1,4 +1,0 @@
-# Frame sequences are large; keep encoded clips eligible for commit.
-**/*.png
-**/frame_*.png
-*.mp4
