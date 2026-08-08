@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"id": "material-test",
+	"version": "1.0.0",
+	"name": "Material GameTests",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-gametest": [
+			"com.industrialcraft.material.gametest.MaterialContentGameTest",
+			"com.industrialcraft.material.gametest.MaterialCreativeTabGameTest",
+			"com.industrialcraft.material.gametest.MaterialFuelGameTest",
+			"com.industrialcraft.material.gametest.MaterialFurnaceGameTest",
+			"com.industrialcraft.material.gametest.MaterialRecipeGameTest",
+			"com.industrialcraft.material.gametest.MaterialWorldPlaceGameTest",
+			"com.industrialcraft.material.gametest.MaterialModelAssetGameTest",
+			"com.industrialcraft.material.gametest.MixedCoalOreGameTest"
+		],
+		"fabric-client-gametest": [
+			"com.industrialcraft.material.gametest.MaterialModelClientGameTest",
+			"com.industrialcraft.material.gametest.MaterialRecipeClientGameTest"
+		]
+	}
+}

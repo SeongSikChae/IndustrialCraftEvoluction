@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"category": "building",
+	"ingredients": [
+		"#material:peat_blocks"
+	],
+	"result": {
+		"count": 9,
+		"id": "material:peat"
+	}
+}

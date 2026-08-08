@@ -12,5 +12,6 @@ pluginManagement {
 rootProject.name = 'IndustrialCraft-Evolution'
 
 include 'Material'
-include 'Machine'
+// Machine — temporarily excluded from the aggregate build (Material-first rework)
+// include 'Machine'
 include 'Showcase'

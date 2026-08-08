@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:smelting",
+	"category": "misc",
+	"cookingtime": 200,
+	"experience": 0.1,
+	"group": "lignite",
+	"ingredient": "material:deepslate_lignite_ore",
+	"result": {
+		"id": "material:lignite"
+	}
+}

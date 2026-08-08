@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:blasting",
+	"category": "misc",
+	"cookingtime": 100,
+	"experience": 0.1,
+	"group": "lignite",
+	"ingredient": "material:lignite_ore",
+	"result": {
+		"id": "material:lignite"
+	}
+}

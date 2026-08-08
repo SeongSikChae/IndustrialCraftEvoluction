@@ -18,6 +18,16 @@ loom {
 	}
 }
 
+fabricApi {
+	configureTests {
+		createSourceSet = true
+		modId = "material-test"
+		enableGameTests = true
+		enableClientGameTests = true
+		eula = true
+	}
+}
+
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
@@ -62,4 +72,10 @@ publishing {
 
 	repositories {
 	}
+}
+
+// project-common §7: server GameTest may run in CI via `./gradlew build` / check.
+// Client GameTest and Render-* scripts stay local-only — do not depend on them here.
+tasks.named('check').configure {
+	dependsOn 'runGameTest'
 }

@@ -14,6 +14,11 @@ public final class ModBlockItemIds {
 	public static final BlockItemId ANTHRACITE_ORE = create("anthracite_ore");
 	public static final BlockItemId DEEPSLATE_ANTHRACITE_ORE = create("deepslate_anthracite_ore");
 
+	public static final BlockItemId PEAT_BLOCK = create("peat_block");
+	public static final BlockItemId LIGNITE_BLOCK = create("lignite_block");
+	public static final BlockItemId SUB_BITUMINOUS_BLOCK = create("sub_bituminous_block");
+	public static final BlockItemId ANTHRACITE_BLOCK = create("anthracite_block");
+
 	private ModBlockItemIds() {
 	}
 

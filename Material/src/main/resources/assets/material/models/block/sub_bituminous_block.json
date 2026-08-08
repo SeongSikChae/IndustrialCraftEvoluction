@@ -1,0 +1,6 @@
+﻿{
+	"parent": "minecraft:block/cube_all",
+	"textures": {
+		"all": "material:block/sub_bituminous_block"
+	}
+}

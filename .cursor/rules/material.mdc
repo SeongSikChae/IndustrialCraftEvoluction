@@ -1,0 +1,130 @@
+---
+description: Material 승인 설계 규칙 (연료·광물·lang·연동). Material/Machine 작업 시 적용.
+globs: Material/**,Machine/**
+alwaysApply: false
+---
+
+# Material
+
+승인된 Material 설계 규칙이다. 바닐라 사실 브리핑은 [`Material/docs/vanilla-coal-charcoal.md`](Material/docs/vanilla-coal-charcoal.md).
+
+## 용어 · lang
+
+| ID | Material에서의 명칭 | 비고 |
+|----|---------------------|------|
+| `minecraft:coal` | **역청탄** | 아이템 ID는 바닐라 유지. UI·문서·lang·주석에서는 “석탄”이 아니라 **역청탄** |
+| `minecraft:coal_ore` | **역청탄 광석** | 동일 |
+| `minecraft:deepslate_coal_ore` | **심층 역청탄 광석** | 바닐라 deepslate = “심층” |
+| `minecraft:coal_block` | **역청탄 블록** | 바닐라 ID 유지. “석탄 블록”이라 부르지 않음 |
+| `minecraft:charcoal` | **숯** | ID·제작 경로 바닐라 유지 |
+| `material:peat` | **이탄** | |
+| `material:lignite` | **갈탄** | |
+| `material:sub_bituminous` | **아역청탄** | |
+| `material:anthracite` | **무연탄** | |
+| `material:{rank}_ore` | **{계열} 광석** | `peat` / `lignite` / `sub_bituminous` / `anthracite` |
+| `material:deepslate_{rank}_ore` | **심층 {계열} 광석** | 동일 네 rank |
+| `material:{rank}_block` | **{계열} 블록** | 동일 네 rank |
+
+- ✅ “역청탄”, “역청탄 블록”, “이탄 블록”, “심층 무연탄 광석” 등 계열명 사용
+- ❌ Material 맥락에서 바닐라 coal / coal_block을 그냥 “석탄”, “석탄 블록”으로 지칭
+
+## 연료 계열
+
+석탄 계열 연료는 다음 **다섯 계열**이다. (낮은 등급 → 높은 등급)
+
+ID 패턴: `{rank}` / `{rank}_ore` / `deepslate_{rank}_ore` / `{rank}_block` / 월드젠 `ore_{rank}`. 지질학적 영문명을 쓴다. 역청탄만 바닐라 `coal`·`coal_block` ID를 쓰며 `material:bituminous` / `material:bituminous_block`은 **없다**.
+
+| 계열 | 연료 아이템 | 압축 블록 | 광석 | 심층 광석 | 월드젠 feature 접두 |
+|------|-------------|-----------|------|-----------|---------------------|
+| 이탄 | `material:peat` | `material:peat_block` | `material:peat_ore` | `material:deepslate_peat_ore` | `ore_peat` |
+| 갈탄 | `material:lignite` | `material:lignite_block` | `material:lignite_ore` | `material:deepslate_lignite_ore` | `ore_lignite` |
+| 아역청탄 | `material:sub_bituminous` | `material:sub_bituminous_block` | `material:sub_bituminous_ore` | `material:deepslate_sub_bituminous_ore` | `ore_sub_bituminous` |
+| 역청탄 | `minecraft:coal` | `minecraft:coal_block` | `minecraft:coal_ore` | `minecraft:deepslate_coal_ore` | `ore_bituminous` |
+| 무연탄 | `material:anthracite` | `material:anthracite_block` | `material:anthracite_ore` | `material:deepslate_anthracite_ore` | `ore_anthracite` |
+
+- 숯(`minecraft:charcoal`)은 위 등급 계열에 **속하지 않는다**. 재생 연료이며, 연소값은 [연료](#연료)의 역청탄 대비 90% 규칙을 따른다. 압축 블록 **없음**.
+- 계열별 연소 틱은 [연료](#연료)를 본다. 월드젠은 [월드 생성](#월드-생성)을 본다.
+
+### 월드 생성
+
+바닐라 석탄 광석 배치(`ore_coal` / `ore_coal_buried`)의 **위치·시도 횟수·크기** 등 광맥 규칙은 유지한다. 일반·buried **동일 비율**.
+
+**혼합 광맥**: 한 광맥이 단일 계열로 채워지지 않는다. 광맥 안 **블록을 놓을 때마다** 아래 weight로 계열을 굴려, 이탄·갈탄·아역청탄·역청탄·무연탄 광석이 **한 광맥에 섞여** 나온다. (광맥 단위로 `ore_peat` 등을 고르는 단독 계열 광맥은 **금지**)
+
+| 계열 | 광석 블록 | 비율 | weight (합 1000) |
+|------|-----------|------|------------------|
+| 이탄 | `peat_ore` / `deepslate_peat_ore` | **50%** | 500 |
+| 갈탄 | `lignite_ore` / `deepslate_lignite_ore` | **10%** | 100 |
+| 아역청탄 | `sub_bituminous_ore` / `deepslate_sub_bituminous_ore` | **17.5%** | 175 |
+| 역청탄 | `coal_ore` / `deepslate_coal_ore` | **20%** | 200 |
+| 무연탄 | `anthracite_ore` / `deepslate_anthracite_ore` | **2.5%** | 25 |
+
+- 확률 = `weight / 1000`. 장기·대량 통계는 이 비율에 수렴한다. 개별 광맥 조성은 샘플 변동이 있다.
+- stone / deepslate replaceable은 바닐라와 같이 유지하되, 굴린 계열의 일반·심층 변형을 놓는다.
+- 피처 ID(`ore_peat` 등)는 구현 편의용일 수 있으나, **최종 동작은 블록 단위 혼합**이어야 한다.
+
+### 사용처
+
+이탄·갈탄·아역청탄·무연탄은 **역청탄(`minecraft:coal`)과 같은 사용처**를 가진다. 연소 시간·등급명만 다르고, 들어갈 수 있는 슬롯·태그·레시피는 동일하다.
+
+| 구분 | 내용 |
+|------|------|
+| 태그 | `#minecraft:coals`, `#minecraft:furnace_minecart_fuel`에 네 아이템을 넣는다 |
+| 제작 | `#coals`를 재료로 쓰는 레시피 전부 (횃불·영혼/구리 횃불·캠프파이어·화염구 등) |
+| 연료 | 용광로·고로·훈연기·화로 광차 (수치는 [연료](#연료) / 계열별 연소 규칙) |
+| 제련 | 계열 광석·심층 광석 → 해당 계열 연료 (역청탄 광석 → 역청탄과 동일). 용광로·고로 |
+| 압축 | 각 계열 자체 블록만 (역청탄 블록 제작에는 **역청탄만**, 타 계열은 대체 불가) |
+
+- 숯도 `#coals`·화로 광차 등 상당 부분을 공유하지만, 압축 블록·주민 석탄 거래 등 **역청탄 전용** 경로는 숯·타 계열과 분리된 바닐라 관례를 유지한다.
+- 광석 네 종(+심층)은 역청탄 광석과 같이 `#minecraft:coal_ores`·곡괭이 채굴 가능 대상에 둔다.
+
+### 광석 제련
+
+바닐라 `coal_ore` / `deepslate_coal_ore` → `coal`과 같이, 각 계열 **광석·심층 광석**을 용광로·고로에 넣으면 **해당 계열 연료 아이템** ×1이 나온다. (실크터치로 캔 광석 블록용. 일반 채굴 드롭과 병행)
+
+| 입력 (일반 / 심층) | 결과 |
+|--------------------|------|
+| `material:peat_ore` / `material:deepslate_peat_ore` | `material:peat` |
+| `material:lignite_ore` / `material:deepslate_lignite_ore` | `material:lignite` |
+| `material:sub_bituminous_ore` / `material:deepslate_sub_bituminous_ore` | `material:sub_bituminous` |
+| `minecraft:coal_ore` / `minecraft:deepslate_coal_ore` | `minecraft:coal` (바닐라 유지) |
+| `material:anthracite_ore` / `material:deepslate_anthracite_ore` | `material:anthracite` |
+
+- 용광로·고로 **양쪽** 레시피. XP·조리 틱은 바닐라 역청탄 광석 제련과 **동일**.
+- 훈연기로는 제련하지 않는다 (바닐라 광석 제련과 동일).
+- 레시피 + 핸드북 해금 advancement를 둔다 (`project-common` §4).
+
+### 압축 블록
+
+각 계열 연료 ×9 ⇄ 해당 계열 블록 ×1 (양방향).
+
+| 조합 | 결과 | ID |
+|------|------|-----|
+| 이탄 ×9 | **이탄 블록** | `material:peat_block` |
+| 갈탄 ×9 | **갈탄 블록** | `material:lignite_block` |
+| 아역청탄 ×9 | **아역청탄 블록** | `material:sub_bituminous_block` |
+| 역청탄 ×9 | **역청탄 블록** | `minecraft:coal_block` |
+| 무연탄 ×9 | **무연탄 블록** | `material:anthracite_block` |
+
+- 블록 → 낱개 ×9 분해 레시피도 둔다 (역청탄은 바닐라 유지).
+- 숯은 압축 불가.
+
+## 연료
+
+| 아이템 | 용광로·고로·훈연기 | 화로 광차 | 비고 |
+|--------|-------------------|-----------|------|
+| `minecraft:coal` (역청탄) | **1600틱** | **3600틱** | 바닐라 기본. 각 열의 앵커(100%) |
+| `minecraft:charcoal` (숯) | **1440틱** | **3240틱** | 각 앵커의 **90%**. ID는 바닐라 유지, 연소·광차 틱만 오버라이드 |
+| `minecraft:coal_block` (역청탄 블록) | **16000틱** | — | 바닐라 동일. 화로 광차 **불가** |
+| `material:peat` (이탄) | **400틱** | **900틱** | 역청탄의 **25%** |
+| `material:peat_block` (이탄 블록) | **4000틱** | — | 역청탄 블록의 **25%**. 화로 광차 **불가** |
+| `material:lignite` (갈탄) | **800틱** | **1800틱** | 역청탄의 **50%** |
+| `material:lignite_block` (갈탄 블록) | **8000틱** | — | 역청탄 블록의 **50%**. 화로 광차 **불가** |
+| `material:sub_bituminous` (아역청탄) | **1200틱** | **2700틱** | 역청탄의 **75%** |
+| `material:sub_bituminous_block` (아역청탄 블록) | **12000틱** | — | 역청탄 블록의 **75%**. 화로 광차 **불가** |
+| `material:anthracite` (무연탄) | **2000틱** | **4500틱** | 역청탄의 **125%** |
+| `material:anthracite_block` (무연탄 블록) | **20000틱** | — | 역청탄 블록의 **125%**. 화로 광차 **불가** |
+
+- 고로·훈연기는 연소 속도를 2배로 쓰지만 **연료 1개당 처리량**은 용광로와 같다. (예: 역청탄 8 · 숯 7.2 · 이탄 2 · 갈탄 4 · 아역청탄 6 · 무연탄 10 · 역청탄 블록 80 · 이탄 블록 20 · 갈탄 블록 40 · 아역청탄 블록 60 · 무연탄 블록 100)
+- 화로 광차 틱은 해당 연료의 용광로 연소에 `× 3600 / 1600`을 적용한 것과 같다 (등급 연료·숯 공통).
+- 계열 효율 요약(역청탄=100%): 이탄 25% · 갈탄 50% · 아역청탄 75% · 역청탄 100% · 무연탄 125% · 숯 90%.

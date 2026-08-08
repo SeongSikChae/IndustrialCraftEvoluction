@@ -20,7 +20,7 @@ public final class FuelDurations {
 	public static int minecartStyleFuelTicks(Level level, ItemStack stack) {
 		int furnaceBurn = level.fuelValues().burnDuration(stack);
 		if (furnaceBurn <= 0) {
-			return VANILLA_MINECART_FUEL_TICKS;
+			return 0;
 		}
 		return furnaceBurn * VANILLA_MINECART_FUEL_TICKS / VANILLA_COAL_FURNACE_BURN;
 	}

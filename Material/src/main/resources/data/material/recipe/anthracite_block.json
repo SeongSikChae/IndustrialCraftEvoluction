@@ -1,0 +1,16 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"category": "building",
+	"key": {
+		"P": "#material:anthracite"
+	},
+	"pattern": [
+		"PPP",
+		"PPP",
+		"PPP"
+	],
+	"result": {
+		"count": 1,
+		"id": "material:anthracite_block"
+	}
+}

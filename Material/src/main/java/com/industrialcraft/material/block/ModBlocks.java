@@ -1,14 +1,12 @@
 package com.industrialcraft.material.block;
 
 import java.util.function.Function;
-import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.references.BlockItemId;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -26,6 +24,11 @@ public final class ModBlocks {
 	public static final Block DEEPSLATE_SUB_BITUMINOUS_ORE = registerDeepslateOre(ModBlockItemIds.DEEPSLATE_SUB_BITUMINOUS_ORE, SUB_BITUMINOUS_ORE);
 	public static final Block ANTHRACITE_ORE = registerOre(ModBlockItemIds.ANTHRACITE_ORE);
 	public static final Block DEEPSLATE_ANTHRACITE_ORE = registerDeepslateOre(ModBlockItemIds.DEEPSLATE_ANTHRACITE_ORE, ANTHRACITE_ORE);
+
+	public static final Block PEAT_BLOCK = registerFuelBlock(ModBlockItemIds.PEAT_BLOCK);
+	public static final Block LIGNITE_BLOCK = registerFuelBlock(ModBlockItemIds.LIGNITE_BLOCK);
+	public static final Block SUB_BITUMINOUS_BLOCK = registerFuelBlock(ModBlockItemIds.SUB_BITUMINOUS_BLOCK);
+	public static final Block ANTHRACITE_BLOCK = registerFuelBlock(ModBlockItemIds.ANTHRACITE_BLOCK);
 
 	private ModBlocks() {
 	}
@@ -49,6 +52,14 @@ public final class ModBlocks {
 		);
 	}
 
+	private static Block registerFuelBlock(BlockItemId id) {
+		return register(
+			id,
+			Block::new,
+			BlockBehaviour.Properties.ofFullCopy(Blocks.COAL_BLOCK)
+		);
+	}
+
 	private static Block register(BlockItemId id, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties properties) {
 		Block block = register(id.block(), factory, properties);
 		Item.Properties itemProperties = new Item.Properties().useBlockDescriptionPrefix().setId(id.item());
@@ -62,16 +73,6 @@ public final class ModBlocks {
 	}
 
 	public static void initialize() {
-		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.NATURAL_BLOCKS)
-			.register(entries -> {
-				entries.accept(PEAT_ORE);
-				entries.accept(DEEPSLATE_PEAT_ORE);
-				entries.accept(LIGNITE_ORE);
-				entries.accept(DEEPSLATE_LIGNITE_ORE);
-				entries.accept(SUB_BITUMINOUS_ORE);
-				entries.accept(DEEPSLATE_SUB_BITUMINOUS_ORE);
-				entries.accept(ANTHRACITE_ORE);
-				entries.accept(DEEPSLATE_ANTHRACITE_ORE);
-			});
+		// Creative tabs are registered in ModCreativeTabs.
 	}
 }

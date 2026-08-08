@@ -30,7 +30,6 @@ jobs:
           name: mods
           path: |
             Material/build/libs/*.jar
-            Machine/build/libs/*.jar
             !**/*-sources.jar
           if-no-files-found: error
           retention-days: 1

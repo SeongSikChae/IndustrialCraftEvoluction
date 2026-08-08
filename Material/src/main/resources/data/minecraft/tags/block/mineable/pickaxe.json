@@ -8,6 +8,10 @@
 		"material:sub_bituminous_ore",
 		"material:deepslate_sub_bituminous_ore",
 		"material:anthracite_ore",
-		"material:deepslate_anthracite_ore"
+		"material:deepslate_anthracite_ore",
+		"material:peat_block",
+		"material:lignite_block",
+		"material:sub_bituminous_block",
+		"material:anthracite_block"
 	]
 }

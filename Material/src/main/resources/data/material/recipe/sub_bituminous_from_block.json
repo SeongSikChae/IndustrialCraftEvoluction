@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"category": "building",
+	"ingredients": [
+		"#material:sub_bituminous_blocks"
+	],
+	"result": {
+		"count": 9,
+		"id": "material:sub_bituminous"
+	}
+}

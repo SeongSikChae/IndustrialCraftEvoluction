@@ -1,0 +1,11 @@
+{
+	"type": "minecraft:smelting",
+	"category": "misc",
+	"cookingtime": 200,
+	"experience": 0.1,
+	"group": "peat",
+	"ingredient": "material:deepslate_peat_ore",
+	"result": {
+		"id": "material:peat"
+	}
+}

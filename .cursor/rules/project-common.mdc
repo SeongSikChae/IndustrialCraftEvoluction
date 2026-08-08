@@ -1,0 +1,103 @@
+---
+description: 전 모듈 공통 — docs/assets·모델링·레시피·GameTest·크리에이티브 탭·CI 검증 구분 규칙
+alwaysApply: true
+---
+
+# 프로젝트 공통 (모듈 전반)
+
+Material · Machine · Showcase 등 **모든 세부 모드**에 통용한다. 모듈별 설계 규칙과 별개이며, 충돌 시 이 문서의 docs/assets·모델링·레시피 핸드북·GameTest·크리에이티브 탭·CI 검증 구분 규칙을 우선한다.
+
+## 1. `docs/`
+
+- 각 모듈의 `docs/`에는 **관련 문서만** 둔다 (Markdown 등 설계·브리핑·참고 문서).
+- **`README.md`는 `docs/`에 두지 않는다.** 모듈 루트(`Material/README.md` 등)에만 둔다.
+- 특정 아이템(또는 블록 등 콘텐츠)에 대한 **세부 문서가 여러 개**이면 `docs/{id}/`처럼 **아이템 단위 디렉터리**로 묶는다. 문서가 하나뿐이면 `docs/{주제}.md`처럼 플랫해도 된다.
+- 아이템·블록 텍스처, 모델, 인벤토리/월드용 이미지 등 **게임 팩 에셋은 `docs/`에 두지 않는다.** → `assets`로.
+
+```text
+✅ Material/docs/vanilla-coal-charcoal.md
+✅ Material/docs/peat/overview.md
+✅ Material/docs/peat/fuel-balance.md
+✅ Machine/README.md
+❌ Material/docs/README.md
+❌ Material/docs/peat.png          ← 아이템 이미지라면 assets
+❌ Material/docs/peat-overview.md + peat-balance.md  (같은 아이템 다문서 → 디렉터리로)
+```
+
+## 2. `assets/`
+
+- 모델링·텍스처·아이템 정의 등 **런타임 에셋**은  
+  `{Module}/src/main/resources/assets/{namespace}/` 아래에 둔다.
+- **Minecraft 표준 레이아웃**을 유지한다. “아이템별 세분화”는 **콘텐츠 ID당 파일**로 한다 (ID별 하위 폴더 강제 아님).
+
+```text
+assets/{namespace}/
+  textures/item/{id}.png
+  textures/block/{id}.png
+  models/item/{id}.json
+  models/block/{id}.json
+  blockstates/{id}.json
+  items/{id}.json          # 1.21+ item model 정의 등
+  lang/en_us.json
+  lang/ko_kr.json
+```
+
+- 신규 콘텐츠 추가 시: 해당 `{id}`에 필요한 텍스처·모델·blockstate·item 정의를 **같은 ID 이름**으로 맞춘다.
+- GUI·파티클 등도 `textures/gui/...` 등 표준 하위 경로를 쓰고, `docs/`로 빼지 않는다.
+
+## 3. 아이템 모델링
+
+- **일반 아이템**(인곳·연료·부품 등 비블록 아이템): **2D 모델링**을 사용한다 (`minecraft:item/generated` 등 flat 아이템 모델 + `textures/item/{id}.png`).
+- **블록형 아이템**(설치 가능한 블록의 인벤토리/드롭 아이템): **3D 모델링**을 사용한다 (블록 모델/`parent`로 블록을 참조하거나, 필요 시 전용 3D 아이템 모델).
+- 새 콘텐츠·아이콘·미리보기 작업 시 위 구분에 맞춘다. 예외가 필요하면 모듈 규칙에 명시한다.
+- **표현 검증**: 모델·아이템 정의를 추가·변경하면, 인벤토리/핸드에 **의도대로 보이는지** 렌더·미리보기로 확인한다 (예: 모듈 `tools/Render-McModel.ps1`, `Render-BlockIso.ps1` 등). 깨진 UV·누락 텍스처·잘못된 parent·gui 각도만 두고 끝내지 않는다.
+- 검증 결과는 assets 경로의 아이콘/미리보기와 맞추고, 문제가 있으면 모델·텍스처를 고친 뒤 다시 렌더한다.
+- 위 렌더·시각 미리보기는 **로컬 전용**이다. GitHub Actions에 넣지 않는다 (§7).
+
+## 4. 레시피와 핸드북 (레시피북)
+
+- 레시피를 추가할 때는 **핸드북 기능(바닐라 레시피북 해금)** 도 함께 제공한다. 레시피 JSON만 두고 advancement를 빠뜨리지 않는다.
+- 각 레시피에 대응하는 `data/{namespace}/advancement/recipes/...` 를 두어, `rewards.recipes`로 해당 레시피를 해금한다.
+- 커스텀 제작대·전용 RecipeBookCategory를 쓰는 경우에도 동일하게 **해금 advancement**를 맞춰 둔다 (예: Machine의 `machine_crafting_table` 경로).
+- 신규 레시피 작업 체크: `recipe/{id}.json` + `advancement/recipes/.../{id}.json` 한 쌍.
+
+## 5. GameTest
+
+- 아이템·블록 등 콘텐츠를 추가하면서 **관련 기능**(동작·로직·상호작용 등)을 넣을 때는, 그 기능을 검증하는 **GameTest 코드도 같이** 추가한다.
+- 테스트는 **해당 모듈**의 기존 GameTest 관례를 따른다 (서버 GameTest / Client GameTest / `src/gametest` 배치·등록 방식 등).
+- 순수 에셋·lang·단순 등록만이고 검증할 동작이 없으면 GameTest는 생략해도 된다. 동작이 있으면 등록·에셋만으로 끝내지 않는다.
+- Showcase 클립/시나리오는 문서·캡처용이므로, 기능 회귀 검증용 GameTest를 대체하지 않는다 (요청·모듈 규칙이 있을 때만 함께 둔다).
+- **CI vs 로컬**: 서버(헤드리스) GameTest는 GitHub Actions에 연결할 수 있다. Client GameTest·Showcase 클립은 **로컬 전용**이며 Actions에서 실행하지 않는다 (§7).
+
+## 6. 크리에이티브 탭
+
+- 아이템·블록 아이템을 추가할 때는 **바닐라 크리에이티브 역할**(건축 블록, 재료, 기능 블록, 자연 블록 등)에 맞춰 배치한다.
+- 표시 이름은 **`IndustrialCraft: {유형}`** 형식의 **전용 크리에이티브 탭**을 쓴다. 예: `IndustrialCraft: Building Blocks`, `IndustrialCraft: Ingredients`, `IndustrialCraft: Functional Blocks`.
+- 해당 유형 탭이 아직 없으면 **신설**하고, 있으면 그 탭에 **출력(추가)** 한다. 바닐라 `CreativeModeTabs.*`에만 넣는 것으로 대체하지 않는다.
+- 탭 ID·lang 키는 프로젝트 관례에 맞추고, `en_us` / `ko_kr`에 표시 이름을 등록한다 (예: `itemGroup.…` / `IndustrialCraft: 건축 블록`).
+
+## 7. 검증 · CI (GitHub Actions) 구분
+
+검증을 추가·문서화할 때 **Actions에서 돌릴 수 있는 것**과 **아닌 것**을 구별한다. 아닌 것은 workflow에 넣지 않는다.
+
+### Actions에서 실행 가능 (CI)
+
+- Gradle `build` / 컴파일·체크·단위 테스트 등 헤드리스로 끝나는 작업
+- **서버 GameTest**(디스플레이·클라이언트 불필요, CI 러너에서 안정적으로 반복 가능)
+
+### 로컬 전용 (Actions에서 실행하지 않음)
+
+- **Client GameTest** (`runClientGameTest` 등)
+- **모델 렌더·시각 미리보기** (`Render-McModel.ps1`, `Render-BlockIso.ps1`, 아이콘 크롭 등)
+- **Showcase** 클립 캡처·ffmpeg 인코딩·수동/시각 검수
+
+### 적용
+
+- 새 검증을 추가할 때 CI 가능 여부에 따라 태스크·문서를 나눈다. CI 불가능 검증을 `.github/workflows`에 연결하지 않는다.
+- CI workflow(`build.yml` 등)는 위 **실행 가능** 항목만 돌린다. `runClientGameTest`·렌더 스크립트·Showcase 인코딩을 Actions step으로 추가하지 않는다.
+- 로컬 전용 검증도 개발 시 생략하지 않는다. CI에 안 넣는다와 “안 한다”를 같게 보지 않는다.
+
+## 적용
+
+- 새 파일·이동·리팩터 시 위 규칙을 따른다.
+- README 미리보기는 `src/main/resources/assets/{namespace}/textures/...` 경로를 가리킨다. 아이콘용 PNG를 새로 두면 같은 assets 경로에 둔다 (docs 금지).

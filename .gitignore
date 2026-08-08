@@ -34,6 +34,11 @@ bin/
 
 run/
 
+# local texture tooling outputs
+Material/tools/*.exe
+Material/tools/_ref_*.png
+Material/build/model-preview/
+
 # java
 
 hs_err_*.log
